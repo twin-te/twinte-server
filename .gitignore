@@ -79,6 +79,9 @@ dist
 # IDE
 .idea
 
+# VS Code
+.vscode
+
 # Service worker
 sw.*
 

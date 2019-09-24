@@ -15,6 +15,10 @@
     "noFallthroughCasesInSwitch": true,
     "moduleResolution": "node",
     "esModuleInterop": true,
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
+    "lib": ["es6"],
+    "types": ["reflect-metadata"],
     "outDir": "build/"
   }
 }

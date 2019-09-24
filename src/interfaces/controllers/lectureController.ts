@@ -1,11 +1,12 @@
 import { Router } from 'express'
 import container from '../../inversify.config'
-import { FindLectureUseCase } from '../../application/usecases/findLectureUseCase'
+import { LectureService } from '../../application/services/LectureService'
 import { TYPES } from '../../types'
 
-const findLectureUseCase = container.get<FindLectureUseCase>(
+const findLectureUseCase = container.get<LectureService>(
   TYPES.FindLectureUseCase
 )
+
 const router = Router()
 
 router.get('/search', async (req, res) => {

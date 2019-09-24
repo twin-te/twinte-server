@@ -4,7 +4,7 @@ import { inject, injectable } from 'inversify'
 import { TYPES } from '../../types'
 
 @injectable()
-export class FindLectureUseCase {
+export class LectureService {
   @inject(TYPES.LectureRepository) lectureRepository!: LectureRepository
 
   searchByName(q: string, year: number): Promise<Lecture[]> {

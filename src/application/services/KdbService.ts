@@ -4,7 +4,7 @@ import { injectable, inject } from 'inversify'
 import { TYPES } from '../../types'
 
 @injectable()
-export class UpdateKdbUseCase {
+export class KdbService {
   @inject(TYPES.LectureRepository) private lectureRepository!: LectureRepository
   @inject(TYPES.KdbRepository) private kdbRepository!: KdbRepository
 

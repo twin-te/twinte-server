@@ -1,7 +1,7 @@
 import { LectureRepository } from '../repositories/lectureRepository'
 import { Lecture } from '../../domain/entities/lecture'
 import { inject, injectable } from 'inversify'
-import { TYPES } from '../../types'
+import { TYPES } from '../../inversifyTypes'
 
 @injectable()
 export class LectureService {

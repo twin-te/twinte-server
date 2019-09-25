@@ -1,90 +1,61 @@
 import { inject, injectable } from 'inversify'
-import { TYPES } from '../../types'
+import { TYPES } from '../../inversifyTypes'
 import { UserRepository } from '../repositories/userRepository'
-import { User, UserLectureData } from '../../domain/entities/user'
+import { Period, UserData } from '../../domain/entities/user'
 import { LectureRepository } from '../repositories/lectureRepository'
-import { Lecture } from '../../domain/entities/lecture'
+import { Day, Module } from 'twinte-parser'
 
 @injectable()
 export class TimetableService {
   @inject(TYPES.UserRepository) private userRepository!: UserRepository
   @inject(TYPES.LectureRepository) private lectureRepository!: LectureRepository
-  async addLectureByCustomData(
+
+  async updatePeriodByLectureID(
     userID: string,
-    lectureData: UserLectureData
-  ): Promise<UserLectureData[] | null> {
-    const timetable = await this.userRepository.getTimetable(
-      userID,
-      lectureData.year
-    )
-    if (!timetable) return null
-
-    timetable.push({
-      ...lectureData,
-      memo: '',
-      attendance: 0,
-      absence: 0,
-      late: 0
-    })
-
-    return await this.userRepository.updateTimetable(
-      userID,
-      lectureData.year,
-      timetable
-    )
-  }
-
-  async addLectureByLectureID(
-    userID: string,
-    year: number,
-    lectureID: string
-  ): Promise<UserLectureData[] | null> {
-    const lectureData = await this.lectureRepository.findByLectureID(
+    lectureID: string,
+    year: number
+  ) {
+    const lecture = await this.lectureRepository.findByLectureID(
       lectureID,
       year
     )
-    if (!lectureData) return null
-
-    const timetable = await this.userRepository.getTimetable(userID, year)
-    if (!timetable) return null
-
-    timetable.push({
-      ...lectureData,
-      memo: '',
-      attendance: 0,
-      absence: 0,
-      late: 0
-    })
-
-    return this.userRepository.updateTimetable(
-      userID,
-      lectureData.year,
-      timetable
+    if (!lecture) return
+    const periods: Period[] = lecture.details.map<Period>(d => ({
+      period: d.period,
+      day: d.day,
+      module: d.module,
+      room: d.room,
+      year,
+      lectureID: lecture.lectureID,
+      name: lecture.name,
+      instructor: lecture.instructor
+    }))
+    await Promise.all(
+      periods.map(el => this.userRepository.updateTimetable(userID, el))
     )
   }
 
-  async updateLecture(
-    userID: string,
-    year: number,
-    lecture: UserLectureData
-  ): Promise<UserLectureData[] | null> {
-    const timetable = await this.userRepository.getTimetable(userID, year)
-    if (!timetable) return null
-
-    const index = timetable.findIndex(el => el.lectureID === lecture.lectureID)
-    timetable[index] = lecture
-    return this.userRepository.updateTimetable(userID, year, timetable)
+  async updatePeriodByCustomData(userID: string, period: Period) {
+    return this.userRepository.updateTimetable(userID, period)
   }
 
-  async removeLecture(
+  async removePeriod(
     userID: string,
     year: number,
-    lectureID: string
-  ): Promise<UserLectureData[] | null > {
-    const timetable = await this.userRepository.getTimetable(userID, year)
-    if (!timetable) return null
+    module: Module,
+    day: Day,
+    period: number
+  ) {
+    return this.userRepository.removeTimetable(
+      userID,
+      year,
+      module,
+      day,
+      period
+    )
+  }
 
-    const index = timetable.findIndex(el => el.lectureID === lecture.lectureID)
-    timetable.splice()
+  async getTimetable(userID: string, year?: number, module?: Module) {
+    return this.userRepository.getTimetable(userID, year, module)
   }
 }

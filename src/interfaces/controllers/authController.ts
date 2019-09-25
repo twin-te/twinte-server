@@ -3,11 +3,11 @@ import session from 'express-session'
 import passport from 'passport'
 import { Strategy as TwitterStrategy } from 'passport-twitter'
 import container from '../../inversify.config'
-import { TYPES } from '../../types'
+import { TYPES } from '../../inversifyTypes'
 import { UserService } from '../../application/services/UserService'
 import { User } from '../../domain/entities/user'
 
-const userService = container.get<UserService>(TYPES.FindUserUseCase)
+const userService = container.get<UserService>(TYPES.UserService)
 
 export default function(app: Express) {
   app.use(

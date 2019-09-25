@@ -9,6 +9,7 @@
     "strictPropertyInitialization": true,
     "noImplicitThis": true,
     "alwaysStrict": true,
+    "skipLibCheck": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "noImplicitReturns": true,
@@ -18,7 +19,13 @@
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
     "lib": ["es6"],
-    "types": ["reflect-metadata"],
+    "types": ["reflect-metadata", "src/types"],
     "outDir": "build/"
-  }
+  },
+  "files": [
+    "src/type.d.ts"
+  ],
+  "include": [
+    "src/**/*"
+  ]
 }

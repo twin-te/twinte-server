@@ -1,7 +1,7 @@
 import { LectureRepository } from '../repositories/lectureRepository'
 import { KdbRepository } from '../repositories/kdbRepository'
 import { injectable, inject } from 'inversify'
-import { TYPES } from '../../types'
+import { TYPES } from '../../inversifyTypes'
 
 @injectable()
 export class KdbService {

@@ -6,8 +6,7 @@ const TYPES = {
   UserService: Symbol.for('UserService'),
   TimetableService: Symbol.for('TimetableService'),
   LectureService: Symbol.for('LectureService'),
-  LectureController: Symbol.for('LectureController'),
-  UserController: Symbol.for('UserController')
+  UserDataService: Symbol.for('UserDataService')
 }
 
 export { TYPES }

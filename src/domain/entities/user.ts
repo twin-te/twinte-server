@@ -1,15 +1,8 @@
 import { Day, Module } from 'twinte-parser'
 
-export interface UserLectureData {
+export interface UserData {
   year: number
-  module: Module
-  day: Day
-  period: number
-  room: string
-
   lectureID: string
-  name: string
-  instructor: string
 
   memo: string
   attendance: number
@@ -17,8 +10,17 @@ export interface UserLectureData {
   late: number
 }
 
-interface Period {
+export interface Period {
+  year: number
+  module: Module
 
+  day: Day
+  period: number
+  room: string
+
+  lectureID: string
+  name: string
+  instructor: string
 }
 
 export interface User {
@@ -30,5 +32,7 @@ export interface User {
       value: string
     }[]
   }
-  timetables: UserLectureData[]
+
+  timetables: Period[]
+  userData: UserData[]
 }

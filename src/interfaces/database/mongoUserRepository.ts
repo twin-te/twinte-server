@@ -1,9 +1,9 @@
 import mongoose, { Schema, model as createModel } from 'mongoose'
-import { UserLectureData, User } from '../../domain/entities/user'
+import { UserData, User, Period } from '../../domain/entities/user'
 import { injectable } from 'inversify'
 import { UserRepository } from '../../application/repositories/userRepository'
 import passport from 'passport'
-import { Module } from 'twinte-parser'
+import { Day, Module } from 'twinte-parser'
 
 mongoose.Schema.Types.String.checkRequired((v: string) => v != null)
 
@@ -24,28 +24,24 @@ const schema = new Schema({
       {
         year: { type: Number, required: true },
         module: { type: String, required: true },
-        lectures: {
-          type: [
-            {
-              name: { type: String, required: true },
-              details: {
-                type: [
-                  {
-                    module: { type: String, required: true },
-                    day: { type: String, required: true },
-                    period: { type: Number, required: true },
-                    room: { type: String, required: true }
-                  }
-                ]
-              },
-              instructor: { type: String, required: true },
-              memo: { type: String },
-              attendance: { type: Number },
-              absence: { type: Number },
-              late: { type: Number }
-            }
-          ]
-        }
+        day: { type: String, required: true },
+        period: { type: Number, required: true },
+        room: { type: String },
+        lectureID: { type: String, required: true },
+        name: { type: String, required: true },
+        instructor: { type: String, required: true }
+      }
+    ]
+  },
+  userData: {
+    type: [
+      {
+        year: { type: Number, required: true },
+        lectureID: { type: String, required: true },
+        memo: { type: String },
+        attendance: { type: Number },
+        absence: { type: Number },
+        late: { type: Number }
       }
     ]
   }
@@ -58,7 +54,8 @@ export class MongoUserRepository implements UserRepository {
   async createUserByTwitter(profile: passport.Profile): Promise<User> {
     const newUser: User = {
       twitter: profile,
-      timetables: []
+      timetables: [],
+      userData: []
     }
     return await new model(newUser).save()
   }
@@ -75,25 +72,96 @@ export class MongoUserRepository implements UserRepository {
     userID: string,
     year?: number,
     module?: Module
-  ): Promise<UserLectureData[] | null> {
-    const user = await model.findById(userID)
-    if (user) {
-      let timetable = user.timetables
-      if (year) timetable = timetable.filter(el => el.year === year)
-      if (module) timetable = timetable.filter(el => el.module === module)
-      return timetable ? timetable : []
-    } else return null
+  ): Promise<Period[] | null> {
+    if (year && module) {
+      const res = (await model.aggregate([
+        { $match: { 'timetables.year': year, 'timetables.module': module } },
+        { $unwind: '$timetables' },
+        { $match: { 'timetables.year': year, 'timetables.module': module } },
+        { $group: { _id: '$_id', timetables: { $push: '$timetables' } } }
+      ]))[0] as unknown
+      return (res as User).timetables
+    } else if (year) {
+      const res = (await model.aggregate([
+        { $match: { 'timetables.year': year } },
+        { $unwind: '$timetables' },
+        { $match: { 'timetables.year': year } },
+        { $group: { _id: '$_id', timetables: { $push: '$timetables' } } }
+      ]))[0] as unknown
+      return (res as User).timetables
+    } else {
+      const res = await model.findById(userID)
+      return res ? res.timetables : null
+    }
+  }
+
+  async getUserData(
+    userID: string,
+    lectureID: string,
+    year: number
+  ): Promise<UserData | null> {
+    const res = await model.findById(userID, {
+      userData: { $elemMatch: { year, lectureID } }
+    })
+    return res ? res.userData[0] : null
   }
 
   async updateTimetable(
     userID: string,
-    year: number,
-    timetable: UserLectureData[]
-  ): Promise<UserLectureData[] | null> {
+    period: Period
+  ): Promise<Period | null> {
     const user = await model.findById(userID)
-    if (user) {
-      user.timetables[year] = timetable
-      return timetable
-    } else return null
+    if (!user) return null
+    const index = user.timetables.findIndex(
+      el =>
+        el.year == period.year &&
+        el.module == period.module &&
+        el.day == period.day &&
+        el.period == period.period
+    )
+    if (index > 0) user.timetables[index] = period
+    else user.timetables.push(period)
+    await user.save()
+
+    return period
+  }
+
+  async removeTimetable(
+    userID: string,
+    year: number,
+    module: Module,
+    day: Day,
+    period: number
+  ): Promise<void> {
+    const user = await model.findById(userID)
+    if (!user) return
+    const index = user.timetables.findIndex(
+      el =>
+        el.year == year &&
+        el.module == module &&
+        el.day == day &&
+        el.period == period
+    )
+    if (index > 0) user.timetables.splice(index, 1)
+    else return
+    await user.save()
+
+    return
+  }
+
+  async updateUserData(
+    userID: string,
+    userData: UserData
+  ): Promise<UserData | null> {
+    const user = await model.findById(userID)
+    if (!user) return null
+    const index = user.userData.findIndex(
+      el => el.lectureID === userData.lectureID && el.year === userData.year
+    )
+    if (index > 0) user.userData[index] = userData
+    else user.userData.push(userData)
+
+    await user.save()
+    return userData
   }
 }

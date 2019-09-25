@@ -8,10 +8,15 @@ export class KdbService {
   @inject(TYPES.LectureRepository) private lectureRepository!: LectureRepository
   @inject(TYPES.KdbRepository) private kdbRepository!: KdbRepository
 
-  async updateLocalKdbDatabase(year: number) {
-    const lectures = await this.kdbRepository.getAllLecturesFromRemoteServer(
-      year
-    )
-    await this.lectureRepository.updateAll(lectures, year)
+  async updateLocalKdbDatabase(year: number, onlyIsEmpty?: boolean) {
+    if (
+      !onlyIsEmpty ||
+      (onlyIsEmpty && (await this.lectureRepository.isEmpty(year)))
+    ) {
+      const lectures = await this.kdbRepository.getAllLecturesFromRemoteServer(
+        year
+      )
+      await this.lectureRepository.updateAll(lectures, year)
+    }
   }
 }

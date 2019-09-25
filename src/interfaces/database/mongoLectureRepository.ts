@@ -3,7 +3,9 @@ import { Lecture } from '../../domain/entities/lecture'
 import mongoose, { Schema, model as createModel } from 'mongoose'
 import { injectable } from 'inversify'
 
+// @ts-ignore
 mongoose.Schema.Types.String.checkRequired((v: string) => v != null)
+
 export interface LectureDocument extends mongoose.Document, Lecture {}
 
 const schema = new Schema({

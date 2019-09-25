@@ -5,6 +5,7 @@ import { UserRepository } from '../../application/repositories/userRepository'
 import passport from 'passport'
 import { Day, Module } from 'twinte-parser'
 
+// @ts-ignore
 mongoose.Schema.Types.String.checkRequired((v: string) => v != null)
 
 export interface UserDocument extends mongoose.Document, User {}

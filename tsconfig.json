@@ -19,7 +19,7 @@
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
     "lib": ["es6"],
-    "types": ["reflect-metadata", "src/types"],
+    "types": ["reflect-metadata"],
     "outDir": "build/"
   },
   "files": [

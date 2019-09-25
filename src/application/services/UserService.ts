@@ -1,14 +1,12 @@
 import { inject, injectable } from 'inversify'
 import { TYPES } from '../../inversifyTypes'
 import { UserRepository } from '../repositories/userRepository'
-import { Period, User } from '../../domain/entities/user'
+import { User } from '../../domain/entities/user'
 import * as passport from 'passport'
-import { LectureRepository } from '../repositories/lectureRepository'
 
 @injectable()
 export class UserService {
   @inject(TYPES.UserRepository) private userRepository!: UserRepository
-  @inject(TYPES.LectureRepository) private lectureRepository!: LectureRepository
 
   async findByID(id: string): Promise<User | null> {
     return this.userRepository.findByID(id)
@@ -19,5 +17,4 @@ export class UserService {
   async createUserByTwitter(profile: passport.Profile): Promise<User> {
     return this.userRepository.createUserByTwitter(profile)
   }
-
 }

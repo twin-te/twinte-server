@@ -7,13 +7,18 @@ import { TYPES } from '../../inversifyTypes'
 import { UserService } from '../../application/services/UserService'
 import { User } from '../../domain/entities/user'
 
+import _MongoStore from 'connect-mongo'
 const userService = container.get<UserService>(TYPES.UserService)
 
 export default function(app: Express) {
+  const MongoStore = _MongoStore(session)
   app.use(
     session({
       secret: process.env.SESSION_SECRET || 'twinte',
-      saveUninitialized: true
+      saveUninitialized: false,
+      store: new MongoStore({
+        url: process.env.MONGO_URL || 'mongodb://localhost/twinte'
+      })
     })
   )
   app.use(passport.initialize())
@@ -33,7 +38,7 @@ export default function(app: Express) {
         consumerSecret: process.env.TWITTER_CONSUMER_SECRET || '',
         callbackURL: 'http://localhost:3000/twitter-callback'
       },
-      async (token, tokenSecret, profile, cb) => {
+      async (_, __, profile, cb) => {
         if (!(await userService.findByTwitterID(profile.id))) {
           await userService.createUserByTwitter({
             provider: profile.provider,
@@ -51,7 +56,7 @@ export default function(app: Express) {
   app.get(
     '/twitter-callback',
     passport.authenticate('twitter', { failureRedirect: '/login' }),
-    (req, res) => {
+    (_, res) => {
       res.redirect('/')
     }
   )

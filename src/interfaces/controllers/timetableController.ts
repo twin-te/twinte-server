@@ -119,13 +119,17 @@ router.get('/:year', async (req, res) => {
 
 /**
  *  @swagger
- *  /timetables:
+ *  /timetables/{year}:
  *    post:
  *      tags:
  *        - timetables
  *      summary: 講義を時間割に登録
  *      description: 講義IDから時間割に自動登録する
  *      parameters:
+ *      - in: path
+ *        name: year
+ *        schema:
+ *          type: integer
  *      - in: body
  *        name: body
  *        description: 登録する講義に関する情報
@@ -133,8 +137,6 @@ router.get('/:year', async (req, res) => {
  *        schema:
  *          type: object
  *          properties:
- *            year:
- *              type: integer
  *            lectureID:
  *              type: string
  *
@@ -156,18 +158,22 @@ router.get('/:year', async (req, res) => {
  *          description: 内部エラー
  */
 router.post(
-  '/',
+  '/:year',
   check('lectureID').isString(),
   check('year').isNumeric(),
   simpleValidator,
   async (req, res) => {
-    req.user
-    await timetableService.updatePeriodByLectureID(
-      req.user!.id,
-      req.body.lectureID,
-      req.body.year
-    )
-    res.json({ msg: 'ok' })
+    try {
+      await timetableService.updatePeriodByLectureID(
+        req.user!.id,
+        req.body.lectureID,
+        req.params.year
+      )
+      res.json({ msg: 'ok' })
+    } catch (e) {
+      console.error(e)
+      res.sendStatus(500).end()
+    }
   }
 )
 
@@ -230,14 +236,19 @@ router.post(
  *          description: 内部エラー
  */
 router.put('/:year/:module/:day/:period', async (req, res) => {
-  await timetableService.updatePeriodByCustomData(req.user!.id, {
-    year: req.params.year,
-    module: req.params.module,
-    day: req.params.day,
-    period: req.params.period,
-    ...req.body
-  })
-  res.json({ msg: 'ok' })
+  try {
+    await timetableService.updatePeriodByCustomData(req.user!.id, {
+      year: req.params.year,
+      module: req.params.module,
+      day: req.params.day,
+      period: req.params.period,
+      ...req.body
+    })
+    res.json({ msg: 'ok' })
+  } catch (e) {
+    console.error(e)
+    res.sendStatus(500).end()
+  }
 })
 
 /**
@@ -280,14 +291,19 @@ router.put('/:year/:module/:day/:period', async (req, res) => {
  *          description: 内部エラー
  */
 router.delete('/:year/:module/:day/:period', async (req, res) => {
-  await timetableService.removePeriod(
-    req.user!.id,
-    req.params.year,
-    req.params.module,
-    req.params.day,
-    req.params.period
-  )
-  res.json({ msg: 'ok' })
+  try {
+    await timetableService.removePeriod(
+      req.user!.id,
+      req.params.year,
+      req.params.module,
+      req.params.day,
+      req.params.period
+    )
+    res.json({ msg: 'ok' })
+  } catch (e) {
+    console.error(e)
+    res.sendStatus(500).end()
+  }
 })
 
 export default router

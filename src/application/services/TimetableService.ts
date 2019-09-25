@@ -1,7 +1,7 @@
 import { inject, injectable } from 'inversify'
 import { TYPES } from '../../inversifyTypes'
 import { UserRepository } from '../repositories/userRepository'
-import { Period, UserData } from '../../domain/entities/user'
+import { Period } from '../../domain/entities/user'
 import { LectureRepository } from '../repositories/lectureRepository'
 import { Day, Module } from 'twinte-parser'
 

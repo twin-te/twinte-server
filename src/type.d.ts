@@ -5,5 +5,8 @@ declare global {
     export interface User extends _User {
       id: string
     }
+    export interface Request {
+
+    }
   }
 }

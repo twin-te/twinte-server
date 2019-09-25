@@ -8,7 +8,15 @@ import { UserService } from '../../application/services/UserService'
 import { User } from '../../domain/entities/user'
 
 import _MongoStore from 'connect-mongo'
+import isAuthenticated from '../middleware/isAuthenticated'
 const userService = container.get<UserService>(TYPES.UserService)
+
+/**
+ * @swagger
+ * tags:
+ *   - name: auth
+ *     description: 認証周り
+ */
 
 export default function(app: Express) {
   const MongoStore = _MongoStore(session)
@@ -52,7 +60,32 @@ export default function(app: Express) {
       }
     )
   )
+  /**
+   *  @swagger
+   *  /login:
+   *    get:
+   *      tags:
+   *        - auth
+   *      summary: ログイン
+   *      description: ブラウザでアクセスするとTwitterの認証画面に飛ぶ
+   */
   app.get('/login', passport.authenticate('twitter'))
+
+  /**
+   *  @swagger
+   *  /logout:
+   *    get:
+   *      tags:
+   *        - auth
+   *      summary: ログアウト
+   *      description: ログアウトする
+   *      responses:
+   *        200:
+   *          description: 成功
+   */
+  app.get('/logout', isAuthenticated, (req, res) => {
+    req.session!.destroy(() => res.sendStatus(200))
+  })
   app.get(
     '/twitter-callback',
     passport.authenticate('twitter', { failureRedirect: '/login' }),

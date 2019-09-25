@@ -48,10 +48,14 @@ export class MongoLectureRepository implements LectureRepository {
     await Promise.all(
       lectures.map(async el => {
         if (el.lectureID === '') return
-        await model.findOneAndUpdate({ lectureID: el.lectureID }, el, {
-          upsert: true,
-          runValidators: true
-        })
+        await model.findOneAndUpdate(
+          { lectureID: el.lectureID, year: el.year },
+          el,
+          {
+            upsert: true,
+            runValidators: true
+          }
+        )
       })
     )
   }

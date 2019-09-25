@@ -16,7 +16,7 @@ export class KdbService {
       const lectures = await this.kdbRepository.getAllLecturesFromRemoteServer(
         year
       )
-      await this.lectureRepository.updateAll(lectures, year)
+      await this.lectureRepository.updateAll(lectures)
     }
   }
 }

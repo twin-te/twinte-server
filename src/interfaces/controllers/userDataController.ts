@@ -38,7 +38,7 @@ router.use(isAuthenticated)
 
 /**
  *  @swagger
- *  /userdata/{year}/{lectureID}:
+ *  /userdatas/{year}/{lectureID}:
  *    get:
  *      tags:
  *        - userdata
@@ -75,7 +75,7 @@ router.get('/:year/:lectureID', async (req, res) => {
 
 /**
  *  @swagger
- *  /userdata/{year}/{lectureID}:
+ *  /userdatas/{year}/{lectureID}:
  *    put:
  *      tags:
  *        - userdata

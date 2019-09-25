@@ -5,6 +5,7 @@ import applyAuthController from '../interfaces/controllers/authController'
 import lectureController from '../interfaces/controllers/lectureController'
 import timetableController from '../interfaces/controllers/timetableController'
 import userDataController from '../interfaces/controllers/userDataController'
+import userController from '../interfaces/controllers/userController'
 import bodyParser from 'body-parser'
 
 // 開発中用cors設定
@@ -57,7 +58,8 @@ export default function() {
   applyAuthController(app)
   app.use('/lectures', lectureController)
   app.use('/timetables', timetableController)
-  app.use('/userdata', userDataController)
+  app.use('/userdatas', userDataController)
+  app.use('/users', userController)
   app.get('/', (req, res) => res.json(req.user))
 
   if (process.env.NODE_ENV !== 'production') initSwagger(app)

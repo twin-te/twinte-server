@@ -156,7 +156,7 @@ export class MongoUserRepository implements UserRepository {
     const user = await model.findById(userID)
     if (!user) return null
     const index = user.userData.findIndex(
-      el => el.lectureID === userData.lectureID && el.year === userData.year
+      el => el.lectureID == userData.lectureID && el.year == userData.year
     )
     if (index > 0) user.userData[index] = userData
     else user.userData.push(userData)

@@ -2,6 +2,7 @@ import { LectureRepository } from '../../application/repositories/lectureReposit
 import { Lecture } from '../../domain/entities/lecture'
 import mongoose, { Schema, model as createModel } from 'mongoose'
 import { injectable } from 'inversify'
+import * as _cliProgress from 'cli-progress'
 
 // @ts-ignore
 mongoose.Schema.Types.String.checkRequired((v: string) => v != null)
@@ -45,18 +46,22 @@ export class MongoLectureRepository implements LectureRepository {
   }
 
   async updateAll(lectures: Lecture[]): Promise<void> {
-    await Promise.all(
-      lectures.map(async el => {
-        if (el.lectureID === '') return
-        await model.findOneAndUpdate(
-          { lectureID: el.lectureID, year: el.year },
-          el,
-          {
-            upsert: true,
-            runValidators: true
-          }
-        )
-      })
-    )
+    const bar = new _cliProgress.Bar({}, _cliProgress.Presets.shades_classic)
+    console.log('●  Updating Database')
+    bar.start(lectures.length, 0)
+    for (let i = 0; i < lectures.length; i++) {
+      if (lectures[i].lectureID === '') return
+      await model.findOneAndUpdate(
+        { lectureID: lectures[i].lectureID, year: lectures[i].year },
+        lectures[i],
+        {
+          upsert: true,
+          runValidators: true
+        }
+      )
+      bar.update(i)
+    }
+    bar.stop()
+    console.log('✔  Done')
   }
 }

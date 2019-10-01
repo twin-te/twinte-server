@@ -22,10 +22,6 @@
     "types": ["reflect-metadata"],
     "outDir": "build/"
   },
-  "files": [
-    "src/type.d.ts"
-  ],
-  "include": [
-    "src/**/*"
-  ]
+  "files": ["src/type.d.ts"],
+  "include": ["src/**/*"]
 }

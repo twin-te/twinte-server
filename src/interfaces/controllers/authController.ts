@@ -44,7 +44,9 @@ export default function(app: Express) {
       {
         consumerKey: process.env.TWITTER_CONSUMER_KEY || '',
         consumerSecret: process.env.TWITTER_CONSUMER_SECRET || '',
-        callbackURL: 'http://localhost:3000/twitter-callback'
+        callbackURL:
+          process.env.TWITTER_LOGIN_CALLBACK_URL ||
+          'http://localhost:3000/twitter-callback'
       },
       async (_, __, profile, cb) => {
         if (!(await userService.findByTwitterID(profile.id))) {

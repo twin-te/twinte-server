@@ -35,9 +35,11 @@ const devCorsMiddleware = (
 
 // プロダクション用cors設定
 const prodCorsMiddleware = cors({
-  origin: 'https://twinte.net',
+  origin: ['https://twinte.net', 'https://dev.twinte.net'],
   credentials: true
 })
+
+const PORT = process.env.PORT || 3000
 
 // express 初期化
 export default function() {
@@ -64,5 +66,5 @@ export default function() {
 
   if (process.env.NODE_ENV !== 'production') initSwagger(app)
 
-  app.listen(3000, () => console.log('listening on port 3000!'))
+  app.listen(PORT, () => console.log(`listening on port ${PORT}!`))
 }

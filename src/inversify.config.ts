@@ -11,7 +11,9 @@ import { UserRepository } from './application/repositories/userRepository'
 import { MongoUserRepository } from './interfaces/database/mongoUserRepository'
 import { UserService } from './application/services/UserService'
 import { TimetableService } from './application/services/TimetableService'
-import {UserDataService} from './application/services/UserDataService'
+import { UserDataService } from './application/services/UserDataService'
+import { ScheduleRepository } from './application/repositories/scheduleRepository'
+import { TsukubaWebScheduleRepository } from './interfaces/database/tsukubaWebScheduleRepository'
 const container = new Container()
 
 container.bind<KdbRepository>(TYPES.KdbRepository).to(TwinteParserKdbRepository)
@@ -19,6 +21,7 @@ container
   .bind<LectureRepository>(TYPES.LectureRepository)
   .to(MongoLectureRepository)
 container.bind<UserRepository>(TYPES.UserRepository).to(MongoUserRepository)
+container.bind<ScheduleRepository>(TYPES.ScheduleRepository).to(TsukubaWebScheduleRepository)
 container.bind<KdbService>(TYPES.KdbService).to(KdbService)
 container.bind<LectureService>(TYPES.LectureService).to(LectureService)
 container.bind<UserService>(TYPES.UserService).to(UserService)

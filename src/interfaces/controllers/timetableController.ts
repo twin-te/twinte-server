@@ -42,6 +42,31 @@ router.use(isAuthenticated)
  *            type: string
  */
 
+
+/**
+ *  @swagger
+ *  /timetables/today:
+ *    get:
+ *      tags:
+ *        - timetables
+ *      summary: 今日の時間割を取得
+ *      description: apiを叩いた日の時間割を取得する
+ *      responses:
+ *        200:
+ *          description: 成功
+ *          schema:
+ *            type: array
+ *            items:
+ *              $ref: '#/components/schemas/Period'
+ *        401:
+ *          description: 未ログイン
+ *        500:
+ *          description: 内部エラー
+ */
+router.get('/today', async (req, res) => {
+  res.json(await timetableService.getTodayTimetable(req.user!.id))
+})
+
 /**
  *  @swagger
  *  /timetables/{year}/{module}:

@@ -76,7 +76,13 @@ export class MongoUserRepository implements UserRepository {
   ): Promise<Period[] | null> {
     if (year && module) {
       const res = (await model.aggregate([
-        { $match: { 'timetables.year': year, 'timetables.module': module } },
+        {
+          $match: {
+            id: mongoose.Types.ObjectId(userID),
+            'timetables.year': year,
+            'timetables.module': module
+          }
+        },
         { $unwind: '$timetables' },
         { $match: { 'timetables.year': year, 'timetables.module': module } },
         { $group: { _id: '$_id', timetables: { $push: '$timetables' } } }
@@ -84,7 +90,12 @@ export class MongoUserRepository implements UserRepository {
       return (res as User).timetables
     } else if (year) {
       const res = (await model.aggregate([
-        { $match: { 'timetables.year': year } },
+        {
+          $match: {
+            _id: mongoose.Types.ObjectId(userID),
+            'timetables.year': year
+          }
+        },
         { $unwind: '$timetables' },
         { $match: { 'timetables.year': year } },
         { $group: { _id: '$_id', timetables: { $push: '$timetables' } } }

@@ -68,7 +68,6 @@ export class TimetableService {
     const nowModule = moduleSchedules.find(el =>
       date.isBetween(el.start, el.end)
     )
-    const hoge = await this.scheduleRepository.getTransferDays()
     const transferDate = (await this.scheduleRepository.getTransferDays()).find(
       el => el.date.isSame(date, 'day')
     )

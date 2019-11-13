@@ -78,7 +78,7 @@ export class MongoUserRepository implements UserRepository {
       const res = (await model.aggregate([
         {
           $match: {
-            id: mongoose.Types.ObjectId(userID),
+            _id: mongoose.Types.ObjectId(userID),
             'timetables.year': year,
             'timetables.module': module
           }

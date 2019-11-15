@@ -92,7 +92,7 @@ export default function(app: Express) {
     '/twitter-callback',
     passport.authenticate('twitter', { failureRedirect: '/login' }),
     (_, res) => {
-      res.redirect('/')
+      res.redirect(process.env.FRONT_BASE_URL || '/')
     }
   )
 }

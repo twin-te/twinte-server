@@ -1,10 +1,13 @@
-import express from "express";
+import container from './di/inversify.config'
+import { UpdateLectureDatabaseUseCase } from './usecase/UpdateLectureDatabaseUseCase'
+import { types } from './di/types'
+import { connect } from './infrastructure/database'
 
-const app = express();
-
-app.get("/", (req, res) => {
-  req;
-  res.send("Hello");
-});
-
-app.listen(3333, () => console.log("listening on port 3000!"));
+const main = async () => {
+  await connect()
+  const usecase = container.get<UpdateLectureDatabaseUseCase>(
+    types.UpdateLectureDatabaseUseCase
+  )
+  await usecase.updateLectureDatabase(2019)
+}
+main()

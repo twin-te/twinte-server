@@ -1,0 +1,6 @@
+{
+  "swagger": {
+    "outputDirectory": "./.swagger_dist",
+    "entryFile": "./src/infrastructure/rest-api/index.ts"
+  }
+}

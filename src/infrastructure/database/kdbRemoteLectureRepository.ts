@@ -1,5 +1,5 @@
 import { RemoteLectureRepository } from '../../interface/repository/remoteLectureRepository'
-import { Lecture } from '../../domain/lecture'
+import { Lecture } from '../../entity/lecture'
 import { downloadKDB, parseKDB } from 'twinte-parser'
 import {injectable} from 'inversify'
 

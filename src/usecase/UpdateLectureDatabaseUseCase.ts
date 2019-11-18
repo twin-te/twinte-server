@@ -1,4 +1,4 @@
-import { Lecture } from '../domain/lecture'
+import { Lecture } from '../entity/lecture'
 
 /**
  * Twinteの講義データベースを更新する

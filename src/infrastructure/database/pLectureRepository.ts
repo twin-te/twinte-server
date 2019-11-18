@@ -1,9 +1,9 @@
 import { LectureRepository } from '../../interface/repository/lectureRepository'
-import { Lecture as pLecture } from './lecture'
+import { Lecture as pLecture } from './orm/lecture'
 import { injectable } from 'inversify'
 import { Like, Repository } from 'typeorm'
-import { Lecture } from '../../domain/lecture'
-import { LectureDate } from './lectureDate'
+import { Lecture } from '../../entity/lecture'
+import { LectureDate } from './orm/lectureDate'
 import uuid = require('uuid')
 import { getConnection } from './index'
 
@@ -25,7 +25,10 @@ export class PLectureRepository implements LectureRepository {
 
   async searchLectureByKeyword(keyword: string): Promise<Lecture[]> {
     const pLecs = await this.repository.find({
-      lecture_name: Like(`${keyword}`)
+      relations: ['dates'],
+      where: {
+        lecture_name: Like(`%${keyword}%`)
+      }
     })
     return pLecs.map(el => this.pLecToLec(el))
   }

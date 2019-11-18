@@ -1,4 +1,4 @@
-import { Lecture } from '../../domain/lecture'
+import { Lecture } from '../../entity/lecture'
 
 /**
  * 筑波大の講義データが保管されているデータベースから情報を取得する

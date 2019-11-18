@@ -1,4 +1,4 @@
-import { Lecture } from '../domain/lecture'
+import { Lecture } from '../entity/lecture'
 
 /**
  * 講義をキーワードで検索する

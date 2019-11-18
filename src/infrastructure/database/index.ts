@@ -1,6 +1,6 @@
 import { Connection, createConnection } from 'typeorm'
-import { Lecture } from './lecture'
-import { LectureDate } from './lectureDate'
+import { Lecture } from './orm/lecture'
+import { LectureDate } from './orm/lectureDate'
 
 let con: Connection
 

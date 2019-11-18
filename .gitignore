@@ -86,3 +86,5 @@ dist
 sw.*
 
 /build
+
+.swagger_dist

@@ -26,7 +26,10 @@ export default function(app: Express) {
       saveUninitialized: false,
       store: new MongoStore({
         url: process.env.MONGO_URL || 'mongodb://localhost/twinte'
-      })
+      }),
+      cookie: {
+        maxAge: 31536000000
+      }
     })
   )
   app.use(passport.initialize())

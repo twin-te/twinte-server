@@ -1,29 +1,6 @@
-import {
-  Context,
-  ContextResponse,
-  Errors,
-  GET,
-  IgnoreNextMiddlewares,
-  Path,
-  PathParam,
-  PostProcessor,
-  PreProcessor,
-  Return,
-  Security,
-  ServiceContext
-} from 'typescript-rest'
-import express from 'express'
+import { Context, GET, Path, PathParam, ServiceContext } from 'typescript-rest'
 import { AuthenticationProvider } from '../../../entity/user'
 import passport from 'passport'
-import { ServiceProcessor } from 'typescript-rest/src/server/model/server-types'
-import { UnauthorizedError } from 'typescript-rest/dist/server/model/errors'
-
-const validator: ServiceProcessor = (
-  req: express.Request,
-  res?: express.Response
-) => {
-  if (!req.isAuthenticated()) throw new UnauthorizedError()
-}
 
 @Path('/auth')
 export class AuthService {

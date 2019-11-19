@@ -6,7 +6,11 @@ const types = {
   CreateUserUserCase: Symbol.for('CreateUserUseCase'),
   UpsertAuthenticationUseCase: Symbol.for('UpsertAuthenticationUseCase'),
   LoginUseCase: Symbol.for('LoginUseCase'),
-  UserRepository: Symbol.for('UserRepository')
+  UserRepository: Symbol.for('UserRepository'),
+  TimetableRepository: Symbol.for('TimetableRepository'),
+  UserLectureRepository: Symbol.for('UserLectureRepository'),
+  CreateUserLectureUseCase: Symbol.for('CreateUserLectureUseCase'),
+  GetTimetableUseCase: Symbol.for('GetTimetableUseCase')
 }
 
 export { types }

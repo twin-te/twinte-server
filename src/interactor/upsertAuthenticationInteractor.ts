@@ -5,7 +5,8 @@ import { types } from '../di/types'
 import { UserRepository } from '../interface/repository/userRepository'
 
 @injectable()
-export class UpsertAuthenticationInteractor implements UpsertAuthenticationUseCase {
+export class UpsertAuthenticationInteractor
+  implements UpsertAuthenticationUseCase {
   @inject(types.UserRepository) userRepository!: UserRepository
 
   upsertAuthentication(

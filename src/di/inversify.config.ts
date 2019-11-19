@@ -17,6 +17,15 @@ import { LoginUseCase } from '../usecase/loginUseCase'
 import { LoginInteractor } from '../interactor/loginInteractor'
 import { UpsertAuthenticationUseCase } from '../usecase/upsertAuthenticationUseCase'
 import { UpsertAuthenticationInteractor } from '../interactor/upsertAuthenticationInteractor'
+import { TimetableRepository } from '../interface/repository/timetableRepository'
+import { PTimetableRepository } from '../infrastructure/database/pTimetableRepository'
+import { UserLectureRepository } from '../interface/repository/userLectureRepository'
+import { PUserLectureRepository } from '../infrastructure/database/pUserLectureRepository'
+import { CreateUserLectureUseCase } from '../usecase/createUserLectureUseCase'
+import { CreateUserLectureInteractor } from '../interactor/createUserLectureInteractor'
+import { TimetableController } from '../interface/controller/timetableController'
+import { GetTimetableUseCase } from '../usecase/getTimetableUseCase'
+import { GetTimetableInteractor } from '../interactor/getTimetableInteractor'
 
 const container = new Container()
 
@@ -46,5 +55,23 @@ container.bind<LoginUseCase>(types.LoginUseCase).to(LoginInteractor)
 container
   .bind<UpsertAuthenticationUseCase>(types.UpsertAuthenticationUseCase)
   .to(UpsertAuthenticationInteractor)
+
+container
+  .bind<TimetableRepository>(types.TimetableRepository)
+  .to(PTimetableRepository)
+
+container
+  .bind<UserLectureRepository>(types.UserLectureRepository)
+  .to(PUserLectureRepository)
+
+container
+  .bind<CreateUserLectureUseCase>(types.CreateUserLectureUseCase)
+  .to(CreateUserLectureInteractor)
+
+container.bind(TimetableController).to(TimetableController)
+
+container
+  .bind<GetTimetableUseCase>(types.GetTimetableUseCase)
+  .to(GetTimetableInteractor)
 
 export default container

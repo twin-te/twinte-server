@@ -16,6 +16,11 @@ export interface LectureRepository {
    */
   searchLectureByKeyword(keyword: string): Promise<Lecture[]>
 
+  findLectureByLectureCode(
+    year: number,
+    lectureCode: string
+  ): Promise<Lecture | undefined>
+
   /**
    * 講義情報を追加、更新する
    * @param lectures

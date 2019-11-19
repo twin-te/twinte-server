@@ -16,7 +16,9 @@ export class PLectureRepository implements LectureRepository {
   }
 
   async findLectureById(twinteLectureId: string): Promise<Lecture | undefined> {
-    const pLec = await this.repository.findOne(twinteLectureId)
+    const pLec = await this.repository.findOne(twinteLectureId, {
+      relations: ['dates']
+    })
 
     if (!pLec) return undefined
 
@@ -75,5 +77,17 @@ export class PLectureRepository implements LectureRepository {
       details: pLec.dates,
       instructor: pLec.instructor
     }
+  }
+
+  async findLectureByLectureCode(
+    year: number,
+    lecture_code: string
+  ): Promise<Lecture | undefined> {
+    const res = await this.repository.findOne(
+      { year, lecture_code },
+      { relations: ['dates'] }
+    )
+    if (!res) return undefined
+    return this.pLecToLec(res)
   }
 }

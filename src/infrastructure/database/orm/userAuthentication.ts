@@ -25,7 +25,9 @@ export class UserAuthentication {
   @Column()
   access_token!: string
 
-  @Column()
+  @Column({
+    nullable: true
+  })
   refresh_token!: string
 
   @ManyToOne(() => User, user => user.authentications)

@@ -9,6 +9,10 @@ import { UpdateLectureDatabaseInteractor } from '../interactor/UpdateLectureData
 import { LectureController } from '../interface/controller/lectureController'
 import { SearchLectureByKeywordUseCase } from '../usecase/SearchLectureByKeywordUseCase'
 import { SearchLectureByKeywordInteractor } from '../interactor/SearchLectureByKeywordInteractor'
+import { UserRepository } from '../interface/repository/userRepository'
+import { PUserRepository } from '../infrastructure/database/pUserRepository'
+import { CreateUserUseCase } from '../usecase/createUserUseCase'
+import { CreateUserInteractor } from '../interactor/createUserInteractor'
 
 const container = new Container()
 
@@ -25,6 +29,12 @@ container
   .bind<SearchLectureByKeywordUseCase>(types.SearchLectureByKeywordUseCase)
   .to(SearchLectureByKeywordInteractor)
 
+container.bind<UserRepository>(types.UserRepository).to(PUserRepository)
+
 container.bind(LectureController).to(LectureController)
+
+container
+  .bind<CreateUserUseCase>(types.CreateUserUserCase)
+  .to(CreateUserInteractor)
 
 export default container

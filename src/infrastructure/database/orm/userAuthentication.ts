@@ -1,9 +1,12 @@
-import {Column, Entity, ManyToOne} from 'typeorm'
-import {User} from './user'
-import {AuthenticationProvider} from '../../../entity/user'
+import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm'
+import { User } from './user'
+import { AuthenticationProvider } from '../../../entity/user'
 
 @Entity()
 export class UserAuthentication {
+  @PrimaryGeneratedColumn()
+  id!: number
+
   @Column({
     type: 'enum',
     enum: AuthenticationProvider
@@ -20,5 +23,5 @@ export class UserAuthentication {
   social_display_name!: string
 
   @ManyToOne(() => User, user => user.authentications)
-  user!:User
+  user!: User
 }

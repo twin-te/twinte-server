@@ -1,5 +1,5 @@
-import {Column, Entity, OneToMany, PrimaryColumn} from 'typeorm'
-import {UserAuthentication} from './userAuthentication'
+import { Column, Entity, OneToMany, PrimaryColumn } from 'typeorm'
+import { UserAuthentication } from './userAuthentication'
 
 @Entity()
 export class User {
@@ -11,7 +11,7 @@ export class User {
   @Column()
   twinte_username!: string
 
-  @OneToMany(() => UserAuthentication, ua => ua.user,{
+  @OneToMany(() => UserAuthentication, ua => ua.user, {
     cascade: true
   })
   authentications!: UserAuthentication[]

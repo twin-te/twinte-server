@@ -10,11 +10,11 @@ export async function connect(): Promise<Connection> {
   if (!con)
     con = await createConnection({
       type: 'postgres',
-      host: 'localhost',
-      port: 5432,
-      username: 'postgres',
-      password: 'postgres',
-      database: 'twin_te',
+      host: process.env.PG_HOST,
+      port: Number(process.env.PG_PORT),
+      username: process.env.PG_USER,
+      password: process.env.PG_PASSWORD,
+      database: process.env.PG_DATABASE,
       entities: [Lecture, LectureDate, User, UserAuthentication],
       synchronize: true,
       logging: false

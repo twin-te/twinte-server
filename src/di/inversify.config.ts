@@ -13,6 +13,10 @@ import { UserRepository } from '../interface/repository/userRepository'
 import { PUserRepository } from '../infrastructure/database/pUserRepository'
 import { CreateUserUseCase } from '../usecase/createUserUseCase'
 import { CreateUserInteractor } from '../interactor/createUserInteractor'
+import { LoginUseCase } from '../usecase/loginUseCase'
+import { LoginInteractor } from '../interactor/loginInteractor'
+import { UpsertAuthenticationUseCase } from '../usecase/upsertAuthenticationUseCase'
+import { UpsertAuthenticationInteractor } from '../interactor/upsertAuthenticationInteractor'
 
 const container = new Container()
 
@@ -36,5 +40,11 @@ container.bind(LectureController).to(LectureController)
 container
   .bind<CreateUserUseCase>(types.CreateUserUserCase)
   .to(CreateUserInteractor)
+
+container.bind<LoginUseCase>(types.LoginUseCase).to(LoginInteractor)
+
+container
+  .bind<UpsertAuthenticationUseCase>(types.UpsertAuthenticationUseCase)
+  .to(UpsertAuthenticationInteractor)
 
 export default container

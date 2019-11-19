@@ -22,6 +22,12 @@ export class UserAuthentication {
   @Column()
   social_display_name!: string
 
+  @Column()
+  access_token!: string
+
+  @Column()
+  refresh_token!: string
+
   @ManyToOne(() => User, user => user.authentications)
   user!: User
 }

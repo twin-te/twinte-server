@@ -4,8 +4,8 @@ export interface User {
 }
 
 export enum AuthenticationProvider {
-  Twitter = 'Twitter',
-  Google = 'Google'
+  Twitter = 'twitter',
+  Google = 'google'
 }
 
 export interface UserAuthentication {
@@ -13,4 +13,6 @@ export interface UserAuthentication {
   social_id: string
   social_username: string
   social_display_name: string
+  access_token: string
+  refresh_token: string
 }

@@ -3,7 +3,9 @@ const types = {
   RemoteLectureRepository: Symbol.for('RemoteLectureRepository'),
   UpdateLectureDatabaseUseCase: Symbol.for('UpdateLectureDatabaseUseCase'),
   SearchLectureByKeywordUseCase: Symbol.for('SearchLectureByKeywordUseCase'),
-  CreateUserUserCase: Symbol.for("CreateUserUseCase"),
+  CreateUserUserCase: Symbol.for('CreateUserUseCase'),
+  UpsertAuthenticationUseCase: Symbol.for('UpsertAuthenticationUseCase'),
+  LoginUseCase: Symbol.for('LoginUseCase'),
   UserRepository: Symbol.for('UserRepository')
 }
 

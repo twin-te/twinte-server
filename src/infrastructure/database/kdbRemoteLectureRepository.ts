@@ -1,7 +1,7 @@
 import { RemoteLectureRepository } from '../../interface/repository/remoteLectureRepository'
 import { Lecture } from '../../entity/lecture'
 import { downloadKDB, parseKDB } from 'twinte-parser'
-import {injectable} from 'inversify'
+import { injectable } from 'inversify'
 
 @injectable()
 export class KdbRemoteLectureRepository implements RemoteLectureRepository {

@@ -6,6 +6,7 @@ import {
   PathParam,
   POST,
   PUT,
+  QueryParam,
   ServiceContext
 } from 'typescript-rest'
 import { TimetableController } from '../../../interface/controller/timetableController'
@@ -37,34 +38,12 @@ export class TimetableService {
     )
   }
 
-  @Path(':year')
+  @Path('/')
   @GET
-  getYearTimetable(@PathParam('year') year: number) {
-    return this.timetableController.getTimetable(
-      this.context.request.user,
-      year
-    )
-  }
-
-  @Path(':year/:module')
-  @GET
-  getModuleTimetable(
-    @PathParam('year') year: number,
-    @PathParam('module') module: Module
-  ) {
-    return this.timetableController.getTimetable(
-      this.context.request.user,
-      year,
-      module
-    )
-  }
-
-  @Path(':year/:module/:day')
-  @GET
-  getDayTimetable(
-    @PathParam('year') year: number,
-    @PathParam('module') module: Module,
-    @PathParam('day') day: Day
+  getTimetable(
+    @QueryParam('year') year?: number,
+    @QueryParam('module') module?: Module,
+    @QueryParam('day') day?: Day
   ) {
     return this.timetableController.getTimetable(
       this.context.request.user,

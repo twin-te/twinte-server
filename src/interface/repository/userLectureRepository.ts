@@ -16,4 +16,9 @@ export interface UserLectureRepository {
     user: UserEntity,
     twinte_lecture_id: string
   ): Promise<UserLectureEntity | undefined>
+
+  updateUserLecture(
+    user: UserEntity,
+    userLecture: UserLectureEntity
+  ): Promise<UserLectureEntity | undefined>
 }

@@ -30,6 +30,11 @@ import { UpsertPeriodUseCase } from '../usecase/upsertPeriodUseCase'
 import { UpsertPeriodInteractor } from '../interactor/upsertPeriodInteractor'
 import { RemovePeriodUseCase } from '../interactor/removePeriodUseCase'
 import { RemovePeriodInteractor } from '../interactor/removePeriodInteractor'
+import { UserLectureController } from '../interface/controller/userLectureController'
+import { FindUserLectureUseCase } from '../usecase/findUserLectureUseCase'
+import { FindUserLectureInteractor } from '../interactor/findUserLectureInteractor'
+import { UpdateUserLectureUseCase } from '../usecase/updateUserLectureUseCase'
+import { UpdateUserLectureInteractor } from '../interactor/UpdateUserLectureInteractor'
 
 const container = new Container()
 
@@ -86,4 +91,13 @@ container
   .bind<RemovePeriodUseCase>(types.RemovePeriodUseCase)
   .to(RemovePeriodInteractor)
 
+container.bind(UserLectureController).to(UserLectureController)
+
+container
+  .bind<FindUserLectureUseCase>(types.FindUserLectureUseCase)
+  .to(FindUserLectureInteractor)
+
+container
+  .bind<UpdateUserLectureUseCase>(types.UpdateUserLectureUseCase)
+  .to(UpdateUserLectureInteractor)
 export default container

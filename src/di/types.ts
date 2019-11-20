@@ -12,7 +12,9 @@ const types = {
   CreateUserLectureUseCase: Symbol.for('CreateUserLectureUseCase'),
   GetTimetableUseCase: Symbol.for('GetTimetableUseCase'),
   UpsertPeriodUseCae: Symbol.for('UpsertPeriodUseCase'),
-  RemovePeriodUseCase: Symbol.for('RemovePeriodUseCase')
+  RemovePeriodUseCase: Symbol.for('RemovePeriodUseCase'),
+  FindUserLectureUseCase: Symbol.for('FindUserLectureUseCase'),
+  UpdateUserLectureUseCase: Symbol.for('UpdateUserLectureUseCase')
 }
 
 export { types }

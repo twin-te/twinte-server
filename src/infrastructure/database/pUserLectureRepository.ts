@@ -76,4 +76,23 @@ export class PUserLectureRepository implements UserLectureRepository {
     newUserLecture.user = u
     return await this.userLectureRepository.save(newUserLecture)
   }
+
+  async updateUserLecture(
+    user: UserEntity,
+    userLecture: UserLectureEntity
+  ): Promise<UserLectureEntity | undefined> {
+    const target = await this.userLectureRepository.findOne({
+      user,
+      user_lecture_id: userLecture.user_lecture_id
+    })
+    if (!target)
+      throw Error('指定されたユーザー講義は存在しないため、更新できません')
+    target.lecture_name = userLecture.lecture_name
+    target.instructor = userLecture.instructor
+    target.absence = userLecture.absence
+    target.attendance = userLecture.attendance
+    target.late = userLecture.late
+    target.memo = userLecture.memo
+    return this.userLectureRepository.save(target)
+  }
 }

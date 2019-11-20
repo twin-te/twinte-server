@@ -1,11 +1,11 @@
 import { CreateUserLectureUseCase } from '../usecase/createUserLectureUseCase'
-import { Period, UserLecture } from '../entity/period'
+import { PeriodEntity, UserLectureEntity } from '../entity/period'
 import { inject, injectable } from 'inversify'
 import { UserLectureRepository } from '../interface/repository/userLectureRepository'
 import { types } from '../di/types'
 import { LectureRepository } from '../interface/repository/lectureRepository'
 import { TimetableRepository } from '../interface/repository/timetableRepository'
-import { User } from '../entity/user'
+import { UserEntity } from '../entity/user'
 
 @injectable()
 export class CreateUserLectureInteractor implements CreateUserLectureUseCase {
@@ -15,11 +15,11 @@ export class CreateUserLectureInteractor implements CreateUserLectureUseCase {
   @inject(types.TimetableRepository) timetableRepository!: TimetableRepository
 
   createCustomUserLecture(
-    user: User,
+    user: UserEntity,
     year: number,
     lecture_name: string,
     instructor: string
-  ): Promise<UserLecture> {
+  ): Promise<UserLectureEntity> {
     return this.userLectureRepository.createCustomUserLecture(
       user,
       year,
@@ -29,10 +29,10 @@ export class CreateUserLectureInteractor implements CreateUserLectureUseCase {
   }
 
   async createUserLecture(
-    user: User,
+    user: UserEntity,
     year: number,
     lectureCode: string
-  ): Promise<UserLecture | undefined> {
+  ): Promise<UserLectureEntity | undefined> {
     const lecture = await this.lectureRepository.findLectureByLectureCode(
       year,
       lectureCode
@@ -54,7 +54,7 @@ export class CreateUserLectureInteractor implements CreateUserLectureUseCase {
 
     for (let i = 0; i < srcLecture.details.length; i++) {
       const d = srcLecture.details[i]
-      const period: Period = {
+      const period: PeriodEntity = {
         year: srcLecture.year,
         module: d.module,
         day: d.day,

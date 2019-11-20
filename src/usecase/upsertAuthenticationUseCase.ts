@@ -1,8 +1,8 @@
-import { User, UserAuthentication } from '../entity/user'
+import { UserEntity, UserAuthenticationEntity } from '../entity/user'
 
 export interface UpsertAuthenticationUseCase {
   upsertAuthentication(
-    user: User,
-    authentication: UserAuthentication
+    user: UserEntity,
+    authentication: UserAuthenticationEntity
   ): Promise<boolean>
 }

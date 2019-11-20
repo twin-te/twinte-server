@@ -1,5 +1,5 @@
-import { User, UserAuthentication } from '../entity/user'
+import { UserEntity, UserAuthenticationEntity } from '../entity/user'
 
 export interface LoginUseCase {
-  login(authentication: UserAuthentication): Promise<User | undefined>
+  login(authentication: UserAuthenticationEntity): Promise<UserEntity | undefined>
 }

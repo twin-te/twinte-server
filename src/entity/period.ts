@@ -1,6 +1,6 @@
 import { Day, Module } from 'twinte-parser'
 
-export interface Period {
+export interface PeriodEntity {
   name: string
   year: number
   module: Module
@@ -10,7 +10,7 @@ export interface Period {
   user_lecture_id: string
 }
 
-export interface UserLecture {
+export interface UserLectureEntity {
   twinte_lecture_id?: string
   user_lecture_id: string
   attendance: number

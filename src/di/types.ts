@@ -10,7 +10,9 @@ const types = {
   TimetableRepository: Symbol.for('TimetableRepository'),
   UserLectureRepository: Symbol.for('UserLectureRepository'),
   CreateUserLectureUseCase: Symbol.for('CreateUserLectureUseCase'),
-  GetTimetableUseCase: Symbol.for('GetTimetableUseCase')
+  GetTimetableUseCase: Symbol.for('GetTimetableUseCase'),
+  UpsertPeriodUseCae: Symbol.for('UpsertPeriodUseCase'),
+  RemovePeriodUseCase: Symbol.for('RemovePeriodUseCase')
 }
 
 export { types }

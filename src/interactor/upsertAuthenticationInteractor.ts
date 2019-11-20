@@ -1,5 +1,5 @@
 import { UpsertAuthenticationUseCase } from '../usecase/upsertAuthenticationUseCase'
-import { User, UserAuthentication } from '../entity/user'
+import { UserEntity, UserAuthenticationEntity } from '../entity/user'
 import { inject, injectable } from 'inversify'
 import { types } from '../di/types'
 import { UserRepository } from '../interface/repository/userRepository'
@@ -10,8 +10,8 @@ export class UpsertAuthenticationInteractor
   @inject(types.UserRepository) userRepository!: UserRepository
 
   upsertAuthentication(
-    user: User,
-    authentication: UserAuthentication
+    user: UserEntity,
+    authentication: UserAuthenticationEntity
   ): Promise<boolean> {
     return this.userRepository.upsertAuthentication(user, authentication)
   }

@@ -5,8 +5,8 @@ import { LoginUseCase } from '../../usecase/loginUseCase'
 import { types } from '../../di/types'
 import {
   AuthenticationProvider,
-  User,
-  UserAuthentication
+  UserEntity,
+  UserAuthenticationEntity
 } from '../../entity/user'
 import { CreateUserUseCase } from '../../usecase/createUserUseCase'
 import { PassportAuthenticator, Server } from 'typescript-rest'
@@ -62,7 +62,7 @@ export function applyPassport(app: express.Application) {
         profile: passport.Profile,
         cb: (err: any, user: any) => void
       ) => {
-        const authentication: UserAuthentication = {
+        const authentication: UserAuthenticationEntity = {
           provider: config.provider,
           social_id: profile.id,
           social_username: profile.username || '',
@@ -86,7 +86,7 @@ export function applyPassport(app: express.Application) {
     Server.registerAuthenticator(
       new PassportAuthenticator(strategy, {
         strategyName: config.provider,
-        serializeUser: (user: User) => JSON.stringify(user),
+        serializeUser: (user: UserEntity) => JSON.stringify(user),
         deserializeUser: data => JSON.parse(data)
       })
     )

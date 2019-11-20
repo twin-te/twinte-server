@@ -2,7 +2,7 @@ import { LectureRepository } from '../../interface/repository/lectureRepository'
 import { Lecture as pLecture } from './orm/lecture'
 import { injectable } from 'inversify'
 import { Like, Repository } from 'typeorm'
-import { Lecture } from '../../entity/lecture'
+import { LectureEntity } from '../../entity/lecture'
 import { LectureDate } from './orm/lectureDate'
 import uuid = require('uuid')
 import { getConnection } from './index'
@@ -15,7 +15,7 @@ export class PLectureRepository implements LectureRepository {
     this.repository = getConnection().getRepository(pLecture)
   }
 
-  async findLectureById(twinteLectureId: string): Promise<Lecture | undefined> {
+  async findLectureById(twinteLectureId: string): Promise<LectureEntity | undefined> {
     const pLec = await this.repository.findOne(twinteLectureId, {
       relations: ['dates']
     })
@@ -25,7 +25,7 @@ export class PLectureRepository implements LectureRepository {
     return this.pLecToLec(pLec)
   }
 
-  async searchLectureByKeyword(keyword: string): Promise<Lecture[]> {
+  async searchLectureByKeyword(keyword: string): Promise<LectureEntity[]> {
     const pLecs = await this.repository.find({
       relations: ['dates'],
       where: {
@@ -35,7 +35,7 @@ export class PLectureRepository implements LectureRepository {
     return pLecs.map(el => this.pLecToLec(el))
   }
 
-  async upsertLectures(lectures: Lecture[]): Promise<Lecture[]> {
+  async upsertLectures(lectures: LectureEntity[]): Promise<LectureEntity[]> {
     return Promise.all(
       lectures.map(async lec => {
         let updateTarget = await this.repository.findOne(
@@ -68,7 +68,7 @@ export class PLectureRepository implements LectureRepository {
     )
   }
 
-  private pLecToLec(pLec: pLecture): Lecture {
+  private pLecToLec(pLec: pLecture): LectureEntity {
     return {
       twinte_lecture_id: pLec.twinte_lecture_id,
       year: pLec.year,
@@ -82,7 +82,7 @@ export class PLectureRepository implements LectureRepository {
   async findLectureByLectureCode(
     year: number,
     lecture_code: string
-  ): Promise<Lecture | undefined> {
+  ): Promise<LectureEntity | undefined> {
     const res = await this.repository.findOne(
       { year, lecture_code },
       { relations: ['dates'] }

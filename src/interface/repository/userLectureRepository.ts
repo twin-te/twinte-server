@@ -1,19 +1,19 @@
-import { UserLecture } from '../../entity/period'
-import { User } from '../../entity/user'
+import { UserLectureEntity } from '../../entity/period'
+import { UserEntity } from '../../entity/user'
 
 export interface UserLectureRepository {
   findUserLectureById(
-    user: User,
+    user: UserEntity,
     user_lecture_id: string
-  ): Promise<UserLecture | undefined>
+  ): Promise<UserLectureEntity | undefined>
   createCustomUserLecture(
-    user: User,
+    user: UserEntity,
     year: number,
     lecture_name: string,
     instructor: string
-  ): Promise<UserLecture>
+  ): Promise<UserLectureEntity>
   createUserLecture(
-    user: User,
+    user: UserEntity,
     twinte_lecture_id: string
-  ): Promise<UserLecture | undefined>
+  ): Promise<UserLectureEntity | undefined>
 }

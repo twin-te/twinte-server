@@ -1,6 +1,6 @@
 import { UserRepository } from '../../interface/repository/userRepository'
 import { injectable } from 'inversify'
-import { User, UserAuthentication } from '../../entity/user'
+import { UserEntity, UserAuthenticationEntity } from '../../entity/user'
 import { User as pUser } from './orm/user'
 import { UserAuthentication as pUserAuthentication } from './orm/userAuthentication'
 import { getConnection } from './index'
@@ -18,7 +18,7 @@ export class PUserRepository implements UserRepository {
     )
   }
 
-  createUser(authentication: UserAuthentication): Promise<User> {
+  createUser(authentication: UserAuthenticationEntity): Promise<UserEntity> {
     const user = new pUser()
     user.twinte_user_id = uuid()
     user.twinte_username = authentication.social_display_name
@@ -33,7 +33,7 @@ export class PUserRepository implements UserRepository {
     return this.userRepository.save(user)
   }
 
-  findUserById(twinte_user_id: string): Promise<User | undefined> {
+  findUserById(twinte_user_id: string): Promise<UserEntity | undefined> {
     return this.userRepository.findOne(
       { twinte_user_id },
       { relations: ['authentications'] }
@@ -41,8 +41,8 @@ export class PUserRepository implements UserRepository {
   }
 
   async findUserByAuthentication(
-    authentication: UserAuthentication
-  ): Promise<User | undefined> {
+    authentication: UserAuthenticationEntity
+  ): Promise<UserEntity | undefined> {
     const res = await this.authenticationRepository.findOne(
       {
         provider: authentication.provider,
@@ -57,8 +57,8 @@ export class PUserRepository implements UserRepository {
   }
 
   async upsertAuthentication(
-    user: User,
-    authentication: UserAuthentication
+    user: UserEntity,
+    authentication: UserAuthenticationEntity
   ): Promise<boolean> {
     const targetUser = await this.userRepository.findOne(
       { twinte_user_id: user.twinte_user_id },

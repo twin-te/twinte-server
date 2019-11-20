@@ -1,21 +1,21 @@
 import { GetTimetableUseCase } from '../usecase/getTimetableUseCase'
-import { User } from '../entity/user'
+import { UserEntity } from '../entity/user'
 import { Day, Module } from 'twinte-parser'
 import { inject, injectable } from 'inversify'
 import { types } from '../di/types'
 import { TimetableRepository } from '../interface/repository/timetableRepository'
-import {Period} from '../entity/period'
+import {PeriodEntity} from '../entity/period'
 
 @injectable()
 export class GetTimetableInteractor implements GetTimetableUseCase {
   @inject(types.TimetableRepository) timetableRepository!: TimetableRepository
 
   getTimetable(
-    user: User,
+    user: UserEntity,
     year?: number,
     module?: Module,
     day?: Day
-  ): Promise<Period[]> {
+  ): Promise<PeriodEntity[]> {
     return this.timetableRepository.getTimetable(user, year, module, day)
   }
 }

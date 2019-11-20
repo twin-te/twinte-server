@@ -1,12 +1,12 @@
 import { UserLectureRepository } from '../../interface/repository/userLectureRepository'
-import { UserLecture } from '../../entity/period'
+import { UserLectureEntity } from '../../entity/period'
 import { UserLecture as pUserLecture } from './orm/userLecture'
 import { Lecture as pLecture } from './orm/lecture'
 import { Repository } from 'typeorm'
 import { getConnection } from './index'
 import uuid = require('uuid')
 import { injectable } from 'inversify'
-import { User } from '../../entity/user'
+import { UserEntity } from '../../entity/user'
 import { User as pUser } from './orm/user'
 
 @injectable()
@@ -22,9 +22,9 @@ export class PUserLectureRepository implements UserLectureRepository {
   }
 
   findUserLectureById(
-    user: User,
+    user: UserEntity,
     user_lecture_id: string
-  ): Promise<UserLecture | undefined> {
+  ): Promise<UserLectureEntity | undefined> {
     return this.userLectureRepository.findOne({
       user,
       user_lecture_id: user_lecture_id
@@ -32,11 +32,11 @@ export class PUserLectureRepository implements UserLectureRepository {
   }
 
   async createCustomUserLecture(
-    user: User,
+    user: UserEntity,
     year: number,
     lecture_name: string,
     instructor: string
-  ): Promise<UserLecture> {
+  ): Promise<UserLectureEntity> {
     const newUserLecture = new pUserLecture()
     newUserLecture.user_lecture_id = uuid()
     newUserLecture.lecture_name = lecture_name
@@ -53,9 +53,9 @@ export class PUserLectureRepository implements UserLectureRepository {
   }
 
   async createUserLecture(
-    user: User,
+    user: UserEntity,
     twinte_lecture_id: string
-  ): Promise<UserLecture | undefined> {
+  ): Promise<UserLectureEntity | undefined> {
     const srcLecture = await this.lectureRepository.findOne({
       twinte_lecture_id
     })

@@ -1,11 +1,11 @@
 import { RemoteLectureRepository } from '../../interface/repository/remoteLectureRepository'
-import { Lecture } from '../../entity/lecture'
+import { LectureEntity } from '../../entity/lecture'
 import { downloadKDB, parseKDB } from 'twinte-parser'
 import { injectable } from 'inversify'
 
 @injectable()
 export class KdbRemoteLectureRepository implements RemoteLectureRepository {
-  async fetchRemoteDatabase(year: number): Promise<Lecture[]> {
+  async fetchRemoteDatabase(year: number): Promise<LectureEntity[]> {
     const csv = await downloadKDB(year)
     const lectures = parseKDB(csv)
 

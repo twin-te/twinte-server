@@ -1,6 +1,6 @@
 import { inject, injectable } from 'inversify'
 import { SearchLectureByKeywordUseCase } from '../usecase/SearchLectureByKeywordUseCase'
-import { Lecture } from '../entity/lecture'
+import { LectureEntity } from '../entity/lecture'
 import { types } from '../di/types'
 import { LectureRepository } from '../interface/repository/lectureRepository'
 
@@ -8,7 +8,7 @@ import { LectureRepository } from '../interface/repository/lectureRepository'
 export class SearchLectureByKeywordInteractor
   implements SearchLectureByKeywordUseCase {
   @inject(types.LectureRepository) private lectureRepository!: LectureRepository
-  async searchLectureByKeyword(keyword: string): Promise<Lecture[]> {
+  async searchLectureByKeyword(keyword: string): Promise<LectureEntity[]> {
     return this.lectureRepository.searchLectureByKeyword(keyword)
   }
 }

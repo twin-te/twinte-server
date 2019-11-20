@@ -1,13 +1,13 @@
-import { User, UserAuthentication } from '../../entity/user'
+import { UserEntity, UserAuthenticationEntity } from '../../entity/user'
 
 export interface UserRepository {
-  findUserById(twinte_user_id: string): Promise<User | undefined>
+  findUserById(twinte_user_id: string): Promise<UserEntity | undefined>
   findUserByAuthentication(
-    authentication: UserAuthentication
-  ): Promise<User | undefined>
+    authentication: UserAuthenticationEntity
+  ): Promise<UserEntity | undefined>
   upsertAuthentication(
-    user: User,
-    authentication: UserAuthentication
+    user: UserEntity,
+    authentication: UserAuthenticationEntity
   ): Promise<boolean>
-  createUser(authentication: UserAuthentication): Promise<User>
+  createUser(authentication: UserAuthenticationEntity): Promise<UserEntity>
 }

@@ -1,10 +1,12 @@
 import { inject, injectable } from 'inversify'
-import { Period, UserLecture } from '../../entity/period'
+import { PeriodEntity, UserLectureEntity } from '../../entity/period'
 import { types } from '../../di/types'
 import { CreateUserLectureUseCase } from '../../usecase/createUserLectureUseCase'
-import { User } from '../../entity/user'
+import { UserEntity } from '../../entity/user'
 import { Day, Module } from 'twinte-parser'
 import { GetTimetableUseCase } from '../../usecase/getTimetableUseCase'
+import { UpsertPeriodUseCase } from '../../usecase/upsertPeriodUseCase'
+import { RemovePeriodUseCase } from '../../interactor/removePeriodUseCase'
 
 @injectable()
 export class TimetableController {
@@ -12,12 +14,16 @@ export class TimetableController {
   createUserLectureUseCase!: CreateUserLectureUseCase
   @inject(types.GetTimetableUseCase)
   getTimetableUseCase!: GetTimetableUseCase
+  @inject(types.UpsertPeriodUseCae)
+  upsertPeriodUseCase!: UpsertPeriodUseCase
+  @inject(types.RemovePeriodUseCase)
+  removePeriodUseCase!: RemovePeriodUseCase
 
   async registerLecture(
-    user: User,
+    user: UserEntity,
     year: number,
     lectureCode: string
-  ): Promise<UserLecture | undefined> {
+  ): Promise<UserLectureEntity | undefined> {
     return this.createUserLectureUseCase.createUserLecture(
       user,
       year,
@@ -26,11 +32,22 @@ export class TimetableController {
   }
 
   async getTimetable(
-    user: User,
+    user: UserEntity,
     year?: number,
     module?: Module,
     day?: Day
-  ): Promise<Period[]> {
+  ): Promise<PeriodEntity[]> {
     return this.getTimetableUseCase.getTimetable(user, year, module, day)
+  }
+
+  upsertPeriod(
+    user: UserEntity,
+    period: PeriodEntity
+  ): Promise<PeriodEntity | undefined> {
+    return this.upsertPeriodUseCase.upsertPeriod(user, period)
+  }
+
+  removePeriod(user: UserEntity, period: PeriodEntity): Promise<boolean> {
+    return this.removePeriodUseCase.removePeriod(user, period)
   }
 }

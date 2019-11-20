@@ -1,14 +1,18 @@
 import {
   Context,
+  DELETE,
   GET,
   Path,
   PathParam,
   POST,
+  PUT,
   ServiceContext
 } from 'typescript-rest'
 import { TimetableController } from '../../../interface/controller/timetableController'
 import container from '../../../di/inversify.config'
 import { Day, Module } from 'twinte-parser'
+import { PeriodEntity } from '../../../entity/period'
+import { Response } from 'typescript-rest-swagger'
 
 @Path('/timetables')
 export class TimetableService {
@@ -67,6 +71,24 @@ export class TimetableService {
       year,
       module,
       day
+    )
+  }
+
+  @Path('/')
+  @PUT
+  upsertPeriod(params: PeriodEntity) {
+    return this.timetableController.upsertPeriod(
+      this.context.request.user,
+      params
+    )
+  }
+
+  @Path('period')
+  @DELETE
+  removePeriod(params: PeriodEntity) {
+    return this.timetableController.removePeriod(
+      this.context.request.user,
+      params
     )
   }
 }

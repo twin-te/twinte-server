@@ -1,16 +1,16 @@
-import { UserLecture } from '../entity/period'
-import { User } from '../entity/user'
+import { UserLectureEntity } from '../entity/period'
+import { UserEntity } from '../entity/user'
 
 export interface CreateUserLectureUseCase {
   createUserLecture(
-    user: User,
+    user: UserEntity,
     year: number,
     lectureCode: string
-  ): Promise<UserLecture | undefined>
+  ): Promise<UserLectureEntity | undefined>
   createCustomUserLecture(
-    user: User,
+    user: UserEntity,
     year: number,
     lecture_name: string,
     instructor: string
-  ): Promise<UserLecture>
+  ): Promise<UserLectureEntity>
 }

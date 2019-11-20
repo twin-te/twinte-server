@@ -2,7 +2,7 @@ import { inject, injectable } from 'inversify'
 import { types } from '../di/types'
 import { LectureRepository } from '../interface/repository/lectureRepository'
 import { UpdateLectureDatabaseUseCase } from '../usecase/UpdateLectureDatabaseUseCase'
-import { Lecture } from '../entity/lecture'
+import { LectureEntity } from '../entity/lecture'
 import { RemoteLectureRepository } from '../interface/repository/remoteLectureRepository'
 
 @injectable()
@@ -15,7 +15,7 @@ export class UpdateLectureDatabaseInteractor
   @inject(types.RemoteLectureRepository)
   private remoteLectureRepository!: RemoteLectureRepository
 
-  async updateLectureDatabase(year: number): Promise<Lecture[]> {
+  async updateLectureDatabase(year: number): Promise<LectureEntity[]> {
     const remoteLectures = await this.remoteLectureRepository.fetchRemoteDatabase(
       year
     )

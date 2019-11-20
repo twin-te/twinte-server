@@ -26,6 +26,10 @@ import { CreateUserLectureInteractor } from '../interactor/createUserLectureInte
 import { TimetableController } from '../interface/controller/timetableController'
 import { GetTimetableUseCase } from '../usecase/getTimetableUseCase'
 import { GetTimetableInteractor } from '../interactor/getTimetableInteractor'
+import { UpsertPeriodUseCase } from '../usecase/upsertPeriodUseCase'
+import { UpsertPeriodInteractor } from '../interactor/upsertPeriodInteractor'
+import { RemovePeriodUseCase } from '../interactor/removePeriodUseCase'
+import { RemovePeriodInteractor } from '../interactor/removePeriodInteractor'
 
 const container = new Container()
 
@@ -73,5 +77,13 @@ container.bind(TimetableController).to(TimetableController)
 container
   .bind<GetTimetableUseCase>(types.GetTimetableUseCase)
   .to(GetTimetableInteractor)
+
+container
+  .bind<UpsertPeriodUseCase>(types.UpsertPeriodUseCae)
+  .to(UpsertPeriodInteractor)
+
+container
+  .bind<RemovePeriodUseCase>(types.RemovePeriodUseCase)
+  .to(RemovePeriodInteractor)
 
 export default container

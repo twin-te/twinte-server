@@ -1,22 +1,19 @@
 import { Day, Module } from 'twinte-parser'
-import { Period } from '../../entity/period'
-import { User } from '../../entity/user'
+import { PeriodEntity } from '../../entity/period'
+import { UserEntity } from '../../entity/user'
 
 export interface TimetableRepository {
   getTimetable(
-    user: User,
+    user: UserEntity,
     year?: number,
     module?: Module,
     day?: Day
-  ): Promise<Period[]>
+  ): Promise<PeriodEntity[]>
 
-  upsertPeriod(user: User, period: Period): Promise<Period | undefined>
+  upsertPeriod(
+    user: UserEntity,
+    period: PeriodEntity
+  ): Promise<PeriodEntity | undefined>
 
-  removePeriod(
-    user: User,
-    year: number,
-    module: Module,
-    day: Day,
-    period: number
-  ): Promise<boolean>
+  removePeriod(user: UserEntity, period: PeriodEntity): Promise<boolean>
 }

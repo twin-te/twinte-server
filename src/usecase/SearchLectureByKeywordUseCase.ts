@@ -1,8 +1,8 @@
-import { Lecture } from '../entity/lecture'
+import { LectureEntity } from '../entity/lecture'
 
 /**
  * 講義をキーワードで検索する
  */
 export interface SearchLectureByKeywordUseCase {
-  searchLectureByKeyword(keyword: string): Promise<Lecture[]>
+  searchLectureByKeyword(keyword: string): Promise<LectureEntity[]>
 }

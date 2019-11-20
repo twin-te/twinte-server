@@ -1,6 +1,6 @@
 import { TimetableRepository } from '../../interface/repository/timetableRepository'
 import { Day, Module } from 'twinte-parser'
-import { Period } from '../../entity/period'
+import { PeriodEntity } from '../../entity/period'
 import { Period as pPeriod } from './orm/period'
 import { Repository } from 'typeorm'
 import { getConnection } from './index'
@@ -26,7 +26,7 @@ export class PTimetableRepository implements TimetableRepository {
     year?: number,
     module?: Module,
     day?: Day
-  ): Promise<Period[]> {
+  ): Promise<PeriodEntity[]> {
     let query = this.periodRepository
       .createQueryBuilder('period')
       .leftJoinAndSelect('period.user_lecture', 'user_lecture')
@@ -39,25 +39,22 @@ export class PTimetableRepository implements TimetableRepository {
     return res.map(p => this.pPeriodToPeriod(p))
   }
 
-  async removePeriod(
-    user: User,
-    year: number,
-    module: Module,
-    day: Day,
-    period: number
-  ): Promise<boolean> {
+  async removePeriod(user: User, period: PeriodEntity): Promise<boolean> {
     const target = await this.periodRepository.find({
       user: await this.userRepository.findOne({ ...user }),
-      year,
-      module,
-      day,
-      period
+      year: period.year,
+      module: period.module,
+      day: period.day,
+      period: period.period
     })
     await this.periodRepository.remove(target)
     return true
   }
 
-  async upsertPeriod(user: User, period: Period): Promise<Period | undefined> {
+  async upsertPeriod(
+    user: User,
+    period: PeriodEntity
+  ): Promise<PeriodEntity | undefined> {
     const u = await this.userRepository.findOne({ ...user })
     if (!u) throw Error('存在するはずのユーザーが存在しません')
     const target = await this.periodRepository.findOne({
@@ -98,7 +95,7 @@ export class PTimetableRepository implements TimetableRepository {
     }
   }
 
-  pPeriodToPeriod(p: pPeriod): Period {
+  pPeriodToPeriod(p: pPeriod): PeriodEntity {
     return {
       name: p.user_lecture.lecture_name,
       year: p.year,

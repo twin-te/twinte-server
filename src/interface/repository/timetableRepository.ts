@@ -7,13 +7,28 @@ export interface TimetableRepository {
     user: UserEntity,
     year?: number,
     module?: Module,
-    day?: Day
+    day?: Day,
+    period?: number
   ): Promise<PeriodEntity[]>
+
+  getPeriod(
+    user: UserEntity,
+    year: number,
+    module: Module,
+    day: Day,
+    period: number
+  ): Promise<PeriodEntity | undefined>
 
   upsertPeriod(
     user: UserEntity,
     period: PeriodEntity
   ): Promise<PeriodEntity | undefined>
 
-  removePeriod(user: UserEntity, period: PeriodEntity): Promise<boolean>
+  removePeriod(
+    user: UserEntity,
+    year: number,
+    module: Module,
+    day: Day,
+    period: number
+  ): Promise<boolean>
 }

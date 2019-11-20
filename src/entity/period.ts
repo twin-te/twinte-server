@@ -1,7 +1,6 @@
 import { Day, Module } from 'twinte-parser'
 
 export interface PeriodEntity {
-  name: string
   year: number
   module: Module
   day: Day

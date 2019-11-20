@@ -6,7 +6,7 @@ import { UserEntity } from '../../entity/user'
 import { Day, Module } from 'twinte-parser'
 import { GetTimetableUseCase } from '../../usecase/getTimetableUseCase'
 import { UpsertPeriodUseCase } from '../../usecase/upsertPeriodUseCase'
-import { RemovePeriodUseCase } from '../../interactor/removePeriodUseCase'
+import { RemovePeriodUseCase } from '../../usecase/removePeriodUseCase'
 
 @injectable()
 export class TimetableController {
@@ -35,9 +35,26 @@ export class TimetableController {
     user: UserEntity,
     year?: number,
     module?: Module,
-    day?: Day
+    day?: Day,
+    period?: number
   ): Promise<PeriodEntity[]> {
-    return this.getTimetableUseCase.getTimetable(user, year, module, day)
+    return this.getTimetableUseCase.getTimetable(
+      user,
+      year,
+      module,
+      day,
+      period
+    )
+  }
+
+  async getPeriod(
+    user: UserEntity,
+    year: number,
+    module: Module,
+    day: Day,
+    period: number
+  ): Promise<PeriodEntity | undefined> {
+    return this.getTimetableUseCase.getPeriod(user, year, module, day, period)
   }
 
   upsertPeriod(
@@ -47,7 +64,19 @@ export class TimetableController {
     return this.upsertPeriodUseCase.upsertPeriod(user, period)
   }
 
-  removePeriod(user: UserEntity, period: PeriodEntity): Promise<boolean> {
-    return this.removePeriodUseCase.removePeriod(user, period)
+  removePeriod(
+    user: UserEntity,
+    year: number,
+    module: Module,
+    day: Day,
+    period: number
+  ): Promise<boolean> {
+    return this.removePeriodUseCase.removePeriod(
+      user,
+      year,
+      module,
+      day,
+      period
+    )
   }
 }

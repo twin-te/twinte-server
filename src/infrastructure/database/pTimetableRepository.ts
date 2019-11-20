@@ -8,6 +8,7 @@ import { UserLecture as pUserLecture } from './orm/userLecture'
 import { injectable } from 'inversify'
 import { User } from './orm/user'
 import { User as pUser } from './orm/user'
+import { UserEntity } from '../../entity/user'
 
 @injectable()
 export class PTimetableRepository implements TimetableRepository {
@@ -25,7 +26,8 @@ export class PTimetableRepository implements TimetableRepository {
     user: User,
     year?: number,
     module?: Module,
-    day?: Day
+    day?: Day,
+    period?: number
   ): Promise<PeriodEntity[]> {
     let query = this.periodRepository
       .createQueryBuilder('period')
@@ -35,17 +37,24 @@ export class PTimetableRepository implements TimetableRepository {
     if (year) query = query.andWhere('period.year = :year', { year })
     if (module) query = query.andWhere('period.module = :module', { module })
     if (day) query = query.andWhere('period.day = :day', { day })
+    if (period) query = query.andWhere('period.period = :period', { period })
     const res = await query.getMany()
     return res.map(p => this.pPeriodToPeriod(p))
   }
 
-  async removePeriod(user: User, period: PeriodEntity): Promise<boolean> {
+  async removePeriod(
+    user: User,
+    year: number,
+    module: Module,
+    day: Day,
+    period: number
+  ): Promise<boolean> {
     const target = await this.periodRepository.findOne({
       user: await this.userRepository.findOne({ ...user }),
-      year: period.year,
-      module: period.module,
-      day: period.day,
-      period: period.period
+      year: year,
+      module: module,
+      day: day,
+      period: period
     })
     if (!target) return false
     await this.periodRepository.remove(target)
@@ -98,7 +107,6 @@ export class PTimetableRepository implements TimetableRepository {
 
   pPeriodToPeriod(p: pPeriod): PeriodEntity {
     return {
-      name: p.user_lecture.lecture_name,
       year: p.year,
       module: p.module,
       day: p.day,
@@ -106,5 +114,26 @@ export class PTimetableRepository implements TimetableRepository {
       room: p.room,
       user_lecture_id: p.user_lecture.user_lecture_id
     }
+  }
+
+  async getPeriod(
+    user: UserEntity,
+    year: number,
+    module: Module,
+    day: Day,
+    period: number
+  ): Promise<PeriodEntity | undefined> {
+    const res = await this.periodRepository.findOne(
+      {
+        user,
+        year,
+        module,
+        day,
+        period
+      },
+      { relations: ['user_lecture'] }
+    )
+    if (!res) return undefined
+    return this.pPeriodToPeriod(res)
   }
 }

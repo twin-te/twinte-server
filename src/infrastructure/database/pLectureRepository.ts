@@ -15,7 +15,9 @@ export class PLectureRepository implements LectureRepository {
     this.repository = getConnection().getRepository(pLecture)
   }
 
-  async findLectureById(twinteLectureId: string): Promise<LectureEntity | undefined> {
+  async findLectureById(
+    twinteLectureId: string
+  ): Promise<LectureEntity | undefined> {
     const pLec = await this.repository.findOne(twinteLectureId, {
       relations: ['dates']
     })
@@ -28,9 +30,11 @@ export class PLectureRepository implements LectureRepository {
   async searchLectureByKeyword(keyword: string): Promise<LectureEntity[]> {
     const pLecs = await this.repository.find({
       relations: ['dates'],
-      where: {
-        lecture_name: Like(`%${keyword}%`)
-      }
+      where: [
+        { lecture_name: Like(`%${keyword}%`) },
+        { lecture_code: Like(`${keyword}%`) },
+        { instructor: Like(`%${keyword}%`) }
+      ]
     })
     return pLecs.map(el => this.pLecToLec(el))
   }

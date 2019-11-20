@@ -16,7 +16,10 @@ import { Day, Module } from 'twinte-parser'
 import { PeriodEntity, UserLectureEntity } from '../../../entity/period'
 import { Response, Tags } from 'typescript-rest-swagger'
 import isAuthenticated from '../middleware/isAuthenticated'
-import { BadRequestError } from 'typescript-rest/dist/server/model/errors'
+import {
+  BadRequestError,
+  NotFoundError
+} from 'typescript-rest/dist/server/model/errors'
 
 @Path('/timetables')
 @PreProcessor(isAuthenticated)
@@ -51,7 +54,7 @@ export class TimetableService {
   }
 
   /**
-   * 時間割を取得する
+   * 指定した条件に合うコマの情報を取得する
    * @param year 実施年度
    * @param module 実施モジュール
    * @param day 実施曜日
@@ -73,33 +76,84 @@ export class TimetableService {
   }
 
   /**
+   * 指定した一コマを取得する
+   * @param year 年度
+   * @param module モジュール
+   * @param day 曜日
+   * @param period 時限
+   */
+  @Path(':year/:module/:day/:period')
+  @GET
+  @Response<PeriodEntity>(200, 'コマ情報')
+  async getPeriod(
+    @PathParam('year') year: number,
+    @PathParam('module') module: Module,
+    @PathParam('day') day: Day,
+    @PathParam('period') period: number
+  ) {
+    const res = this.timetableController.getPeriod(
+      this.context.request.user,
+      year,
+      module,
+      day,
+      period
+    )
+    if (!res) throw new NotFoundError()
+    else return res
+  }
+
+  /**
    * 1コマを追加/更新する
    * @param params user_lecture_idはこのコマがどの講義に紐付いているかを示す。
+   * @param year 年度
+   * @param module モジュール
+   * @param day 曜日
+   * @param period 時限
    * ユーザーが独自に講義を作成する場合は、事前にユーザー講義を作成しておく必要がある
    */
-  @Path('/')
+  @Path('/:year/:module/:day/:period')
   @Response<PeriodEntity>(200, '作成/更新されたコマ情報')
   @PUT
-  upsertPeriod(params: PeriodEntity) {
-    return this.timetableController.upsertPeriod(
-      this.context.request.user,
-      params
-    )
+  upsertPeriod(
+    @PathParam('year') year: number,
+    @PathParam('module') module: Module,
+    @PathParam('day') day: Day,
+    @PathParam('period') period: number,
+    params: { room: string; user_lecture_id: string }
+  ) {
+    return this.timetableController.upsertPeriod(this.context.request.user, {
+      year,
+      module,
+      day,
+      period,
+      ...params
+    })
   }
 
   /**
    * 1コマを削除する
    * 指定されたコマを削除するだけで、講義すべてのコマが削除されるわけではない。
-   * @param params
+   * @param year 年度
+   * @param module モジュール
+   * @param day 曜日
+   * @param period 時限
    */
-  @Path('period')
+  @Path('/:year/:module/:day/:period')
   @Response(200, '成功')
-  @Response(400, '指定されたコマが存在しません')
+  @Response(404, '指定されたコマが存在しません')
   @DELETE
-  removePeriod(params: PeriodEntity) {
+  removePeriod(
+    @PathParam('year') year: number,
+    @PathParam('module') module: Module,
+    @PathParam('day') day: Day,
+    @PathParam('period') period: number
+  ) {
     const res = this.timetableController.removePeriod(
       this.context.request.user,
-      params
+      year,
+      module,
+      day,
+      period
     )
     if (res) return
     else throw new BadRequestError('指定されたコマは存在しません')

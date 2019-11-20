@@ -15,7 +15,7 @@ import isAuthenticated from '../middleware/isAuthenticated'
 import { Response, Tags } from 'typescript-rest-swagger'
 import { NotFoundError } from 'typescript-rest/dist/server/model/errors'
 
-@Path('/user-lecture')
+@Path('/user-lectures')
 @PreProcessor(isAuthenticated)
 @Tags('ユーザー講義')
 @Response(401, '未認証')

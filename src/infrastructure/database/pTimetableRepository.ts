@@ -40,13 +40,14 @@ export class PTimetableRepository implements TimetableRepository {
   }
 
   async removePeriod(user: User, period: PeriodEntity): Promise<boolean> {
-    const target = await this.periodRepository.find({
+    const target = await this.periodRepository.findOne({
       user: await this.userRepository.findOne({ ...user }),
       year: period.year,
       module: period.module,
       day: period.day,
       period: period.period
     })
+    if (!target) return false
     await this.periodRepository.remove(target)
     return true
   }

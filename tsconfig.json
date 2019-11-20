@@ -17,6 +17,8 @@
     "noFallthroughCasesInSwitch": true,
     "moduleResolution": "node",
     "esModuleInterop": true,
-    "outDir": "build/"
+    "outDir": "build/",
+    "typeRoots": ["./src/infrastructure/rest-api/types"],
+    "types": []
   }
 }

@@ -1,7 +1,7 @@
 import {Moment} from "moment"
 import {Day} from "twinte-parser"
 
-export interface TransferDate {
+export interface SubstituteDay {
   date: Moment
-  day: Day
+  change_to: Day
 }

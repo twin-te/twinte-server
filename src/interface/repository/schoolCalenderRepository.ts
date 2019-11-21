@@ -1,8 +1,13 @@
-import { Module } from 'twinte-parser'
 import { ModuleTerm } from '../../entity/moduleTerm'
-import { TransferDate } from '../../entity/transferDate'
+import { SubstituteDay } from '../../entity/substituteDay'
+import { Event } from '../../entity/event'
 
 export interface SchoolCalenderRepository {
-  getModuleTerm(year: number, module: Module): Promise<ModuleTerm | undefined>
-  getTransferDates(year: number): Promise<TransferDate[]>
+  getModuleTerms(year: number): Promise<ModuleTerm[]>
+  getSubstituteDays(year: number): Promise<SubstituteDay[]>
+  getEvents(year: number): Promise<Event[]>
+
+  setModuleTerm(term: ModuleTerm): Promise<ModuleTerm>
+  setSubstituteDay(substituteDay: SubstituteDay): Promise<SubstituteDay>
+  setEvent(event: Event): Promise<Event>
 }

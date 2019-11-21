@@ -14,7 +14,7 @@ export async function startExpress() {
 
   enableCors(app)
   enableSession(app)
-  applyPassport(app)
+  applyPassport()
 
   const routingFolder = path.resolve(__dirname, './routing')
   const files = await fs.readdir(routingFolder)

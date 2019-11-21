@@ -5,8 +5,9 @@ import { inject, injectable } from 'inversify'
 import { types } from '../di/types'
 import { TimetableRepository } from '../interface/repository/timetableRepository'
 import { PeriodEntity } from '../entity/period'
-import moment = require('moment')
 import { SchoolCalenderRepository } from '../interface/repository/schoolCalenderRepository'
+import { EventType } from '../entity/event'
+import moment = require('moment')
 
 @injectable()
 export class GetTimetableInteractor implements GetTimetableUseCase {
@@ -44,10 +45,8 @@ export class GetTimetableInteractor implements GetTimetableUseCase {
     user: UserEntity,
     date: moment.Moment
   ): Promise<PeriodEntity[]> {
-    const moduleTerms = await Promise.all(
-      Object.entries(Module).map(async ([_, value]) =>
-        this.schoolCalenderRepository.getModuleTerm(date.year(), value)
-      )
+    const moduleTerms = await this.schoolCalenderRepository.getModuleTerms(
+      date.year()
     )
 
     const targetModule = moduleTerms
@@ -56,13 +55,32 @@ export class GetTimetableInteractor implements GetTimetableUseCase {
 
     if (!targetModule) return []
 
-    const transferDates = await this.schoolCalenderRepository.getTransferDates(
+    const substituteDates = await this.schoolCalenderRepository.getSubstituteDays(
       date.year()
     )
-    const res = transferDates.find(el => el.date.isSame(date, 'date'))
+
+    const schoolEvents = await this.schoolCalenderRepository.getEvents(
+      date.year()
+    )
+
+    // 今日が休日かどうか
+    const eToday = schoolEvents.find(
+      el =>
+        el.date.isSame(date, 'date') &&
+        (el.event_type === EventType.PublicHoliday ||
+          el.event_type === EventType.Holiday)
+    )
+
+    // 休日だったらからの時間割を返す
+    if (eToday) return []
+
+    // 今日が振替授業かどうか
+    const sToday = substituteDates.find(el => el.date.isSame(date, 'date'))
     let targetDay: Day
-    if (!res) targetDay = Object.values(Day)[date.day()]
-    else targetDay = res.day
+
+    // 振替授業だったら曜日を振替曜日に変更
+    if (!sToday) targetDay = Object.values(Day)[date.day()]
+    else targetDay = sToday.change_to
 
     return this.getTimetable(user, date.year(), targetModule.module, targetDay)
   }

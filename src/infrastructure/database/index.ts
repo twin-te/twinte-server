@@ -5,6 +5,9 @@ import { User } from './orm/user'
 import { UserAuthentication } from './orm/userAuthentication'
 import { Period } from './orm/period'
 import { UserLecture } from './orm/userLecture'
+import {ModuleTerm} from './orm/moduleTerm'
+import {SchoolEvent} from './orm/schoolEvent'
+import {SubstituteDay} from './orm/substituteDay'
 
 let con: Connection
 
@@ -23,7 +26,10 @@ export async function connect(): Promise<Connection> {
         User,
         UserAuthentication,
         Period,
-        UserLecture
+        UserLecture,
+        ModuleTerm,
+        SchoolEvent,
+        SubstituteDay
       ],
       synchronize: true,
       logging: false

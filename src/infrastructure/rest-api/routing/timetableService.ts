@@ -10,10 +10,13 @@ import {
   QueryParam,
   ServiceContext
 } from 'typescript-rest'
-import {OutputPeriodData, TimetableController} from '../../../interface/controller/timetableController'
+import {
+  OutputPeriodData,
+  TimetableController
+} from '../../../interface/controller/timetableController'
 import container from '../../../di/inversify.config'
 import { Day, Module } from 'twinte-parser'
-import { PeriodEntity, UserLectureEntity } from '../../../entity/period'
+import { UserLectureEntity } from '../../../entity/period'
 import { Response, Tags } from 'typescript-rest-swagger'
 import isAuthenticated from '../middleware/isAuthenticated'
 import {
@@ -44,7 +47,6 @@ export class TimetableService {
     200,
     '登録に伴って生成されたユーザー講義オブジェクト'
   )
-  @Response(401, '未認証')
   registerLecture(params: { year: number; lectureCode: string }) {
     return this.timetableController.registerLecture(
       this.context.request.user,
@@ -75,8 +77,12 @@ export class TimetableService {
     )
   }
 
+  /**
+   * このAPIを呼び出した日の時間割を返す
+   */
   @Path('/today')
   @GET
+  @Response<OutputPeriodData[]>(200, '時間割')
   async getTodayTimeTable() {
     return this.timetableController.getTodayTimetable(this.context.request.user)
   }

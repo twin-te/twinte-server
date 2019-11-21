@@ -10,7 +10,7 @@ import {
   QueryParam,
   ServiceContext
 } from 'typescript-rest'
-import { TimetableController } from '../../../interface/controller/timetableController'
+import {OutputPeriodData, TimetableController} from '../../../interface/controller/timetableController'
 import container from '../../../di/inversify.config'
 import { Day, Module } from 'twinte-parser'
 import { PeriodEntity, UserLectureEntity } from '../../../entity/period'
@@ -61,7 +61,7 @@ export class TimetableService {
    */
   @Path('/')
   @GET
-  @Response<PeriodEntity[]>(200, '時間割')
+  @Response<OutputPeriodData[]>(200, '時間割')
   getTimetable(
     @QueryParam('year') year?: number,
     @QueryParam('module') module?: Module,
@@ -90,7 +90,7 @@ export class TimetableService {
    */
   @Path(':year/:module/:day/:period')
   @GET
-  @Response<PeriodEntity>(200, 'コマ情報')
+  @Response<OutputPeriodData>(200, 'コマ情報')
   async getPeriod(
     @PathParam('year') year: number,
     @PathParam('module') module: Module,
@@ -118,7 +118,7 @@ export class TimetableService {
    * ユーザーが独自に講義を作成する場合は、事前にユーザー講義を作成しておく必要がある
    */
   @Path('/:year/:module/:day/:period')
-  @Response<PeriodEntity>(200, '作成/更新されたコマ情報')
+  @Response<OutputPeriodData>(200, '作成/更新されたコマ情報')
   @PUT
   upsertPeriod(
     @PathParam('year') year: number,

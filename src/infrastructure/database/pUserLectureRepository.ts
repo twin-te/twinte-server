@@ -21,14 +21,19 @@ export class PUserLectureRepository implements UserLectureRepository {
     this.userRepository = getConnection().getRepository(pUser)
   }
 
-  findUserLectureById(
+  async findUserLectureById(
     user: UserEntity,
     user_lecture_id: string
   ): Promise<UserLectureEntity | undefined> {
-    return this.userLectureRepository.findOne({
-      user,
-      user_lecture_id: user_lecture_id
-    })
+    const res = await this.userLectureRepository.findOne(
+      {
+        user,
+        user_lecture_id: user_lecture_id
+      },
+      { relations: ['twinte_lecture'] }
+    )
+    if (!res) return undefined
+    return this.pUserLectureToUserLecture(res)
   }
 
   async createCustomUserLecture(
@@ -94,5 +99,14 @@ export class PUserLectureRepository implements UserLectureRepository {
     target.late = userLecture.late
     target.memo = userLecture.memo
     return this.userLectureRepository.save(target)
+  }
+
+  pUserLectureToUserLecture(p: pUserLecture): UserLectureEntity {
+    return {
+      twinte_lecture_id: p.twinte_lecture
+        ? p.twinte_lecture.twinte_lecture_id
+        : undefined,
+      ...p
+    }
   }
 }

@@ -8,40 +8,45 @@ import { injectable } from 'inversify'
 
 @injectable()
 export class WebSchoolCalenderRepository implements SchoolCalenderRepository {
-  async getModuleTerm(year: number, module: Module): Promise<ModuleTerm | undefined> {
-    const data: ModuleTerm[] = [
-      {
-        module: Module.SpringA,
-        start: moment('2019-4-1', 'YYYY-MM-DD'),
-        end: moment('2019-4-30', 'YYYY-MM-DD')
-      },
-      {
-        module: Module.SpringB,
-        start: moment('2019-5-1', 'YYYY-MM-DD'),
-        end: moment('2019-6-30', 'YYYY-MM-DD')
-      },
-      {
-        module: Module.SpringC,
-        start: moment('2019-7-1', 'YYYY-MM-DD'),
-        end: moment('2019-8-8', 'YYYY-MM-DD')
-      },
-      {
-        module: Module.FallA,
-        start: moment('2019-10-1', 'YYYY-MM-DD'),
-        end: moment('2019-11-11', 'YYYY-MM-DD')
-      },
-      {
-        module: Module.FallB,
-        start: moment('2019-11-12', 'YYYY-MM-DD'),
-        end: moment('2019-12-31', 'YYYY-MM-DD')
-      },
-      {
-        module: Module.FallC,
-        start: moment('2020-1-1', 'YYYY-MM-DD'),
-        end: moment('2020-2-13', 'YYYY-MM-DD')
-      }
-    ]
-    return data.find(el => el.module === module)
+  async getModuleTerm(
+    year: number,
+    module: Module
+  ): Promise<ModuleTerm | undefined> {
+    const data: { [key: number]: ModuleTerm[] } = {
+      2019: [
+        {
+          module: Module.SpringA,
+          start: moment('2019-4-1', 'YYYY-MM-DD'),
+          end: moment('2019-5-30', 'YYYY-MM-DD')
+        },
+        {
+          module: Module.SpringB,
+          start: moment('2019-5-1', 'YYYY-MM-DD'),
+          end: moment('2019-6-30', 'YYYY-MM-DD')
+        },
+        {
+          module: Module.SpringC,
+          start: moment('2019-7-1', 'YYYY-MM-DD'),
+          end: moment('2019-8-8', 'YYYY-MM-DD')
+        },
+        {
+          module: Module.FallA,
+          start: moment('2019-10-1', 'YYYY-MM-DD'),
+          end: moment('2019-11-11', 'YYYY-MM-DD')
+        },
+        {
+          module: Module.FallB,
+          start: moment('2019-11-12', 'YYYY-MM-DD'),
+          end: moment('2019-12-31', 'YYYY-MM-DD')
+        },
+        {
+          module: Module.FallC,
+          start: moment('2020-1-1', 'YYYY-MM-DD'),
+          end: moment('2020-2-13', 'YYYY-MM-DD')
+        }
+      ]
+    }
+    return data[year].find(el => el.module === module)
   }
 
   async getTransferDates(year: number): Promise<TransferDate[]> {

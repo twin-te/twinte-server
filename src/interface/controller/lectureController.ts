@@ -1,12 +1,12 @@
 import { inject, injectable } from 'inversify'
 import { types } from '../../di/types'
-import { SearchLectureByKeywordUseCase } from '../../usecase/SearchLectureByKeywordUseCase'
+import { FindLectureUseCase } from '../../usecase/FindLectureUseCase'
 import { LectureEntity } from '../../entity/lecture'
 
 @injectable()
 export class LectureController {
-  @inject(types.SearchLectureByKeywordUseCase)
-  private searchLectureByKeywordUseCase!: SearchLectureByKeywordUseCase
+  @inject(types.FindLectureUseCase)
+  private searchLectureByKeywordUseCase!: FindLectureUseCase
 
   searchByKeyword(keyword: string): Promise<LectureEntity[]> {
     return this.searchLectureByKeywordUseCase.searchLectureByKeyword(keyword)

@@ -7,8 +7,8 @@ import { KdbRemoteLectureRepository } from '../infrastructure/database/kdbRemote
 import { UpdateLectureDatabaseUseCase } from '../usecase/UpdateLectureDatabaseUseCase'
 import { UpdateLectureDatabaseInteractor } from '../interactor/UpdateLectureDatabaseInteractor'
 import { LectureController } from '../interface/controller/lectureController'
-import { SearchLectureByKeywordUseCase } from '../usecase/SearchLectureByKeywordUseCase'
-import { SearchLectureByKeywordInteractor } from '../interactor/SearchLectureByKeywordInteractor'
+import { FindLectureUseCase } from '../usecase/FindLectureUseCase'
+import { FindLectureInteractor } from '../interactor/FindLectureInteractor'
 import { UserRepository } from '../interface/repository/userRepository'
 import { PUserRepository } from '../infrastructure/database/pUserRepository'
 import { CreateUserUseCase } from '../usecase/createUserUseCase'
@@ -50,8 +50,8 @@ container
   .bind<UpdateLectureDatabaseUseCase>(types.UpdateLectureDatabaseUseCase)
   .to(UpdateLectureDatabaseInteractor)
 container
-  .bind<SearchLectureByKeywordUseCase>(types.SearchLectureByKeywordUseCase)
-  .to(SearchLectureByKeywordInteractor)
+  .bind<FindLectureUseCase>(types.FindLectureUseCase)
+  .to(FindLectureInteractor)
 
 container.bind<UserRepository>(types.UserRepository).to(PUserRepository)
 

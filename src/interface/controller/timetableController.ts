@@ -7,6 +7,14 @@ import { Day, Module } from 'twinte-parser'
 import { GetTimetableUseCase } from '../../usecase/getTimetableUseCase'
 import { UpsertPeriodUseCase } from '../../usecase/upsertPeriodUseCase'
 import { RemovePeriodUseCase } from '../../usecase/removePeriodUseCase'
+import { FindUserLectureUseCase } from '../../usecase/findUserLectureUseCase'
+import { FindLectureUseCase } from '../../usecase/FindLectureUseCase'
+
+export interface OutputPeriodData extends PeriodEntity {
+  lecture_code: string | null
+  lecture_name: string
+  instructor: string
+}
 
 @injectable()
 export class TimetableController {
@@ -18,6 +26,10 @@ export class TimetableController {
   upsertPeriodUseCase!: UpsertPeriodUseCase
   @inject(types.RemovePeriodUseCase)
   removePeriodUseCase!: RemovePeriodUseCase
+  @inject(types.FindUserLectureUseCase)
+  findUserLectureUseCase!: FindUserLectureUseCase
+  @inject(types.FindLectureUseCase)
+  findLectureUseCase!: FindLectureUseCase
 
   async registerLecture(
     user: UserEntity,
@@ -37,18 +49,20 @@ export class TimetableController {
     module?: Module,
     day?: Day,
     period?: number
-  ): Promise<PeriodEntity[]> {
-    return this.getTimetableUseCase.getTimetable(
+  ): Promise<OutputPeriodData[]> {
+    const res = await this.getTimetableUseCase.getTimetable(
       user,
       year,
       module,
       day,
       period
     )
+    return Promise.all(res.map(p => this.addLectureData(user, p)))
   }
 
-  getTodayTimetable(user: UserEntity): Promise<PeriodEntity[]> {
-    return this.getTimetableUseCase.getTodayTimetable(user)
+  async getTodayTimetable(user: UserEntity): Promise<PeriodEntity[]> {
+    const res = await this.getTimetableUseCase.getTodayTimetable(user)
+    return Promise.all(res.map(p => this.addLectureData(user, p)))
   }
 
   async getPeriod(
@@ -57,15 +71,25 @@ export class TimetableController {
     module: Module,
     day: Day,
     period: number
-  ): Promise<PeriodEntity | undefined> {
-    return this.getTimetableUseCase.getPeriod(user, year, module, day, period)
+  ): Promise<OutputPeriodData | undefined> {
+    const res = await this.getTimetableUseCase.getPeriod(
+      user,
+      year,
+      module,
+      day,
+      period
+    )
+    if (!res) return undefined
+    return this.addLectureData(user, res)
   }
 
-  upsertPeriod(
+  async upsertPeriod(
     user: UserEntity,
     period: PeriodEntity
-  ): Promise<PeriodEntity | undefined> {
-    return this.upsertPeriodUseCase.upsertPeriod(user, period)
+  ): Promise<OutputPeriodData | undefined> {
+    const res = await this.upsertPeriodUseCase.upsertPeriod(user, period)
+    if (!res) return undefined
+    return this.addLectureData(user, res)
   }
 
   removePeriod(
@@ -82,5 +106,41 @@ export class TimetableController {
       day,
       period
     )
+  }
+
+  private async addLectureData(
+    user: UserEntity,
+    periodEntity: PeriodEntity
+  ): Promise<OutputPeriodData> {
+    const userLecture = await this.findUserLectureUseCase.findUserLecture(
+      user,
+      periodEntity.user_lecture_id
+    )
+
+    if (!userLecture)
+      throw new Error('存在するはずのユーザー講義が取得できませんでした')
+
+    //カスタム講義の場合
+    if (!userLecture.twinte_lecture_id) {
+      return {
+        ...periodEntity,
+        lecture_code: null,
+        lecture_name: userLecture.lecture_name,
+        instructor: userLecture.instructor
+      }
+    }
+    const twinteLecture = await this.findLectureUseCase.findLectureByLectureID(
+      userLecture.twinte_lecture_id
+    )
+
+    if (!twinteLecture)
+      throw new Error('存在するはずの講義が取得できませんでした')
+
+    return {
+      ...periodEntity,
+      lecture_code: twinteLecture.lectureCode,
+      lecture_name: userLecture.lecture_name,
+      instructor: userLecture.instructor
+    }
   }
 }

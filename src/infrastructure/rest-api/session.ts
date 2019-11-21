@@ -22,7 +22,8 @@ export function enableSession(app: express.Application) {
           database: process.env.PG_DATABASE
         }),
         tableName: 'session'
-      })
+      }),
+      resave: false
     })
   )
 }

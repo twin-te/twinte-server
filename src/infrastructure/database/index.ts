@@ -9,10 +9,22 @@ import { ModuleTerm } from './orm/moduleTerm'
 import { SchoolEvent } from './orm/schoolEvent'
 import { SubstituteDay } from './orm/substituteDay'
 import { Session } from './orm/session'
+import { getLogger } from 'log4js'
+
+const logger = getLogger('database')
 
 let con: Connection
 
 export async function connect(): Promise<Connection> {
+  logger.info('Postgresに接続中')
+  logger.debug({
+    host: process.env.PG_HOST,
+    port: Number(process.env.PG_PORT),
+    username: process.env.PG_USER,
+    password: 'xxxxxxx',
+    database: process.env.PG_DATABASE
+  })
+
   if (!con)
     con = await createConnection({
       type: 'postgres',

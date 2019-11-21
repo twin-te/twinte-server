@@ -36,7 +36,9 @@ import { FindUserLectureInteractor } from '../interactor/findUserLectureInteract
 import { UpdateUserLectureUseCase } from '../usecase/updateUserLectureUseCase'
 import { UpdateUserLectureInteractor } from '../interactor/UpdateUserLectureInteractor'
 import { SchoolCalenderRepository } from '../interface/repository/schoolCalenderRepository'
-import {PSchoolCalenderRepository} from '../infrastructure/database/pSchoolCalenderRepository'
+import { PSchoolCalenderRepository } from '../infrastructure/database/pSchoolCalenderRepository'
+import { UpdateSchoolCalenderUseCase } from '../usecase/UpdateSchoolCalenderUseCase'
+import {UpdateSchoolCalenderInteractor} from '../interactor/UpdateSchoolCalenderInteractor'
 
 const container = new Container()
 
@@ -106,4 +108,8 @@ container
 container
   .bind<SchoolCalenderRepository>(types.SchoolCalenderRepository)
   .to(PSchoolCalenderRepository)
+
+container
+  .bind<UpdateSchoolCalenderUseCase>(types.UpdateSchoolCalenderUseCase)
+  .to(UpdateSchoolCalenderInteractor)
 export default container

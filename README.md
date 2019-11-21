@@ -1,39 +1,44 @@
 # twinte-server
 
-twinte のバックエンドです。WIP。
+twinteのバックエンドです。
 
-## Development
+# 構成
+twinte-serverはクリーンアーキテクチャで構築されています。
 
-リポジトリをクローンして依存ライブラリをインストールします。
+# Frameworks & Drivers
+## WebAPI
+[typescript-rest](https://github.com/thiagobustamante/typescript-rest) (express) を使用しています。
+## Database
+[TypeORM](https://github.com/typeorm/typeorm) (postgres) を使用しています
 
+# 開発
 ```
 $ git clone git@github.com:twin-te/twinte-server.git
 $ cd twinte-server
 $ yarn
-```
-
-ローカルホストで動かします。
-
-```
 $ yarn dev
 ```
+起動に必要な環境変数は `./src/envCheck.ts` 内を参照してください。
+また、開講情報は `yarn updateLectureDatabase` を実行することでkdbから自動インポートされます。
 
-ビルドします。`build`に吐き出します。
-
+# プロダクション起動
 ```
-$ yarn build
-```
-
-リントします。@typescript-eslint/parser を使っているのでちょっと遅いです。fix までするときは:fix をつけます。
-
-```
-$ yarn lint
-or
-$ yarn lint:fix
+$ yarn start
 ```
 
-フォーマットをします。Prettier の標準ルールに準拠しています。
+twinteは開講情報の他に学年暦のデータを必要とします。
+現状、手動でデータを定義しインポートします。
+2019年度の定義ファイルは作成済みです。
 
+## モジュール期間の定義をインポート
 ```
-$ yarn format
+$ yarn importModuleDefinition ./schoolCalender/module2019.json
+```
+## 振替授業の定義をインポート
+```
+$ yarn importSubstituteDefinition ./schoolCalender/substitute2019.json
+```
+## 臨時休業や試験などのスケジュールをインポート
+```
+$ yarn importEventDefinition ./schoolCalender/events2019.json
 ```

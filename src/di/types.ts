@@ -15,7 +15,8 @@ const types = {
   RemovePeriodUseCase: Symbol.for('RemovePeriodUseCase'),
   FindUserLectureUseCase: Symbol.for('FindUserLectureUseCase'),
   UpdateUserLectureUseCase: Symbol.for('UpdateUserLectureUseCase'),
-  SchoolCalenderRepository: Symbol.for('SchoolCalenderRepository')
+  SchoolCalenderRepository: Symbol.for('SchoolCalenderRepository'),
+  UpdateSchoolCalenderUseCase: Symbol.for('UpdateSchoolCalenderUseCase')
 }
 
 export { types }

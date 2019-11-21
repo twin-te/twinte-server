@@ -11,6 +11,6 @@ export interface Event {
   date: Moment
   description: string
   event_type: EventType
-  metadata: any
+  metadata?: {}
 }
 

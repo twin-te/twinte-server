@@ -7,7 +7,9 @@ import { UserRepository } from '../interface/repository/userRepository'
 @injectable()
 export class LoginInteractor implements LoginUseCase {
   @inject(types.UserRepository) userRepository!: UserRepository
-  login(authentication: UserAuthenticationEntity): Promise<UserEntity | undefined> {
+  login(
+    authentication: UserAuthenticationEntity
+  ): Promise<UserEntity | undefined> {
     return this.userRepository.findUserByAuthentication(authentication)
   }
 }

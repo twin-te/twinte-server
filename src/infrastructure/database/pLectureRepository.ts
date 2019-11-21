@@ -6,6 +6,10 @@ import { LectureEntity } from '../../entity/lecture'
 import { LectureDate } from './orm/lectureDate'
 import uuid = require('uuid')
 import { getConnection } from './index'
+import _cliProgress from 'cli-progress'
+import { getLogger } from 'log4js'
+
+const logger = getLogger('database')
 
 @injectable()
 export class PLectureRepository implements LectureRepository {
@@ -40,36 +44,44 @@ export class PLectureRepository implements LectureRepository {
   }
 
   async upsertLectures(lectures: LectureEntity[]): Promise<LectureEntity[]> {
-    return Promise.all(
-      lectures.map(async lec => {
-        let updateTarget = await this.repository.findOne(
-          {
-            lecture_code: lec.lectureCode,
-            year: lec.year
-          },
-          { relations: ['dates'] }
-        )
+    logger.info('講義データベースを更新しています')
+    const bar = new _cliProgress.Bar({}, _cliProgress.Presets.shades_classic)
 
-        if (!updateTarget) {
-          updateTarget = new pLecture()
-          updateTarget.twinte_lecture_id = uuid()
-        }
+    // 低RAM環境での負荷軽減のため、直列で挿入を行う
+    bar.start(lectures.length, 0)
+    for (let i = 0; i < lectures.length; i++) {
+      const lec = lectures[i]
+      let updateTarget = await this.repository.findOne(
+        {
+          lecture_code: lec.lectureCode,
+          year: lec.year
+        },
+        { relations: ['dates'] }
+      )
 
-        updateTarget.lecture_name = lec.name
-        updateTarget.instructor = lec.instructor
-        updateTarget.year = lec.year
-        updateTarget.lecture_code = lec.lectureCode
-        updateTarget.dates = lec.details.map(el => {
-          const ld = new LectureDate()
-          ld.module = el.module
-          ld.day = el.day
-          ld.period = el.period
-          ld.room = el.room
-          return ld
-        })
-        return this.pLecToLec(await this.repository.save(updateTarget))
+      if (!updateTarget) {
+        updateTarget = new pLecture()
+        updateTarget.twinte_lecture_id = uuid()
+      }
+
+      updateTarget.lecture_name = lec.name
+      updateTarget.instructor = lec.instructor
+      updateTarget.year = lec.year
+      updateTarget.lecture_code = lec.lectureCode
+      updateTarget.dates = lec.details.map(el => {
+        const ld = new LectureDate()
+        ld.module = el.module
+        ld.day = el.day
+        ld.period = el.period
+        ld.room = el.room
+        return ld
       })
-    )
+      await this.pLecToLec(await this.repository.save(updateTarget))
+      bar.update(i)
+    }
+    bar.stop()
+    logger.info('更新が完了しました')
+    return []
   }
 
   private pLecToLec(pLec: pLecture): LectureEntity {

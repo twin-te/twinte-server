@@ -1,7 +1,8 @@
-import { Column, Entity, OneToMany, PrimaryColumn } from 'typeorm'
+import { Column, Entity, OneToMany, PrimaryColumn, Unique } from 'typeorm'
 import { LectureDate } from './lectureDate'
 
 @Entity()
+@Unique('UQ_YEAR_LECTURE_CODE', ['year', 'lecture_code'])
 export class Lecture {
   @PrimaryColumn({
     type: 'uuid'
@@ -23,8 +24,12 @@ export class Lecture {
   @Column()
   instructor!: string
 
-  @OneToMany(() => LectureDate, lectureDate => lectureDate.lecture, {
-    cascade: true
-  })
+  @OneToMany(
+    () => LectureDate,
+    lectureDate => lectureDate.lecture,
+    {
+      cascade: true
+    }
+  )
   dates!: LectureDate[]
 }

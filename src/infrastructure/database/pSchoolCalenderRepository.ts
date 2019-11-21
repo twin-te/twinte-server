@@ -1,6 +1,5 @@
 import { SchoolCalenderRepository } from '../../interface/repository/schoolCalenderRepository'
 import { injectable } from 'inversify'
-import { Day } from 'twinte-parser'
 import { ModuleTerm } from '../../entity/moduleTerm'
 import { SubstituteDay } from '../../entity/substituteDay'
 import { Raw, Repository } from 'typeorm'
@@ -83,7 +82,7 @@ export class PSchoolCalenderRepository implements SchoolCalenderRepository {
     target.module = term.module
     target.start = term.start.format('YYYY-MM-DD')
     target.end = term.end.format('YYYY-MM-DD')
-    target.year = year
+    target.year = term.year
     const res = await this.moduleTermRepository.save(target)
     return {
       year: res.year,

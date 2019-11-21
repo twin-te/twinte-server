@@ -46,7 +46,7 @@ const list: {
   }
 ]
 
-export function applyPassport(app: express.Application) {
+export function applyPassport() {
   list.forEach(config => {
     config.option = {
       ...config.option,

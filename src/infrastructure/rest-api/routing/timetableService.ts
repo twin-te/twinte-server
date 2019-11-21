@@ -75,6 +75,12 @@ export class TimetableService {
     )
   }
 
+  @Path('/today')
+  @GET
+  async getTodayTimeTable() {
+    return this.timetableController.getTodayTimetable(this.context.request.user)
+  }
+
   /**
    * 指定した一コマを取得する
    * @param year 年度

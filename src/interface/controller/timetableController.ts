@@ -47,6 +47,10 @@ export class TimetableController {
     )
   }
 
+  getTodayTimetable(user: UserEntity): Promise<PeriodEntity[]> {
+    return this.getTimetableUseCase.getTodayTimetable(user)
+  }
+
   async getPeriod(
     user: UserEntity,
     year: number,

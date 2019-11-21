@@ -67,13 +67,16 @@ export class PTimetableRepository implements TimetableRepository {
   ): Promise<PeriodEntity | undefined> {
     const u = await this.userRepository.findOne({ ...user })
     if (!u) throw Error('存在するはずのユーザーが存在しません')
-    const target = await this.periodRepository.findOne({
-      user: u,
-      year: period.year,
-      module: period.module,
-      day: period.day,
-      period: period.period
-    })
+    const target = await this.periodRepository.findOne(
+      {
+        user: u,
+        year: period.year,
+        module: period.module,
+        day: period.day,
+        period: period.period
+      },
+      { relations: ['user_lecture'] }
+    )
     if (target) {
       target.room = period.room
       const res = await this.periodRepository.save(target)

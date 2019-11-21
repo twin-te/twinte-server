@@ -13,12 +13,12 @@ const envVariables: { [key: string]: string } = {
 }
 
 export default function() {
-  const checkResult = Object.keys(envVariables).every(key => {
+  const missingVariables = Object.keys(envVariables).filter(key => {
     if (!process.env[key])
       console.error(
         `環境変数: ${key} (${envVariables[key]}) が設定されていません。`
       )
-    return process.env[key]
+    return !process.env[key]
   })
-  if (!checkResult) process.exit(-1)
+  if (missingVariables.length > 0) process.exit(-1)
 }

@@ -4,7 +4,7 @@ import { UpdateLectureDatabaseUseCase } from './usecase/UpdateLectureDatabaseUse
 import { connect } from './infrastructure/database'
 
 import envCheck from './envCheck'
-envCheck()
+envCheck(['Database'])
 
 const main = async () => {
   await connect()

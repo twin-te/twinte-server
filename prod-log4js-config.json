@@ -4,7 +4,7 @@
       "type": "console"
     },
     "logfile": {
-      "type": "dataFile",
+      "type": "file",
       "filename" : "/var/log/twinte/server.log"
     }
   },

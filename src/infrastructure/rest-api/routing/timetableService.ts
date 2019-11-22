@@ -42,6 +42,7 @@ export class TimetableService {
    * (自動でそれに対応するユーザー講義オブジェクトも生成される)
    * @param params 登録する講義
    */
+  @Path('/')
   @POST
   @Response<UserLectureEntity>(
     200,
@@ -60,6 +61,7 @@ export class TimetableService {
    * @param year 実施年度
    * @param module 実施モジュール
    * @param day 実施曜日
+   * @param date 日付で絞り込む。(形式は: 2019-11-21  今日('today') も指定可能)このクエリが指定されているときは、上記３つのクエリは無視される
    */
   @Path('/')
   @GET
@@ -67,32 +69,24 @@ export class TimetableService {
   getTimetable(
     @QueryParam('year') year?: number,
     @QueryParam('module') module?: Module,
-    @QueryParam('day') day?: Day
+    @QueryParam('day') day?: Day,
+    @QueryParam('date') date?: string
   ) {
+    if (date)
+      if (date === 'today')
+        return this.timetableController.getTodayTimetable(
+          this.context.request.user
+        )
+      else
+        return this.timetableController.getTimetableByDate(
+          this.context.request.user,
+          date
+        )
     return this.timetableController.getTimetable(
       this.context.request.user,
       year,
       module,
       day
-    )
-  }
-
-  /**
-   * このAPIを呼び出した日の時間割を返す
-   */
-  @Path('/by-date/today')
-  @GET
-  @Response<OutputPeriodData[]>(200, '時間割')
-  async getTodayTimeTable() {
-    return this.timetableController.getTodayTimetable(this.context.request.user)
-  }
-
-  @Path('/by-date/:date')
-  @GET
-  getTimetableByDate(@PathParam('date') date: string) {
-    return this.timetableController.getTimetableByDate(
-      this.context.request.user,
-      date
     )
   }
 

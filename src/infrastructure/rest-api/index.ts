@@ -29,7 +29,7 @@ export async function startExpress() {
 
   const apiv1 = express.Router()
 
-  Server.loadServices(apiv1, 'src/infrastructure/rest-api/routing/*')
+  Server.loadServices(apiv1, './routing/*', __dirname)
 
   enableSwaggerDocument(app)
   app.use('/v1', apiv1)

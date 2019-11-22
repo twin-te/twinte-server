@@ -26,19 +26,18 @@ const logger = getLogger('main')
 
 export default function(category?: string[]) {
   if (!category) category = Object.keys(envVariables)
-  const missingVariables = category
-    .map(c => {
-      return Object.keys(envVariables[c]).filter((v): boolean => {
-        if (!process.env[v]) {
-          logger.fatal(
-            `環境変数: ${v} (${envVariables[c][v]}) が設定されていません。`
-          )
-          return true
-        }
-        return false
-      })
+  const missingVariables = category.map(c => {
+    return Object.keys(envVariables[c]).filter((v): boolean => {
+      if (!process.env[v]) {
+        logger.fatal(
+          `環境変数: ${v} (${envVariables[c][v]}) が設定されていません。`
+        )
+        return true
+      }
+      return false
     })
-    .flat()
-  if (missingVariables.length > 0) process.exit(1)
+  })
+  const res = missingVariables.some(el => el.some(v => v.length > 0))
+  if (res) process.exit(1)
   logger.info('環境変数のチェックが完了しました')
 }

@@ -16,8 +16,6 @@ export function enableSwaggerDocument(app: express.Application) {
   Server.swagger(app, {
     endpoint: 'api-docs',
     filePath: './.swagger_dist/swagger.yaml',
-    host: 'localhost:3000',
-    schemes: ['http'],
     swaggerUiOptions: swaggerUiOptions
   })
 }

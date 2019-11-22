@@ -9,6 +9,7 @@ import { UpsertPeriodUseCase } from '../../usecase/upsertPeriodUseCase'
 import { RemovePeriodUseCase } from '../../usecase/removePeriodUseCase'
 import { FindUserLectureUseCase } from '../../usecase/findUserLectureUseCase'
 import { FindLectureUseCase } from '../../usecase/FindLectureUseCase'
+import moment = require('moment')
 
 export interface OutputPeriodData extends PeriodEntity {
   lecture_code: string | null
@@ -62,6 +63,14 @@ export class TimetableController {
 
   async getTodayTimetable(user: UserEntity): Promise<PeriodEntity[]> {
     const res = await this.getTimetableUseCase.getTodayTimetable(user)
+    return Promise.all(res.map(p => this.addLectureData(user, p)))
+  }
+
+  async getTimetableByDate(user: UserEntity, date: string) {
+    const res = await this.getTimetableUseCase.getTimetableByDate(
+      user,
+      moment(date)
+    )
     return Promise.all(res.map(p => this.addLectureData(user, p)))
   }
 

@@ -21,7 +21,7 @@ export class AuthService {
         this.context.request,
         this.context.response,
         () => {
-          this.context.response.redirect('/')
+          this.context.response.redirect(process.env.REDIRECT_URL || '/')
           resolve()
         }
       )

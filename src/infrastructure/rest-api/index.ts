@@ -16,7 +16,9 @@ export async function startExpress() {
       level: 'info',
       format: (req, _, formatter) =>
         formatter(
-          `:remote-addr - ${req.user ? req.user.twinte_user_id : 'not logged in'} - ":method :url HTTP/:http-version" :status :content-length ":referrer" ":user-agent"`
+          `:remote-addr - ${
+            req.user ? req.user.twinte_user_id : 'not logged in'
+          } - ":method :url HTTP/:http-version" :status :content-length ":referrer" ":user-agent"`
         )
     })
   )

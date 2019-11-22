@@ -80,11 +80,20 @@ export class TimetableService {
   /**
    * このAPIを呼び出した日の時間割を返す
    */
-  @Path('/today')
+  @Path('/by-date/today')
   @GET
   @Response<OutputPeriodData[]>(200, '時間割')
   async getTodayTimeTable() {
     return this.timetableController.getTodayTimetable(this.context.request.user)
+  }
+
+  @Path('/by-date/:date')
+  @GET
+  getTimetableByDate(@PathParam('date') date: string) {
+    return this.timetableController.getTimetableByDate(
+      this.context.request.user,
+      date
+    )
   }
 
   /**

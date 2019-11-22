@@ -11,7 +11,8 @@ const envVariables: { [key: string]: { [key: string]: string } } = {
   RestApi: {
     PORT: '稼働ポート',
     BASE_URL: '外部から見たときのURL',
-    SESSION_SECRET: 'セッション'
+    SESSION_SECRET: 'セッション',
+    REDIRECT_URL: 'ログイン後にリダイレクトするURL'
   },
   Auth: {
     TWITTER_CONSUMER_KEY: 'Twitter Consumer Key',

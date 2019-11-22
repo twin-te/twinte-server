@@ -50,7 +50,7 @@ export function applyPassport() {
   list.forEach(config => {
     config.option = {
       ...config.option,
-      callbackURL: `${process.env.BASE_URL}/auth/${config.provider}`,
+      callbackURL: `${process.env.BASE_URL}/v1/auth/${config.provider}`,
       passReqToCallback: true
     }
     const strategy: passport.Strategy = new config.strategy(

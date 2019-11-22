@@ -45,13 +45,21 @@ export class GetTimetableInteractor implements GetTimetableUseCase {
     user: UserEntity,
     date: moment.Moment
   ): Promise<PeriodEntity[]> {
+    // 年度
+    const nendo = date.month() < 4 ? date.year() - 1 : date.year()
+
     const moduleTerms = await this.schoolCalenderRepository.getModuleTerms(
-      date.year()
+      nendo
     )
 
     const targetModule = moduleTerms
       .filter(el => el)
-      .find(el => date.isBetween(el!.start, el!.end))
+      .find(
+        el =>
+          date.isBetween(el!.start, el!.end) ||
+          date.isSame(el!.start) ||
+          date.isSame(el!.end)
+      )
 
     if (!targetModule) return []
 
@@ -82,7 +90,7 @@ export class GetTimetableInteractor implements GetTimetableUseCase {
     if (!sToday) targetDay = Object.values(Day)[date.day()]
     else targetDay = sToday.change_to
 
-    return this.getTimetable(user, date.year(), targetModule.module, targetDay)
+    return this.getTimetable(user, nendo, targetModule.module, targetDay)
   }
 
   getTodayTimetable(user: UserEntity): Promise<PeriodEntity[]> {

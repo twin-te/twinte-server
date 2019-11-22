@@ -19,7 +19,6 @@
     "resolveJsonModule": true,
     "esModuleInterop": true,
     "outDir": "build/",
-    "typeRoots": ["./src/infrastructure/rest-api/types"],
-    "types": []
+    "typeRoots": ["./src/infrastructure/rest-api/types"]
   }
 }

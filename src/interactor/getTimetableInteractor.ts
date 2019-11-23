@@ -7,7 +7,8 @@ import { TimetableRepository } from '../interface/repository/timetableRepository
 import { PeriodEntity } from '../entity/period'
 import { SchoolCalenderRepository } from '../interface/repository/schoolCalenderRepository'
 import { EventType } from '../entity/event'
-import moment = require('moment')
+
+import moment from 'moment'
 
 @injectable()
 export class GetTimetableInteractor implements GetTimetableUseCase {

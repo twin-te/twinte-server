@@ -9,7 +9,8 @@ import { UpsertPeriodUseCase } from '../../usecase/upsertPeriodUseCase'
 import { RemovePeriodUseCase } from '../../usecase/removePeriodUseCase'
 import { FindUserLectureUseCase } from '../../usecase/findUserLectureUseCase'
 import { FindLectureUseCase } from '../../usecase/FindLectureUseCase'
-import moment = require('moment')
+
+import moment from 'moment'
 
 export interface OutputPeriodData extends PeriodEntity {
   lecture_code: string | null

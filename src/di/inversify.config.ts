@@ -39,6 +39,9 @@ import { SchoolCalenderRepository } from '../interface/repository/schoolCalender
 import { PSchoolCalenderRepository } from '../infrastructure/database/pSchoolCalenderRepository'
 import { UpdateSchoolCalenderUseCase } from '../usecase/UpdateSchoolCalenderUseCase'
 import { UpdateSchoolCalenderInteractor } from '../interactor/UpdateSchoolCalenderInteractor'
+import { GetSchoolCalenderUseCase } from '../usecase/getSchoolCalenderUseCase'
+import { GetSchoolCalenderInteractor } from '../interactor/getSchoolCalenderInteractor'
+import { SchoolCalenderController } from '../interface/controller/schoolCalenderController'
 
 const container = new Container()
 
@@ -112,4 +115,11 @@ container
 container
   .bind<UpdateSchoolCalenderUseCase>(types.UpdateSchoolCalenderUseCase)
   .to(UpdateSchoolCalenderInteractor)
+
+container
+  .bind<GetSchoolCalenderUseCase>(types.GetSchoolCalenderUseCase)
+  .to(GetSchoolCalenderInteractor)
+
+container.bind(SchoolCalenderController).to(SchoolCalenderController)
+
 export default container

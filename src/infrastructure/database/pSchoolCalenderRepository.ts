@@ -8,7 +8,9 @@ import { SchoolEvent as pSchoolEvent } from './orm/schoolEvent'
 import { SubstituteDay as pSubstituteDay } from './orm/substituteDay'
 import { Event } from '../../entity/event'
 import { getConnection } from './index'
+
 import moment from 'moment'
+import { Module } from 'twinte-parser'
 @injectable()
 export class PSchoolCalenderRepository implements SchoolCalenderRepository {
   moduleTermRepository: Repository<pModuleTerm>
@@ -101,6 +103,52 @@ export class PSchoolCalenderRepository implements SchoolCalenderRepository {
     newSub.date = substituteDay.date.format('YYYY-MM-DD')
     newSub.change_to = substituteDay.change_to
     const res = await this.substituteDayRepository.save(newSub)
+    return {
+      date: moment(res.date),
+      change_to: res.change_to
+    }
+  }
+
+  async getEvent(date: moment.Moment): Promise<Event | undefined> {
+    const res = await this.schoolEventRepository.findOne({
+      date: Raw(
+        alias =>
+          `${alias} = '${date.year()}-${date.month() + 1}-${date.date()}'::date`
+      )
+    })
+    if (!res) return undefined
+    return {
+      date: moment(res.date),
+      description: res.description,
+      event_type: res.event_type,
+      metadata: res.metadata
+    }
+  }
+
+  async getModuleTerm(
+    year: number,
+    module: Module
+  ): Promise<ModuleTerm | undefined> {
+    const res = await this.moduleTermRepository.findOne({ year, module })
+    if (!res) return undefined
+    return {
+      year: res.year,
+      module: res.module,
+      start: moment(res.start),
+      end: moment(res.end)
+    }
+  }
+
+  async getSubstituteDay(
+    date: moment.Moment
+  ): Promise<SubstituteDay | undefined> {
+    const res = await this.substituteDayRepository.findOne({
+      date: Raw(
+        alias =>
+          `${alias} = '${date.year()}-${date.month() + 1}-${date.date()}'::date`
+      )
+    })
+    if (!res) return undefined
     return {
       date: moment(res.date),
       change_to: res.change_to

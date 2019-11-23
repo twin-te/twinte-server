@@ -16,7 +16,8 @@ const types = {
   FindUserLectureUseCase: Symbol.for('FindUserLectureUseCase'),
   UpdateUserLectureUseCase: Symbol.for('UpdateUserLectureUseCase'),
   SchoolCalenderRepository: Symbol.for('SchoolCalenderRepository'),
-  UpdateSchoolCalenderUseCase: Symbol.for('UpdateSchoolCalenderUseCase')
+  UpdateSchoolCalenderUseCase: Symbol.for('UpdateSchoolCalenderUseCase'),
+  GetSchoolCalenderUseCase: Symbol.for('GetSchoolCalenderUseCase')
 }
 
 export { types }

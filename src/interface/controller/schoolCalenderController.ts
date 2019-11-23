@@ -1,18 +1,21 @@
 import { inject, injectable } from 'inversify'
 import { types } from '../../di/types'
-import { Event } from '../../entity/event'
+import { EventType } from '../../entity/event'
 import { GetSchoolCalenderUseCase } from '../../usecase/getSchoolCalenderUseCase'
 
 import moment from 'moment'
-import { SubstituteDay } from '../../entity/substituteDay'
-import { Module } from 'twinte-parser'
+import { Day, Module } from 'twinte-parser'
 
-interface OutputEvent extends Event {
+interface OutputEvent {
+  description: string
+  event_type: EventType
+  metadata?: {}
   date: string
 }
 
-interface OutputSubstituteDay extends SubstituteDay {
+interface OutputSubstituteDay {
   date: string
+  change_to: Day
 }
 
 export interface OutputSchoolCalender {

@@ -1,5 +1,5 @@
-import {Column, Entity, PrimaryColumn} from 'typeorm'
-import {Day} from 'twinte-parser'
+import { Column, Entity, PrimaryColumn } from 'typeorm'
+import { Day } from 'twinte-parser'
 
 @Entity()
 export class SubstituteDay {
@@ -9,7 +9,7 @@ export class SubstituteDay {
   date!: string
 
   @Column({
-    type:'enum',
+    type: 'enum',
     enum: Day
   })
   change_to!: Day

@@ -10,7 +10,10 @@ export class UserLecture {
   })
   user_lecture_id!: string
 
-  @ManyToOne(() => User, user => user.twinte_user_id)
+  @ManyToOne(
+    () => User,
+    user => user.twinte_user_id
+  )
   user!: User
 
   @Column()
@@ -22,14 +25,22 @@ export class UserLecture {
   @Column()
   instructor!: string
 
-  @ManyToOne(() => Lecture, lecture => lecture.twinte_lecture_id, {
-    nullable: true
-  })
+  @ManyToOne(
+    () => Lecture,
+    lecture => lecture.twinte_lecture_id,
+    {
+      nullable: true
+    }
+  )
   twinte_lecture?: Lecture
 
-  @OneToMany(() => Period, period => period.user_lecture, {
-    cascade: true
-  })
+  @OneToMany(
+    () => Period,
+    period => period.user_lecture,
+    {
+      cascade: true
+    }
+  )
   periods!: Period[]
 
   @Column()

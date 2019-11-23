@@ -15,7 +15,9 @@ const logger = log4js.getLogger('main')
 envCheck(['Database'])
 const main = async () => {
   await connect()
-  logger.info('講義データベースの更新を開始します。途中で終了しないでください。')
+  logger.info(
+    '講義データベースの更新を開始します。途中で終了しないでください。'
+  )
   const usecase = container.get<UpdateLectureDatabaseUseCase>(
     types.UpdateLectureDatabaseUseCase
   )

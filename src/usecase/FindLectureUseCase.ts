@@ -5,5 +5,7 @@ import { LectureEntity } from '../entity/lecture'
  */
 export interface FindLectureUseCase {
   searchLectureByKeyword(keyword: string): Promise<LectureEntity[]>
-  findLectureByLectureID(twinte_lecture_id: string): Promise<LectureEntity | undefined>
+  findLectureByLectureID(
+    twinte_lecture_id: string
+  ): Promise<LectureEntity | undefined>
 }

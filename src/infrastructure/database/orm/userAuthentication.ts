@@ -30,6 +30,9 @@ export class UserAuthentication {
   })
   refresh_token!: string
 
-  @ManyToOne(() => User, user => user.authentications)
+  @ManyToOne(
+    () => User,
+    user => user.authentications
+  )
   user!: User
 }

@@ -8,10 +8,16 @@ export class Period {
   @PrimaryGeneratedColumn()
   id!: number
 
-  @ManyToOne(() => User, user => user.twinte_user_id)
+  @ManyToOne(
+    () => User,
+    user => user.twinte_user_id
+  )
   user!: User
 
-  @ManyToOne(() => UserLecture, ulecture => ulecture.user_lecture_id)
+  @ManyToOne(
+    () => UserLecture,
+    ulecture => ulecture.user_lecture_id
+  )
   user_lecture!: UserLecture
 
   @Column()

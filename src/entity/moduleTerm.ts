@@ -1,5 +1,5 @@
-import {Moment} from "moment"
-import {Module} from "twinte-parser"
+import { Moment } from 'moment'
+import { Module } from 'twinte-parser'
 
 export interface ModuleTerm {
   year: number

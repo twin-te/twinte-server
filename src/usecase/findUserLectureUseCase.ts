@@ -1,6 +1,9 @@
-import {UserLectureEntity} from '../entity/period'
-import {UserEntity} from '../entity/user'
+import { UserLectureEntity } from '../entity/period'
+import { UserEntity } from '../entity/user'
 
 export interface FindUserLectureUseCase {
-  findUserLecture(user:UserEntity,user_lecture_id: string): Promise<UserLectureEntity | undefined>
+  findUserLecture(
+    user: UserEntity,
+    user_lecture_id: string
+  ): Promise<UserLectureEntity | undefined>
 }

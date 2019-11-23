@@ -1,5 +1,5 @@
-import {Moment} from "moment"
-import {Day} from "twinte-parser"
+import { Moment } from 'moment'
+import { Day } from 'twinte-parser'
 
 export interface SubstituteDay {
   date: Moment

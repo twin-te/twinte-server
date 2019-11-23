@@ -11,8 +11,12 @@ export class User {
   @Column()
   twinte_username!: string
 
-  @OneToMany(() => UserAuthentication, ua => ua.user, {
-    cascade: true
-  })
+  @OneToMany(
+    () => UserAuthentication,
+    ua => ua.user,
+    {
+      cascade: true
+    }
+  )
   authentications!: UserAuthentication[]
 }

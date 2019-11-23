@@ -1,4 +1,11 @@
-import { Context, GET, Path, PathParam, ServiceContext } from 'typescript-rest'
+import {
+  Context,
+  GET,
+  Path,
+  PathParam,
+  Return,
+  ServiceContext
+} from 'typescript-rest'
 import { AuthenticationProvider } from '../../../entity/user'
 import passport from 'passport'
 import { Tags } from 'typescript-rest-swagger'
@@ -26,5 +33,17 @@ export class AuthService {
         }
       )
     })
+  }
+
+  /**
+   * ログアウトする
+   */
+  @Path('/logout')
+  @GET
+  async logout() {
+    if (this.context.request.session)
+      this.context.request.session.destroy(_ => {
+        return new Return.MovedPermanently(process.env.REDIRECT_URL || '/')
+      })
   }
 }

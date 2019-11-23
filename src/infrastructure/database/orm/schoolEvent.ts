@@ -1,5 +1,5 @@
-import {Column, Entity, PrimaryColumn} from 'typeorm'
-import {EventType} from '../../../entity/event'
+import { Column, Entity, PrimaryColumn } from 'typeorm'
+import { EventType } from '../../../entity/event'
 
 @Entity()
 export class SchoolEvent {

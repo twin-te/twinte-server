@@ -25,6 +25,9 @@ export class LectureDate {
   @Column()
   room!: string
 
-  @ManyToOne(() => Lecture, lecture => lecture.dates)
+  @ManyToOne(
+    () => Lecture,
+    lecture => lecture.dates
+  )
   lecture!: Lecture
 }

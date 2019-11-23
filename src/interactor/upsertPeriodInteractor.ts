@@ -8,7 +8,10 @@ import { UserEntity } from '../entity/user'
 @injectable()
 export class UpsertPeriodInteractor implements UpsertPeriodUseCase {
   @inject(types.TimetableRepository) timetableRepository!: TimetableRepository
-  upsertPeriod(user: UserEntity, period: PeriodEntity): Promise<PeriodEntity | undefined> {
+  upsertPeriod(
+    user: UserEntity,
+    period: PeriodEntity
+  ): Promise<PeriodEntity | undefined> {
     return this.timetableRepository.upsertPeriod(user, period)
   }
 }

@@ -1,4 +1,4 @@
-import {Moment} from 'moment'
+import { Moment } from 'moment'
 
 export enum EventType {
   Holiday = '休日',
@@ -13,4 +13,3 @@ export interface Event {
   event_type: EventType
   metadata?: {}
 }
-

@@ -38,7 +38,7 @@ import { UpdateUserLectureInteractor } from '../interactor/UpdateUserLectureInte
 import { SchoolCalenderRepository } from '../interface/repository/schoolCalenderRepository'
 import { PSchoolCalenderRepository } from '../infrastructure/database/pSchoolCalenderRepository'
 import { UpdateSchoolCalenderUseCase } from '../usecase/UpdateSchoolCalenderUseCase'
-import {UpdateSchoolCalenderInteractor} from '../interactor/UpdateSchoolCalenderInteractor'
+import { UpdateSchoolCalenderInteractor } from '../interactor/UpdateSchoolCalenderInteractor'
 
 const container = new Container()
 

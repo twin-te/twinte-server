@@ -1,6 +1,6 @@
-import {ModuleTerm} from '../entity/moduleTerm'
-import {SubstituteDay} from '../entity/substituteDay'
-import {Event} from '../entity/event'
+import { ModuleTerm } from '../entity/moduleTerm'
+import { SubstituteDay } from '../entity/substituteDay'
+import { Event } from '../entity/event'
 
 export interface UpdateSchoolCalenderUseCase {
   setModuleTerm(term: ModuleTerm): Promise<ModuleTerm>

@@ -24,7 +24,9 @@ export class PSchoolCalenderRepository implements SchoolCalenderRepository {
   async getEvents(year: number): Promise<Event[]> {
     const res = await this.schoolEventRepository.find({
       date: Raw(
-        alias => `${alias} >= '${year}-01-01'::date and ${alias} <= '${year + 1}-12-31'::date`
+        alias =>
+          `${alias} >= '${year}-01-01'::date and ${alias} <= '${year +
+            1}-12-31'::date`
       )
     })
     return res.map(el => ({
@@ -48,7 +50,9 @@ export class PSchoolCalenderRepository implements SchoolCalenderRepository {
   async getSubstituteDays(year: number): Promise<SubstituteDay[]> {
     const res = await this.substituteDayRepository.find({
       date: Raw(
-        alias => `${alias} >= '${year}-01-01'::date and ${alias} <= '${year + 1}-12-31'::date`
+        alias =>
+          `${alias} >= '${year}-01-01'::date and ${alias} <= '${year +
+            1}-12-31'::date`
       )
     })
     return res.map(el => ({

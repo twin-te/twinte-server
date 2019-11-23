@@ -6,7 +6,7 @@ import { UpdateSchoolCalenderUseCase } from '../usecase/UpdateSchoolCalenderUseC
 import { promises as fs } from 'fs'
 import { connect } from '../infrastructure/database'
 import moment from 'moment'
-import {Event} from '../entity/event'
+import { Event } from '../entity/event'
 log4js.configure('./dev-log4js-config.json')
 const logger = log4js.getLogger('main')
 

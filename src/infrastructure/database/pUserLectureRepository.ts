@@ -66,6 +66,12 @@ export class PUserLectureRepository implements UserLectureRepository {
     })
     if (!srcLecture) return undefined
 
+    const exist = await this.userLectureRepository.findOne({
+      twinte_lecture: { twinte_lecture_id }
+    })
+
+    if (exist) throw new Error('この講義は既に存在します')
+
     const newUserLecture = new pUserLecture()
     newUserLecture.lecture_name = srcLecture.lecture_name
     newUserLecture.user_lecture_id = uuid()

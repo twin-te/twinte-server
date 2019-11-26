@@ -19,6 +19,9 @@ export class UserService {
   @GET
   @Response<UserEntity>(200, 'ログイン中のユーザー')
   getMe() {
-    return this.context.request.user
+    return {
+      twinte_user_id: this.context.request.user.twinte_user_id,
+      twinte_username: this.context.request.user.twinte_username
+    }
   }
 }

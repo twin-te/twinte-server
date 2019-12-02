@@ -3668,9 +3668,9 @@ tsutils@^3.17.1:
   dependencies:
     tslib "^1.8.1"
 
-twinte-parser@^1.2.1:
-  version "1.2.1"
-  resolved "https://registry.yarnpkg.com/twinte-parser/-/twinte-parser-1.2.1.tgz#3b5f104929f26158ee94fc6e210e25b9da64074d"
+twinte-parser@^1.2.2:
+  version "1.2.2"
+  resolved "https://registry.yarnpkg.com/twinte-parser/-/twinte-parser-1.2.2.tgz#60e34edb6e70d0e179d43e85307ac98b38339d09"
   dependencies:
     axios "^0.19.0"
     cli-progress "^2.1.1"

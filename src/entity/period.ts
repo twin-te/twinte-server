@@ -19,3 +19,9 @@ export interface UserLectureEntity {
   lecture_name: string
   instructor: string
 }
+
+export interface TimetableEntity extends PeriodEntity {
+  lecture_name: string
+  lecture_code?: string
+  instructor: string
+}

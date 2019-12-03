@@ -4,7 +4,7 @@ import { Day, Module } from 'twinte-parser'
 import { inject, injectable } from 'inversify'
 import { types } from '../di/types'
 import { TimetableRepository } from '../interface/repository/timetableRepository'
-import { PeriodEntity } from '../entity/period'
+import { PeriodEntity, TimetableEntity } from '../entity/period'
 import { SchoolCalenderRepository } from '../interface/repository/schoolCalenderRepository'
 import { EventType } from '../entity/event'
 
@@ -22,7 +22,7 @@ export class GetTimetableInteractor implements GetTimetableUseCase {
     module?: Module,
     day?: Day,
     period?: number
-  ): Promise<PeriodEntity[]> {
+  ): Promise<TimetableEntity[]> {
     return this.timetableRepository.getTimetable(
       user,
       year,

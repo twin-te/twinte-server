@@ -1,12 +1,11 @@
 import { TimetableRepository } from '../../interface/repository/timetableRepository'
 import { Day, Module } from 'twinte-parser'
-import { PeriodEntity } from '../../entity/period'
+import { PeriodEntity, TimetableEntity } from '../../entity/period'
 import { Period as pPeriod } from './orm/period'
 import { Repository } from 'typeorm'
 import { getConnection } from './index'
 import { UserLecture as pUserLecture } from './orm/userLecture'
 import { injectable } from 'inversify'
-import { User } from './orm/user'
 import { User as pUser } from './orm/user'
 import { UserEntity } from '../../entity/user'
 
@@ -23,27 +22,40 @@ export class PTimetableRepository implements TimetableRepository {
   }
 
   async getTimetable(
-    user: User,
+    user: UserEntity,
     year?: number,
     module?: Module,
     day?: Day,
     period?: number
-  ): Promise<PeriodEntity[]> {
-    let query = this.periodRepository
-      .createQueryBuilder('period')
-      .leftJoinAndSelect('period.user_lecture', 'user_lecture')
-      .leftJoinAndSelect('period.user', 'user')
-      .where('user.twinte_user_id = :id', { id: user.twinte_user_id })
-    if (year) query = query.andWhere('period.year = :year', { year })
-    if (module) query = query.andWhere('period.module = :module', { module })
-    if (day) query = query.andWhere('period.day = :day', { day })
-    if (period) query = query.andWhere('period.period = :period', { period })
-    const res = await query.getMany()
-    return res.map(p => this.pPeriodToPeriod(p))
+  ): Promise<TimetableEntity[]> {
+    const where: {
+      user: UserEntity
+      year?: number
+      module?: Module
+      day?: Day
+      period?: number
+    } = { user }
+    if (year) where.year = year
+    if (module) where.module = module
+    if (day) where.day = day
+    if (period) where.period = period
+    const res = await this.periodRepository.find({
+      relations: ['user_lecture', 'user_lecture.twinte_lecture'],
+      where
+    })
+
+    return res.map(p => ({
+      ...this.pPeriodToPeriod(p),
+      lecture_name: p.user_lecture.lecture_name,
+      lecture_code: p.user_lecture.twinte_lecture
+        ? p.user_lecture.twinte_lecture.lecture_code
+        : undefined,
+      instructor: p.user_lecture.instructor
+    }))
   }
 
   async removePeriod(
-    user: User,
+    user: UserEntity,
     year: number,
     module: Module,
     day: Day,
@@ -62,7 +74,7 @@ export class PTimetableRepository implements TimetableRepository {
   }
 
   async upsertPeriod(
-    user: User,
+    user: UserEntity,
     period: PeriodEntity
   ): Promise<PeriodEntity | undefined> {
     const u = await this.userRepository.findOne({ ...user })

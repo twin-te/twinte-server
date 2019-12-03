@@ -1,6 +1,6 @@
 import { UserEntity } from '../entity/user'
 import { Day, Module } from 'twinte-parser'
-import { PeriodEntity } from '../entity/period'
+import { PeriodEntity, TimetableEntity } from '../entity/period'
 import { Moment } from 'moment'
 
 export interface GetTimetableUseCase {
@@ -10,7 +10,7 @@ export interface GetTimetableUseCase {
     module?: Module,
     day?: Day,
     period?: number
-  ): Promise<PeriodEntity[]>
+  ): Promise<TimetableEntity[]>
 
   getTodayTimetable(user: UserEntity): Promise<PeriodEntity[]>
 

@@ -1,5 +1,9 @@
 import { inject, injectable } from 'inversify'
-import { PeriodEntity, UserLectureEntity } from '../../entity/period'
+import {
+  PeriodEntity,
+  TimetableEntity,
+  UserLectureEntity
+} from '../../entity/period'
 import { types } from '../../di/types'
 import { CreateUserLectureUseCase } from '../../usecase/createUserLectureUseCase'
 import { UserEntity } from '../../entity/user'
@@ -51,7 +55,7 @@ export class TimetableController {
     module?: Module,
     day?: Day,
     period?: number
-  ): Promise<OutputPeriodData[]> {
+  ): Promise<TimetableEntity[]> {
     const res = await this.getTimetableUseCase.getTimetable(
       user,
       year,
@@ -59,7 +63,7 @@ export class TimetableController {
       day,
       period
     )
-    return Promise.all(res.map(p => this.addLectureData(user, p)))
+    return res
   }
 
   async getTodayTimetable(user: UserEntity): Promise<PeriodEntity[]> {

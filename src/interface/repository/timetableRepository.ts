@@ -1,6 +1,8 @@
 import { Day, Module } from 'twinte-parser'
-import { PeriodEntity } from '../../entity/period'
+import { PeriodEntity, TimetableEntity } from '../../entity/period'
 import { UserEntity } from '../../entity/user'
+
+// TODO TimetableEntity と PeriodEntity をどうにかする
 
 export interface TimetableRepository {
   getTimetable(
@@ -9,7 +11,7 @@ export interface TimetableRepository {
     module?: Module,
     day?: Day,
     period?: number
-  ): Promise<PeriodEntity[]>
+  ): Promise<TimetableEntity[]>
 
   getPeriod(
     user: UserEntity,

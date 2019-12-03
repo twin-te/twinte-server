@@ -16,7 +16,7 @@ import {
 } from '../../../interface/controller/timetableController'
 import container from '../../../di/inversify.config'
 import { Day, Module } from 'twinte-parser'
-import { UserLectureEntity } from '../../../entity/period'
+import { TimetableEntity, UserLectureEntity } from '../../../entity/period'
 import { Response, Tags } from 'typescript-rest-swagger'
 import isAuthenticated from '../middleware/isAuthenticated'
 import {
@@ -65,7 +65,7 @@ export class TimetableService {
    */
   @Path('/')
   @GET
-  @Response<OutputPeriodData[]>(200, '時間割')
+  @Response<TimetableEntity[]>(200, '時間割')
   getTimetable(
     @QueryParam('year') year?: number,
     @QueryParam('module') module?: Module,

@@ -36,6 +36,11 @@ export class PUserLectureRepository implements UserLectureRepository {
     return this.pUserLectureToUserLecture(res)
   }
 
+  async getAllUserLecture(user: UserEntity): Promise<UserLectureEntity[]> {
+    const res = await this.userLectureRepository.find({ user })
+    return res.map(el => this.pUserLectureToUserLecture(el))
+  }
+
   async createCustomUserLecture(
     user: UserEntity,
     year: number,
@@ -106,6 +111,19 @@ export class PUserLectureRepository implements UserLectureRepository {
     target.late = userLecture.late
     target.memo = userLecture.memo
     return this.userLectureRepository.save(target)
+  }
+
+  async removeUserLecture(
+    user: UserEntity,
+    user_lecture_id: string
+  ): Promise<boolean> {
+    const target = await this.userLectureRepository.findOne({
+      user,
+      user_lecture_id
+    })
+    if (!target) throw Error('指定された講義が見つかりません')
+    await this.userLectureRepository.remove(target)
+    return true
   }
 
   pUserLectureToUserLecture(p: pUserLecture): UserLectureEntity {

@@ -6,6 +6,7 @@ export interface UserLectureRepository {
     user: UserEntity,
     user_lecture_id: string
   ): Promise<UserLectureEntity | undefined>
+  getAllUserLecture(user: UserEntity): Promise<UserLectureEntity[]>
   createCustomUserLecture(
     user: UserEntity,
     year: number,
@@ -16,9 +17,12 @@ export interface UserLectureRepository {
     user: UserEntity,
     twinte_lecture_id: string
   ): Promise<UserLectureEntity | undefined>
-
   updateUserLecture(
     user: UserEntity,
     userLecture: UserLectureEntity
   ): Promise<UserLectureEntity | undefined>
+  removeUserLecture(
+      user:UserEntity,
+      user_lecture_id: string
+  ): Promise<boolean>
 }

@@ -42,6 +42,8 @@ import { UpdateSchoolCalenderInteractor } from '../interactor/updateSchoolCalend
 import { GetSchoolCalenderUseCase } from '../usecase/getSchoolCalenderUseCase'
 import { GetSchoolCalenderInteractor } from '../interactor/getSchoolCalenderInteractor'
 import { SchoolCalenderController } from '../interface/controller/schoolCalenderController'
+import { RemoveUserLectureUseCase } from '../usecase/removeUserLectureUseCase'
+import { RemoveUserLectureInteractor } from '../interactor/removeUserLectureInteractor'
 
 const container = new Container()
 
@@ -121,5 +123,9 @@ container
   .to(GetSchoolCalenderInteractor)
 
 container.bind(SchoolCalenderController).to(SchoolCalenderController)
+
+container
+  .bind<RemoveUserLectureUseCase>(types.RemoveUserLectureUseCase)
+  .to(RemoveUserLectureInteractor)
 
 export default container

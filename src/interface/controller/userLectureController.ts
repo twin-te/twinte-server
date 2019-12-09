@@ -5,6 +5,7 @@ import { UserEntity } from '../../entity/user'
 import { UserLectureEntity } from '../../entity/period'
 import { FindUserLectureUseCase } from '../../usecase/findUserLectureUseCase'
 import { UpdateUserLectureUseCase } from '../../usecase/updateUserLectureUseCase'
+import { RemoveUserLectureUseCase } from '../../usecase/removeUserLectureUseCase'
 
 @injectable()
 export class UserLectureController {
@@ -14,6 +15,8 @@ export class UserLectureController {
   findUserLectureUseCase!: FindUserLectureUseCase
   @inject(types.UpdateUserLectureUseCase)
   updateUserLectureUseCase!: UpdateUserLectureUseCase
+  @inject(types.RemoveUserLectureUseCase)
+  removeUserLectureUseCase!: RemoveUserLectureUseCase
 
   createCustomUserLecture(
     user: UserEntity,
@@ -34,6 +37,20 @@ export class UserLectureController {
     user_lecture_id: string
   ): Promise<UserLectureEntity | undefined> {
     return this.findUserLectureUseCase.findUserLecture(user, user_lecture_id)
+  }
+
+  getAllUserLectures(user: UserEntity): Promise<UserLectureEntity[]> {
+    return this.findUserLectureUseCase.getAllUserLectures(user)
+  }
+
+  removeUserLecture(
+    user: UserEntity,
+    user_lecture_id: string
+  ): Promise<boolean> {
+    return this.removeUserLectureUseCase.removeUserLecture(
+      user,
+      user_lecture_id
+    )
   }
 
   updateUserLecture(

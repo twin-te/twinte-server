@@ -1,5 +1,6 @@
 import {
   Context,
+  DELETE,
   GET,
   Path,
   PathParam,
@@ -67,6 +68,17 @@ export class UserLectureService {
   }
 
   /**
+   * ユーザーが保持しているユーザー講義をすべて取得する
+   */
+  @GET
+  @Response<UserLectureEntity>(200, 'ユーザー講義一覧')
+  getAllUserLecture() {
+    return this.userLectureController.getAllUserLectures(
+      this.context.request.user
+    )
+  }
+
+  /**
    * ユーザー講義の情報を更新する
    * @param user_lecture_id 更新するユーザー講義ID
    * @param userLecture 更新情報
@@ -86,5 +98,17 @@ export class UserLectureService {
     )
     if (!result) throw new NotFoundError('指定されたユーザー講義は存在しません')
     else return result
+  }
+
+  /**
+   * 指定されたユーザー講義を削除する
+   */
+  @Path(':user_lecture_id')
+  @DELETE
+  deleteUserLecture(@PathParam('user_lecture_id') user_lecture_id: string) {
+    return this.userLectureController.removeUserLecture(
+      this.context.request.user,
+      user_lecture_id
+    )
   }
 }

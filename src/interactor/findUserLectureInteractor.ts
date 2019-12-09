@@ -16,4 +16,8 @@ export class FindUserLectureInteractor implements FindUserLectureUseCase {
   ): Promise<UserLectureEntity | undefined> {
     return this.userLectureRepository.findUserLectureById(user, user_lecture_id)
   }
+
+  getAllUserLectures(user: UserEntity): Promise<UserLectureEntity[]> {
+    return this.userLectureRepository.getAllUserLecture(user)
+  }
 }

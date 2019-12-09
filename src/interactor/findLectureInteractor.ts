@@ -1,5 +1,5 @@
 import { inject, injectable } from 'inversify'
-import { FindLectureUseCase } from '../usecase/FindLectureUseCase'
+import { FindLectureUseCase } from '../usecase/findLectureUseCase'
 import { LectureEntity } from '../entity/lecture'
 import { types } from '../di/types'
 import { LectureRepository } from '../interface/repository/lectureRepository'

@@ -1,7 +1,7 @@
 import { inject, injectable } from 'inversify'
 import { types } from '../di/types'
 import { LectureRepository } from '../interface/repository/lectureRepository'
-import { UpdateLectureDatabaseUseCase } from '../usecase/UpdateLectureDatabaseUseCase'
+import { UpdateLectureDatabaseUseCase } from '../usecase/updateLectureDatabaseUseCase'
 import { LectureEntity } from '../entity/lecture'
 import { RemoteLectureRepository } from '../interface/repository/remoteLectureRepository'
 

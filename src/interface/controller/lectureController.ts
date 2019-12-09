@@ -1,6 +1,6 @@
 import { inject, injectable } from 'inversify'
 import { types } from '../../di/types'
-import { FindLectureUseCase } from '../../usecase/FindLectureUseCase'
+import { FindLectureUseCase } from '../../usecase/findLectureUseCase'
 import { LectureEntity } from '../../entity/lecture'
 
 @injectable()

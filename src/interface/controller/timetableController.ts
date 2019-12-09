@@ -12,7 +12,7 @@ import { GetTimetableUseCase } from '../../usecase/getTimetableUseCase'
 import { UpsertPeriodUseCase } from '../../usecase/upsertPeriodUseCase'
 import { RemovePeriodUseCase } from '../../usecase/removePeriodUseCase'
 import { FindUserLectureUseCase } from '../../usecase/findUserLectureUseCase'
-import { FindLectureUseCase } from '../../usecase/FindLectureUseCase'
+import { FindLectureUseCase } from '../../usecase/findLectureUseCase'
 
 import moment from 'moment'
 

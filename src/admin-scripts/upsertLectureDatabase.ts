@@ -4,7 +4,7 @@
 
 import container from '../di/inversify.config'
 import { types } from '../di/types'
-import { UpdateLectureDatabaseUseCase } from '../usecase/UpdateLectureDatabaseUseCase'
+import { UpdateLectureDatabaseUseCase } from '../usecase/updateLectureDatabaseUseCase'
 import { connect } from '../infrastructure/database'
 import envCheck from '../envCheck'
 import log4js from 'log4js'

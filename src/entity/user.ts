@@ -5,7 +5,8 @@ export interface UserEntity {
 
 export enum AuthenticationProvider {
   Twitter = 'twitter',
-  Google = 'google'
+  Google = 'google',
+  Apple = 'apple'
 }
 
 export interface UserAuthenticationEntity {

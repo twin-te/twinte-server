@@ -1,12 +1,14 @@
 import { Strategy as TwitterStrategy } from 'passport-twitter'
 import { OAuth2Strategy as GoogleStrategy } from 'passport-google-oauth'
+import AppleStrategy from 'passport-apple'
+import AppleConfig from '../../../config/apple'
 import container from '../../di/inversify.config'
 import { LoginUseCase } from '../../usecase/loginUseCase'
 import { types } from '../../di/types'
 import {
   AuthenticationProvider,
-  UserEntity,
-  UserAuthenticationEntity
+  UserAuthenticationEntity,
+  UserEntity
 } from '../../entity/user'
 import { CreateUserUseCase } from '../../usecase/createUserUseCase'
 import { PassportAuthenticator, Server } from 'typescript-rest'
@@ -26,6 +28,7 @@ const list: {
   strategy: any
   provider: AuthenticationProvider
   option: {}
+  customCallback?: (...args: any) => void
 }[] = [
   {
     strategy: TwitterStrategy,
@@ -43,6 +46,39 @@ const list: {
       clientSecret: process.env.GOOGLE_CLIENT_SECRET,
       scope: ['profile']
     }
+  },
+  {
+    strategy: AppleStrategy,
+    provider: AuthenticationProvider.Apple,
+    option: AppleConfig,
+    customCallback: async (
+      req: express.Request,
+      accessToken: string,
+      refreshToken: string,
+      idToken: string,
+      profile: passport.Profile,
+      cb: (err: any, user: any) => void
+    ) => {
+      const authentication: UserAuthenticationEntity = {
+        provider: AuthenticationProvider.Apple,
+        social_id: idToken,
+        social_username: 'apple user',
+        social_display_name: 'apple user',
+        access_token: accessToken,
+        refresh_token: refreshToken
+      }
+      if (!req.user) {
+        const loginResult = await loginUseCase.login(authentication)
+        if (loginResult) cb(null, loginResult)
+        else cb(null, await createUserUseCase.createUser(authentication))
+      } else {
+        await upsertAuthenticationUseCase.upsertAuthentication(
+          req.user,
+          authentication
+        )
+        cb(null, req.user)
+      }
+    }
   }
 ]
 
@@ -53,9 +89,9 @@ export function applyPassport() {
       callbackURL: `${process.env.BASE_URL}/v1/auth/${config.provider}`,
       passReqToCallback: true
     }
-    const strategy: passport.Strategy = new config.strategy(
-      config.option,
-      async (
+
+    if (!config.customCallback)
+      config.customCallback = async (
         req: express.Request,
         accessToken: string,
         refreshToken: string,
@@ -82,6 +118,10 @@ export function applyPassport() {
           cb(null, req.user)
         }
       }
+
+    const strategy: passport.Strategy = new config.strategy(
+      config.option,
+      config.customCallback
     )
     Server.registerAuthenticator(
       new PassportAuthenticator(strategy, {

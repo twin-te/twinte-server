@@ -1,7 +1,7 @@
 import { Strategy as TwitterStrategy } from 'passport-twitter'
 import { OAuth2Strategy as GoogleStrategy } from 'passport-google-oauth'
+// @ts-ignore
 import AppleStrategy from 'passport-apple'
-import AppleConfig from '../../../config/apple'
 import container from '../../di/inversify.config'
 import { LoginUseCase } from '../../usecase/loginUseCase'
 import { types } from '../../di/types'
@@ -50,13 +50,19 @@ const list: {
   {
     strategy: AppleStrategy,
     provider: AuthenticationProvider.Apple,
-    option: AppleConfig,
+    option: {
+      clientID: process.env.APPLE_CLIENT_ID,
+      teamID: process.env.APPLE_TEAM_ID,
+      keyID: process.env.APPLE_KEY_ID,
+      scope: '',
+      privateKeyLocation: process.env.APPLE_PRIVATE_KEY_LOCATION
+    },
     customCallback: async (
       req: express.Request,
       accessToken: string,
       refreshToken: string,
       idToken: string,
-      profile: passport.Profile,
+      _: passport.Profile,
       cb: (err: any, user: any) => void
     ) => {
       const authentication: UserAuthenticationEntity = {
@@ -67,20 +73,28 @@ const list: {
         access_token: accessToken,
         refresh_token: refreshToken
       }
-      if (!req.user) {
-        const loginResult = await loginUseCase.login(authentication)
-        if (loginResult) cb(null, loginResult)
-        else cb(null, await createUserUseCase.createUser(authentication))
-      } else {
-        await upsertAuthenticationUseCase.upsertAuthentication(
-          req.user,
-          authentication
-        )
-        cb(null, req.user)
-      }
+      await authenticate(req, authentication, cb)
     }
   }
 ]
+
+async function authenticate(
+  req: express.Request,
+  authentication: UserAuthenticationEntity,
+  cb: (err: any, user: any) => void
+) {
+  if (!req.user) {
+    const loginResult = await loginUseCase.login(authentication)
+    if (loginResult) cb(null, loginResult)
+    else cb(null, await createUserUseCase.createUser(authentication))
+  } else {
+    await upsertAuthenticationUseCase.upsertAuthentication(
+      req.user,
+      authentication
+    )
+    cb(null, req.user)
+  }
+}
 
 export function applyPassport() {
   list.forEach(config => {
@@ -106,17 +120,8 @@ export function applyPassport() {
           access_token: accessToken,
           refresh_token: refreshToken
         }
-        if (!req.user) {
-          const loginResult = await loginUseCase.login(authentication)
-          if (loginResult) cb(null, loginResult)
-          else cb(null, await createUserUseCase.createUser(authentication))
-        } else {
-          await upsertAuthenticationUseCase.upsertAuthentication(
-            req.user,
-            authentication
-          )
-          cb(null, req.user)
-        }
+
+        await authenticate(req, authentication, cb)
       }
 
     const strategy: passport.Strategy = new config.strategy(

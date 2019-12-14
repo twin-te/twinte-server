@@ -18,7 +18,13 @@ const envVariables: { [key: string]: { [key: string]: string } } = {
     TWITTER_CONSUMER_KEY: 'Twitter Consumer Key',
     TWITTER_CONSUMER_SECRET: 'Twitter Consumer Secret',
     GOOGLE_CLIENT_ID: 'Google Client ID',
-    GOOGLE_CLIENT_SECRET: 'Google Client Secret'
+    GOOGLE_CLIENT_SECRET: 'Google Client Secret',
+    APPLE_CLIENT_ID: 'Apple Client ID',
+    APPLE_TEAM_ID: 'Apple Team ID',
+    // APPLE_SCOPE: 'Apple Scope',
+    APPLE_KEY_ID: 'Apple Key ID',
+    APPLE_PRIVATE_KEY_LOCATION:
+      'Appleから１回限りDLできる Private Key ファイルの設置場所 (ワーキングディレクトリからの相対パスも可)'
   }
 }
 

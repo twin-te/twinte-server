@@ -1,38 +1,31 @@
 ---
-name: Bug report
-about: Create a report to help us improve
+name: バグ報告
+about: バグの可能性がある挙動を報告してください
 title: ''
-labels: ''
-assignees: ''
+labels: bug
+assignees: SIY1121
 
 ---
 
-**Describe the bug**
-A clear and concise description of what the bug is.
+**バグの説明**
+簡潔にバグを説明してください。
 
-**To Reproduce**
-Steps to reproduce the behavior:
-1. Go to '...'
-2. Click on '....'
-3. Scroll down to '....'
-4. See error
+**再現手順**
+バグを再現するための手順:
+1.
+2.
+3.
+...
 
-**Expected behavior**
-A clear and concise description of what you expected to happen.
+**期待される挙動**
+本来どのような挙動になるべきか説明してください。
 
-**Screenshots**
-If applicable, add screenshots to help explain your problem.
+**スクリーンショットやログ**
 
-**Desktop (please complete the following information):**
- - OS: [e.g. iOS]
- - Browser [e.g. chrome, safari]
- - Version [e.g. 22]
+**環境**
+ - OS:
+ - Browser:
+ - Version:
 
-**Smartphone (please complete the following information):**
- - Device: [e.g. iPhone6]
- - OS: [e.g. iOS8.1]
- - Browser [e.g. stock browser, safari]
- - Version [e.g. 22]
-
-**Additional context**
-Add any other context about the problem here.
+**その他**
+補足説明等あれば書いてください。

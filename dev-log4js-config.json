@@ -1,0 +1,29 @@
+{
+  "appenders":{
+    "console": {
+      "type": "console"
+    }
+  },
+  "categories": {
+    "default": {
+      "appenders": ["console"],
+      "level": "debug"
+    },
+    "main": {
+      "appenders": ["console"],
+      "level": "debug"
+    },
+    "express": {
+      "appenders": ["console"],
+      "level": "debug"
+    },
+    "passport": {
+      "appenders": ["console"],
+      "level": "debug"
+    },
+    "database": {
+      "appenders": ["console"],
+      "level": "debug"
+    }
+  }
+}

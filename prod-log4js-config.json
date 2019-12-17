@@ -1,0 +1,33 @@
+{
+  "appenders":{
+    "console": {
+      "type": "console"
+    },
+    "logfile": {
+      "type": "file",
+      "filename" : "/var/log/twinte/server.log"
+    }
+  },
+  "categories": {
+    "default": {
+      "appenders": ["console", "logfile"],
+      "level": "info"
+    },
+    "main": {
+      "appenders": ["console", "logfile"],
+      "level": "info"
+    },
+    "express": {
+      "appenders": ["console", "logfile"],
+      "level": "info"
+    },
+    "passport": {
+      "appenders": ["console", "logfile"],
+      "level": "info"
+    },
+    "database": {
+      "appenders": ["console", "logfile"],
+      "level": "info"
+    }
+  }
+}

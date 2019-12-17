@@ -1,0 +1,2 @@
+# Interactor
+UseCaseの実装

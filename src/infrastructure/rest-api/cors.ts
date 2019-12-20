@@ -30,6 +30,7 @@ const devCorsMiddleware = (
 const prodCorsMiddleware = cors({
   origin: [
     'https://twinte.net',
+    'https://app.twinte.net',
     'https://dev.twinte.net',
     'https://twins.tsukuba.ac.jp'
   ],

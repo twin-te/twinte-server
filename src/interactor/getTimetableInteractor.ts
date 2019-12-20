@@ -16,20 +16,43 @@ export class GetTimetableInteractor implements GetTimetableUseCase {
   @inject(types.SchoolCalenderRepository)
   schoolCalenderRepository!: SchoolCalenderRepository
 
-  getTimetable(
+  async getTimetable(
     user: UserEntity,
     year?: number,
     module?: Module,
     day?: Day,
     period?: number
   ): Promise<TimetableEntity[]> {
-    return this.timetableRepository.getTimetable(
+    const res = await this.timetableRepository.getTimetable(
       user,
       year,
       module,
       day,
       period
     )
+
+    /*
+    モジュールの指定があり、かつ長期休業でなければ通年の時間割も追加する
+     */
+    if (
+      module &&
+      ![
+        Module.SpringVacation,
+        Module.SummerVacation,
+        Module.Unknown,
+        Module.Annual
+      ].find(m => m === module)
+    )
+      return res.concat(
+        await this.timetableRepository.getTimetable(
+          user,
+          year,
+          Module.Annual,
+          day,
+          period
+        )
+      )
+    else return res
   }
 
   getPeriod(

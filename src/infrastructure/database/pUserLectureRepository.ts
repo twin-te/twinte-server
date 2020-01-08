@@ -8,17 +8,20 @@ import uuid = require('uuid')
 import { injectable } from 'inversify'
 import { UserEntity } from '../../entity/user'
 import { User as pUser } from './orm/user'
+import { Period as pPeriod } from './orm/period'
 
 @injectable()
 export class PUserLectureRepository implements UserLectureRepository {
   userLectureRepository: Repository<pUserLecture>
   lectureRepository: Repository<pLecture>
   userRepository: Repository<pUser>
+  periodRepository: Repository<pPeriod>
 
   constructor() {
     this.userLectureRepository = getConnection().getRepository(pUserLecture)
     this.lectureRepository = getConnection().getRepository(pLecture)
     this.userRepository = getConnection().getRepository(pUser)
+    this.periodRepository = getConnection().getRepository(pPeriod)
   }
 
   async findUserLectureById(
@@ -117,11 +120,19 @@ export class PUserLectureRepository implements UserLectureRepository {
     user: UserEntity,
     user_lecture_id: string
   ): Promise<boolean> {
-    const target = await this.userLectureRepository.findOne({
-      user,
-      user_lecture_id
-    })
+    const target = await this.userLectureRepository.findOne(
+      {
+        user,
+        user_lecture_id
+      },
+      { relations: ['periods'] }
+    )
     if (!target) throw Error('指定された講義が見つかりません')
+
+    // userLectureを削除する前にperiodsを先に消す
+    await this.periodRepository.remove(target.periods)
+
+    // 最後に本体を消す
     await this.userLectureRepository.remove(target)
     return true
   }

@@ -14,10 +14,11 @@ type SubscriptionStatus = 'active' | 'pending' | 'canceled'
 
 // ユーザーのサブスク状態
 export interface Subscription {
+  subscription_id: string
   paymentUser: PaymentUser
   plan: Plan[]
   status: SubscriptionStatus
   start_at: number
-  cancel_at: number
+  cancel_at: number | null
 }
 

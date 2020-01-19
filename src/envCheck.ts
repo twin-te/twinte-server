@@ -25,6 +25,9 @@ const envVariables: { [key: string]: { [key: string]: string } } = {
     APPLE_KEY_ID: 'Apple Key ID',
     APPLE_PRIVATE_KEY_LOCATION:
       'Appleから１回限りDLできる Private Key ファイルの設置場所 (ワーキングディレクトリからの相対パスも可)'
+  },
+  Stripe: {
+    STRIPE_API_KEY: 'Stripe Api Key'
   }
 }
 

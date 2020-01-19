@@ -51,6 +51,20 @@ import { FindPaymentInteractor } from '../interactor/payment/findPaymentInteract
 import { UnsubscribeUseCase } from '../usecase/payment/unsubscribeUseCase'
 import { UnsubscribeInteractor } from '../interactor/payment/unsubscribeInteractor'
 import { PaymentController } from '../interface/controller/paymentController'
+import { FindPaymentUserUseCase } from '../usecase/payment/findPaymentUserUseCase'
+import { FindPaymentUserInteractor } from '../interactor/payment/findPaymentUserInteractor'
+import { CreatePaymentUserUseCase } from '../usecase/payment/createPaymentUserUseCase'
+import { CreatePaymentUserInteractor } from '../interactor/payment/createPaymentUserInteractor'
+import { CheckoutSessionRepository } from '../interface/repository/payment/checkoutSessionRepository'
+import { StripeCheckoutSessionRepository } from '../infrastructure/payment/StripeCheckoutSessionRepository'
+import { PaymentUserRepository } from '../interface/repository/payment/paymentUserRepository'
+import { PPaymentUserRepository } from '../infrastructure/payment/pPaymentUserRepository'
+import { PaymentRepository } from '../interface/repository/payment/paymentRepository'
+import { StripePaymentRepository } from '../infrastructure/payment/StripePaymentRepository'
+import { SubscriptionRepository } from '../interface/repository/payment/subscriptionRepository'
+import { StripeSubscriptionRepository } from '../infrastructure/payment/StripeSubscriptionRepository'
+import { FindSubscriptionUseCase } from '../usecase/payment/findSubscriptionUseCase'
+import { FindSubscriptionInteractor } from '../interactor/payment/findSubscriptionInteractor'
 
 const container = new Container()
 
@@ -148,5 +162,33 @@ container
   .to(UnsubscribeInteractor)
 
 container.bind(PaymentController).to(PaymentController)
+
+container
+  .bind<FindPaymentUserUseCase>(types.FindPaymentUserUseCase)
+  .to(FindPaymentUserInteractor)
+
+container
+  .bind<CreatePaymentUserUseCase>(types.CreatePaymentUserUseCase)
+  .to(CreatePaymentUserInteractor)
+
+container
+  .bind<CheckoutSessionRepository>(types.CheckoutSessionRepository)
+  .to(StripeCheckoutSessionRepository)
+
+container
+  .bind<PaymentUserRepository>(types.PaymentUserRepository)
+  .to(PPaymentUserRepository)
+
+container
+  .bind<PaymentRepository>(types.PaymentRepository)
+  .to(StripePaymentRepository)
+
+container
+  .bind<SubscriptionRepository>(types.SubscriptionRepository)
+  .to(StripeSubscriptionRepository)
+
+container
+  .bind<FindSubscriptionUseCase>(types.FindSubscriptionUseCase)
+  .to(FindSubscriptionInteractor)
 
 export default container

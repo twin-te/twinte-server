@@ -25,7 +25,10 @@ const types = {
   SubscriptionRepository: Symbol.for('SubscriptionRepository'),
   CreateCheckoutSessionUseCase: Symbol.for('CreateCheckoutSessionUseCase'),
   FindPaymentUseCase: Symbol.for('FindPaymentUseCase'),
-  UnsubscribeUseCase: Symbol.for('UnsubscribeUseCase')
+  UnsubscribeUseCase: Symbol.for('UnsubscribeUseCase'),
+  FindPaymentUserUseCase: Symbol.for('FindPaymentUserUseCase'),
+  CreatePaymentUserUseCase: Symbol.for('CreatePaymentUserUseCase'),
+  FindSubscriptionUseCase: Symbol.for('FindSubscriptionUseCase')
 }
 
 export { types }

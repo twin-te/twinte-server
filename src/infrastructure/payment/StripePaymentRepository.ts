@@ -1,7 +1,6 @@
 import { injectable } from 'inversify'
 import { PaymentRepository } from '../../interface/repository/payment/paymentRepository'
 import { PaymentUser } from '../../entity/payment/paymentUser'
-import { Payment, PaymentStatus } from '../../entity/payment/payment'
 import { stripe } from './stripe'
 import { Stripe } from 'stripe'
 
@@ -25,23 +24,10 @@ export class StripePaymentRepository implements PaymentRepository {
       intents.has_more = moreIntents.has_more
     }
 
-    const invoices = await stripe.invoices.list({
-      customer: paymentUser ? paymentUser.payment_user_id : undefined
-    })
-
-    while (invoices.has_more) {
-      const moreInvoices = await stripe.invoices.list({
-        starting_after: invoices.data.slice(-1)[0].id,
-        customer: paymentUser ? paymentUser.payment_user_id : undefined
-      })
-      invoices.data.push(...moreInvoices.data)
-      invoices.has_more = moreInvoices.has_more
-    }
-
     payments.push(
       ...intents.data.map((i: Stripe.PaymentIntent) => {
         const obj: Payment = {
-          type: 'OneTime',
+          type: i.invoice ? 'Subscription' : 'OneTime',
           id: i.id,
           paymentUser: paymentUser ? paymentUser : null,
           amount: i.amount,
@@ -51,25 +37,6 @@ export class StripePaymentRepository implements PaymentRepository {
               ? i.status
               : 'pending'
         }
-        return obj
-      })
-    )
-
-    payments.push(
-      ...invoices.data.map((i: Stripe.Invoice) => {
-        let s: PaymentStatus = 'pending'
-        if (i.status === 'paid') s = 'succeeded'
-        else if (i.status === 'deleted') s = 'canceled'
-
-        const obj: Payment = {
-          type: 'Subscription',
-          id: i.id,
-          paymentUser: paymentUser ? paymentUser : null,
-          amount: i.total,
-          status: s,
-          paid_at: i.status_transitions.paid_at
-        }
-
         return obj
       })
     )
@@ -98,27 +65,11 @@ export class StripePaymentRepository implements PaymentRepository {
       })
       sum += intents.data
         .filter((i: Stripe.PaymentIntent) => i.status === 'succeeded')
-        .reduce(
-          (p: Stripe.PaymentIntent, c: Stripe.PaymentIntent) =>
-            p.amount + c.amount
-        )
+        .map((p: Stripe.PaymentIntent) => p.amount)
+        .reduce((p: number, c: number) => p + c)
       if (!intents.has_more) break
       lastID = intents.data.slice(-1)[0].id
     }
-    lastID = undefined
-    while (true) {
-      // @ts-ignore
-      const invoices = await stripe.invoices.list({
-        limit: 100,
-        starting_after: lastID
-      })
-      sum += invoices.data
-        .filter((i: Stripe.Invoice) => i.status === 'paid')
-        .reduce((p: Stripe.Invoice, c: Stripe.Invoice) => p.total + c.total)
-      if (!invoices.has_more) break
-      lastID = invoices.data.slice(-1)[0].id
-    }
-
     return sum
   }
 }

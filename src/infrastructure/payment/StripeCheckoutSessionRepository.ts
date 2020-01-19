@@ -31,8 +31,8 @@ export class StripeCheckoutSessionRepository
           quantity: 1
         }
       ],
-      success_url: `${process.env.BASE_URL}/payment/success`,
-      cancel_url: `${process.env.BASE_URL}/payment/cancel`
+      success_url: `${process.env.BASE_URL}/v1/payment/success?session_id={CHECKOUT_SESSION_ID}`,
+      cancel_url: `${process.env.BASE_URL}/v1/payment/cancel`
     })
     return session.id
   }
@@ -51,8 +51,8 @@ export class StripeCheckoutSessionRepository
           }
         ]
       },
-      success_url: `${process.env.BASE_URL}/payment/success`,
-      cancel_url: `${process.env.BASE_URL}/payment/cancel`
+      success_url: `${process.env.BASE_URL}/v1/payment/success?session_id={CHECKOUT_SESSION_ID}`,
+      cancel_url: `${process.env.BASE_URL}/v1/payment/cancel`
     })
     return session.id
   }

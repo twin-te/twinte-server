@@ -22,7 +22,11 @@ const types = {
   CheckoutSessionRepository: Symbol.for('CheckoutSessionRepository'),
   PaymentRepository: Symbol.for('PaymentRepository'),
   PaymentUserRepository: Symbol.for('PaymentUserRepository'),
-  SubscriptionRepository: Symbol.for('SubscriptionRepository')
+  SubscriptionRepository: Symbol.for('SubscriptionRepository'),
+  CreateCheckoutSessionUseCase: Symbol.for('CreateCheckoutSessionUseCase'),
+  FindPaymentUseCase: Symbol.for('FindPaymentUseCase'),
+  SaveCheckoutSessionUseCase: Symbol.for('SaveCheckoutSessionUseCase'),
+  UnsubscribeUseCase: Symbol.for('UnsubscribeUseCase')
 }
 
 export { types }

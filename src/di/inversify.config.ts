@@ -44,6 +44,14 @@ import { GetSchoolCalenderInteractor } from '../interactor/getSchoolCalenderInte
 import { SchoolCalenderController } from '../interface/controller/schoolCalenderController'
 import { RemoveUserLectureUseCase } from '../usecase/removeUserLectureUseCase'
 import { RemoveUserLectureInteractor } from '../interactor/removeUserLectureInteractor'
+import { CreateCheckoutSessionUseCase } from '../usecase/payment/createCheckoutSessionUseCase'
+import { CreateCheckoutSessionInteractor } from '../interactor/payment/createCheckoutSessionInteractor'
+import { FindPaymentUseCase } from '../usecase/payment/findPaymentUseCase'
+import { FindPaymentInteractor } from '../interactor/payment/findPaymentInteractor'
+import { SaveCheckoutSessionUseCase } from '../usecase/payment/saveCheckoutSessionUseCase'
+import { SaveCheckoutSessionInteractor } from '../interactor/payment/saveCheckoutSessionInteractor'
+import { UnsubscribeUseCase } from '../usecase/payment/unsubscribeUseCase'
+import { UnsubscribeInteractor } from '../interactor/payment/unsubscribeInteractor'
 
 const container = new Container()
 
@@ -127,5 +135,21 @@ container.bind(SchoolCalenderController).to(SchoolCalenderController)
 container
   .bind<RemoveUserLectureUseCase>(types.RemoveUserLectureUseCase)
   .to(RemoveUserLectureInteractor)
+
+container
+  .bind<CreateCheckoutSessionUseCase>(types.CreateCheckoutSessionUseCase)
+  .to(CreateCheckoutSessionInteractor)
+
+container
+  .bind<FindPaymentUseCase>(types.FindPaymentUseCase)
+  .to(FindPaymentInteractor)
+
+container
+  .bind<SaveCheckoutSessionUseCase>(types.SaveCheckoutSessionUseCase)
+  .to(SaveCheckoutSessionInteractor)
+
+container
+  .bind<UnsubscribeUseCase>(types.UnsubscribeUseCase)
+  .to(UnsubscribeInteractor)
 
 export default container

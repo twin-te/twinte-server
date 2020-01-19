@@ -1,9 +1,11 @@
-import {Context, DELETE, GET, Path, POST, PreProcessor, ServiceContext} from 'typescript-rest'
+import {Context, DELETE, GET, PATCH, Path, PathParam, POST, PreProcessor, ServiceContext} from 'typescript-rest'
 import {PaymentController} from '../../../interface/controller/paymentController'
 import container from '../../../di/inversify.config'
 import isAuthenticated from '../middleware/isAuthenticated'
+import {Tags} from 'typescript-rest-swagger'
 
 @Path('/payment')
+@Tags('寄付決済に関するAPI')
 @PreProcessor(isAuthenticated)
 export class PaymentService {
 
@@ -18,17 +20,17 @@ export class PaymentService {
 
   @Path('/checkout-session/onetime')
   @POST
-  async createOneTimeCheckoutSession(body: {amount: number }) {
+  async createOneTimeCheckoutSession(params: {amount: number }) {
     return {
-      sessionId: await this.paymentController.createOneTimeCheckoutSession(body.amount, this.context.request.user)
+      sessionId: await this.paymentController.createOneTimeCheckoutSession(params.amount, this.context.request.user)
     }
   }
 
   @Path('/checkout-session/subscription')
   @POST
-  async createSubscriptionCheckoutSession(body: {plan_id  : string }) {
+  async createSubscriptionCheckoutSession(params: {plan_id  : string }) {
     return {
-      sessionId: await this.paymentController.createSubscriptionCheckoutSession(body.plan_id, this.context.request.user)
+      sessionId: await this.paymentController.createSubscriptionCheckoutSession(params.plan_id, this.context.request.user)
     }
   }
 
@@ -56,14 +58,21 @@ export class PaymentService {
     return this.paymentController.findSubscriptionByPaymentUser(this.context.request.user)
   }
 
+  @Path('/users/:id')
+  @PATCH
+  updatePaymentUser(params: {nickname:string | null , link: string | null }) {
+    return this.paymentController.updatePaymentUser(this.context.request.user, params)
+  }
+
   @Path('/subscriptions/:id')
   @DELETE
-  async unsubscribe(body: {subscription_id: string}) {
-    await this.paymentController.unsubscribe(body.subscription_id)
+  async unsubscribe(@PathParam('id')subscription_id: string) {
+    await this.paymentController.unsubscribe(subscription_id)
   }
 }
 
 @Path('/payment')
+@Tags('寄付決済に関するAPI')
 export class _PaymentService {
 
   paymentController: PaymentController
@@ -78,5 +87,12 @@ export class _PaymentService {
     return {
       total: await this.paymentController.getTotalPaymentAmount()
     }
+  }
+
+
+  @Path('/users')
+  @GET
+  getPaidUsers() {
+    return this.paymentController.getAllPaidUsers()
   }
 }

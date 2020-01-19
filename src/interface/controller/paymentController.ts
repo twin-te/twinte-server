@@ -9,6 +9,9 @@ import { CreatePaymentUserUseCase } from '../../usecase/payment/createPaymentUse
 import { UserEntity } from '../../entity/user'
 import { FindSubscriptionUseCase } from '../../usecase/payment/findSubscriptionUseCase'
 import { Subscription } from '../../entity/payment/subscription'
+import { UpdatePaymentUserUseCase } from '../../usecase/payment/updatePaymentUserUseCase'
+import { PaymentUser } from '../../entity/payment/paymentUser'
+import { GetAllPaidUserUseCase } from './getAllPaidUserUseCase'
 
 @injectable()
 export class PaymentController {
@@ -29,6 +32,12 @@ export class PaymentController {
 
   @inject(types.FindSubscriptionUseCase)
   private findSubscriptionUseCase!: FindSubscriptionUseCase
+
+  @inject(types.UpdatePaymentUserUseCase)
+  private updatePaymentUserUseCase!: UpdatePaymentUserUseCase
+
+  @inject(types.GetAllPaidUserUseCase)
+  private getAllPaidUserUseCase!: GetAllPaidUserUseCase
 
   async createOneTimeCheckoutSession(
     amount: number,
@@ -83,6 +92,35 @@ export class PaymentController {
 
   unsubscribe(subscription_id: string): Promise<void> {
     return this.unsubscribeUseCase.unsubscribe(subscription_id)
+  }
+
+  async updatePaymentUser(
+    user: UserEntity,
+    params: { nickname: string | null; link: string | null }
+  ): Promise<PaymentUser> {
+    const paymentUser = await this.findPaymentUserUseCase.findPaymentUserByTwinteUserId(
+      user.twinte_user_id
+    )
+    if (!paymentUser) throw new Error('PaymentUserが存在しません')
+    paymentUser.nickname = params.nickname
+    paymentUser.link = params.link
+    return this.updatePaymentUserUseCase.updatePaymentUser(paymentUser)
+  }
+
+  async getAllPaidUsers(): Promise<{
+    count: number
+    users: { nickname: string; link: string | null }[]
+  }> {
+    const users = await this.getAllPaidUserUseCase.getAllPaidUsers()
+    return {
+      count: users.length,
+      users: users
+        .filter(u => u.nickname !== null)
+        .map(u => ({
+          nickname: u.nickname!!,
+          link: u.link
+        }))
+    }
   }
 
   private async findOrCreatePaymentUserByTwinteUserId(twinte_user_id: string) {

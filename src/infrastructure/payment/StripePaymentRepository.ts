@@ -3,6 +3,7 @@ import { PaymentRepository } from '../../interface/repository/payment/paymentRep
 import { PaymentUser } from '../../entity/payment/paymentUser'
 import { stripe } from './stripe'
 import { Stripe } from 'stripe'
+import { Payment } from '../../entity/payment/payment'
 
 @injectable()
 export class StripePaymentRepository implements PaymentRepository {

@@ -28,7 +28,9 @@ const types = {
   UnsubscribeUseCase: Symbol.for('UnsubscribeUseCase'),
   FindPaymentUserUseCase: Symbol.for('FindPaymentUserUseCase'),
   CreatePaymentUserUseCase: Symbol.for('CreatePaymentUserUseCase'),
-  FindSubscriptionUseCase: Symbol.for('FindSubscriptionUseCase')
+  FindSubscriptionUseCase: Symbol.for('FindSubscriptionUseCase'),
+  UpdatePaymentUserUseCase: Symbol.for('UpdatePaymentUserUseCase'),
+  GetAllPaidUserUseCase: Symbol.for('GetAllPaidUserUseCase')
 }
 
 export { types }

@@ -65,6 +65,10 @@ import { SubscriptionRepository } from '../interface/repository/payment/subscrip
 import { StripeSubscriptionRepository } from '../infrastructure/payment/StripeSubscriptionRepository'
 import { FindSubscriptionUseCase } from '../usecase/payment/findSubscriptionUseCase'
 import { FindSubscriptionInteractor } from '../interactor/payment/findSubscriptionInteractor'
+import { UpdatePaymentUserUseCase } from '../usecase/payment/updatePaymentUserUseCase'
+import { UpdatePaymentUserInteractor } from '../interactor/payment/updatePaymentUserInteractor'
+import { GetAllPaidUserUseCase } from '../interface/controller/getAllPaidUserUseCase'
+import { GetAllPaidUserInteractor } from '../interactor/payment/GetAllPaidUserInteractor'
 
 const container = new Container()
 
@@ -190,5 +194,13 @@ container
 container
   .bind<FindSubscriptionUseCase>(types.FindSubscriptionUseCase)
   .to(FindSubscriptionInteractor)
+
+container
+  .bind<UpdatePaymentUserUseCase>(types.UpdatePaymentUserUseCase)
+  .to(UpdatePaymentUserInteractor)
+
+container
+  .bind<GetAllPaidUserUseCase>(types.GetAllPaidUserUseCase)
+  .to(GetAllPaidUserInteractor)
 
 export default container

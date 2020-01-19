@@ -28,7 +28,9 @@ export class PPaymentUserRepository implements PaymentUserRepository {
     if (!paymentUser) return undefined
     return {
       payment_user_id: paymentUser.payment_user_id,
-      twinte_user_id: paymentUser.user.twinte_user_id
+      twinte_user_id: paymentUser.user.twinte_user_id,
+      nickname: paymentUser.nickname,
+      link: paymentUser.link
     }
   }
 
@@ -44,7 +46,9 @@ export class PPaymentUserRepository implements PaymentUserRepository {
     if (!paymentUser) return undefined
     return {
       payment_user_id: paymentUser.payment_user_id,
-      twinte_user_id: paymentUser.user.twinte_user_id
+      twinte_user_id: paymentUser.user.twinte_user_id,
+      nickname: paymentUser.nickname,
+      link: paymentUser.link
     }
   }
 
@@ -62,7 +66,31 @@ export class PPaymentUserRepository implements PaymentUserRepository {
     await this.paymentUserRepository.save(newUser)
     return {
       twinte_user_id,
-      payment_user_id: customer.id
+      payment_user_id: customer.id,
+      nickname: null,
+      link: null
     }
+  }
+
+  async update(paymentUser: PaymentUser): Promise<PaymentUser> {
+    const user = await this.paymentUserRepository.findOne({
+      payment_user_id: paymentUser.payment_user_id,
+      user: { twinte_user_id: paymentUser.twinte_user_id }
+    })
+    if (!user) throw new Error('PaymentUserが見つかりません')
+    user.nickname = paymentUser.nickname
+    user.link = paymentUser.link
+    await this.paymentUserRepository.save(user)
+    return paymentUser
+  }
+
+  async findAll(): Promise<PaymentUser[]> {
+    const users = await this.paymentUserRepository.find({ relations: ['user'] })
+    return users.map(u => ({
+      twinte_user_id: u.user.twinte_user_id,
+      payment_user_id: u.payment_user_id,
+      nickname: u.nickname,
+      link: u.link
+    }))
   }
 }

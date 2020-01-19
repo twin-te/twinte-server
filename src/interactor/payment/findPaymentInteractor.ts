@@ -8,7 +8,7 @@ import {PaymentRepository} from '../../interface/repository/payment/paymentRepos
 @injectable()
 export class FindPaymentInteractor  implements  FindPaymentUseCase{
   @inject(types.PaymentRepository) paymentRepository!:PaymentRepository
-  findByPaymentUser(paymentUser: PaymentUser | null): Promise<Payment[]> {
+  findByPaymentUser(paymentUser: PaymentUser): Promise<Payment[]> {
     return this.paymentRepository.findByPaymentUser(paymentUser)
   }
 

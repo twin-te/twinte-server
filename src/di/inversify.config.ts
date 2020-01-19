@@ -48,10 +48,9 @@ import { CreateCheckoutSessionUseCase } from '../usecase/payment/createCheckoutS
 import { CreateCheckoutSessionInteractor } from '../interactor/payment/createCheckoutSessionInteractor'
 import { FindPaymentUseCase } from '../usecase/payment/findPaymentUseCase'
 import { FindPaymentInteractor } from '../interactor/payment/findPaymentInteractor'
-import { SaveCheckoutSessionUseCase } from '../usecase/payment/saveCheckoutSessionUseCase'
-import { SaveCheckoutSessionInteractor } from '../interactor/payment/saveCheckoutSessionInteractor'
 import { UnsubscribeUseCase } from '../usecase/payment/unsubscribeUseCase'
 import { UnsubscribeInteractor } from '../interactor/payment/unsubscribeInteractor'
+import { PaymentController } from '../interface/controller/paymentController'
 
 const container = new Container()
 
@@ -145,11 +144,9 @@ container
   .to(FindPaymentInteractor)
 
 container
-  .bind<SaveCheckoutSessionUseCase>(types.SaveCheckoutSessionUseCase)
-  .to(SaveCheckoutSessionInteractor)
-
-container
   .bind<UnsubscribeUseCase>(types.UnsubscribeUseCase)
   .to(UnsubscribeInteractor)
+
+container.bind(PaymentController).to(PaymentController)
 
 export default container

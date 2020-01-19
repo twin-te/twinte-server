@@ -61,6 +61,7 @@
     "passport-twitter": "^1.0.4",
     "pg": "^7.12.1",
     "reflect-metadata": "^0.1.13",
+    "stripe": "^8.4.0",
     "twinte-parser": "^1.2.2",
     "typeorm": "^0.2.20",
     "typescript-rest": "^2.2.2",

@@ -1,3 +1,3 @@
 export interface UnsubscribeUseCase {
-  unsubscribe(subscription_id: string) : Promise<void>
+  unsubscribe(subscription_id: string): Promise<void>
 }

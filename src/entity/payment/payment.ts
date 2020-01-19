@@ -1,4 +1,4 @@
-import {PaymentUser} from './paymentUser'
+import { PaymentUser } from './paymentUser'
 
 export type PaymentType = 'OneTime' | 'Subscription'
 export type PaymentStatus = 'succeeded' | 'canceled' | 'pending'

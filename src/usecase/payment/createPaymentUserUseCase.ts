@@ -1,5 +1,5 @@
-import {PaymentUser} from '../../entity/payment/paymentUser'
+import { PaymentUser } from '../../entity/payment/paymentUser'
 
 export interface CreatePaymentUserUseCase {
-  createPaymentUser(twinte_user_id: string) : Promise<PaymentUser>
+  createPaymentUser(twinte_user_id: string): Promise<PaymentUser>
 }

@@ -1,4 +1,4 @@
-import {PaymentUser} from './paymentUser'
+import { PaymentUser } from './paymentUser'
 
 type BillInterval = 'day' | 'week' | 'month' | 'year'
 
@@ -21,4 +21,3 @@ export interface Subscription {
   start_at: number
   cancel_at: number | null
 }
-

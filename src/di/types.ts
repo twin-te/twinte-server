@@ -18,7 +18,19 @@ const types = {
   SchoolCalenderRepository: Symbol.for('SchoolCalenderRepository'),
   UpdateSchoolCalenderUseCase: Symbol.for('UpdateSchoolCalenderUseCase'),
   GetSchoolCalenderUseCase: Symbol.for('GetSchoolCalenderUseCase'),
-  RemoveUserLectureUseCase: Symbol.for('RemoveUserLectureUseCase')
+  RemoveUserLectureUseCase: Symbol.for('RemoveUserLectureUseCase'),
+  CheckoutSessionRepository: Symbol.for('CheckoutSessionRepository'),
+  PaymentRepository: Symbol.for('PaymentRepository'),
+  PaymentUserRepository: Symbol.for('PaymentUserRepository'),
+  SubscriptionRepository: Symbol.for('SubscriptionRepository'),
+  CreateCheckoutSessionUseCase: Symbol.for('CreateCheckoutSessionUseCase'),
+  FindPaymentUseCase: Symbol.for('FindPaymentUseCase'),
+  UnsubscribeUseCase: Symbol.for('UnsubscribeUseCase'),
+  FindPaymentUserUseCase: Symbol.for('FindPaymentUserUseCase'),
+  CreatePaymentUserUseCase: Symbol.for('CreatePaymentUserUseCase'),
+  FindSubscriptionUseCase: Symbol.for('FindSubscriptionUseCase'),
+  UpdatePaymentUserUseCase: Symbol.for('UpdatePaymentUserUseCase'),
+  GetAllPaidUserUseCase: Symbol.for('GetAllPaidUserUseCase')
 }
 
 export { types }

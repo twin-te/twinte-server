@@ -10,7 +10,6 @@ const logger = getLogger('express')
 
 export async function startExpress() {
   let app: express.Application = express()
-
   app.use(
     log4js.connectLogger(logger, {
       level: 'info',

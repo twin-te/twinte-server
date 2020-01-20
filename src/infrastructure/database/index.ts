@@ -10,6 +10,7 @@ import { SchoolEvent } from './orm/schoolEvent'
 import { SubstituteDay } from './orm/substituteDay'
 import { Session } from './orm/session'
 import { getLogger } from 'log4js'
+import { PaymentUser } from '../payment/orm/paymentUser'
 
 const logger = getLogger('database')
 
@@ -43,7 +44,8 @@ export async function connect(): Promise<Connection> {
         ModuleTerm,
         SchoolEvent,
         SubstituteDay,
-        Session
+        Session,
+        PaymentUser
       ],
       synchronize: true,
       logging: false

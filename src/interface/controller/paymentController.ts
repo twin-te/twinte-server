@@ -107,6 +107,12 @@ export class PaymentController {
     return this.updatePaymentUserUseCase.updatePaymentUser(paymentUser)
   }
 
+  getPaymentUser(user: UserEntity): Promise<PaymentUser | undefined> {
+    return this.findPaymentUserUseCase.findPaymentUserByTwinteUserId(
+      user.twinte_user_id
+    )
+  }
+
   async getAllPaidUsers(): Promise<{
     count: number
     users: { nickname: string; link: string | null }[]

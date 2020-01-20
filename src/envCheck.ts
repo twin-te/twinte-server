@@ -27,7 +27,9 @@ const envVariables: { [key: string]: { [key: string]: string } } = {
       'Appleから１回限りDLできる Private Key ファイルの設置場所 (ワーキングディレクトリからの相対パスも可)'
   },
   Stripe: {
-    STRIPE_API_KEY: 'Stripe Api Key'
+    STRIPE_API_KEY: 'Stripe Api Key',
+    STRIPE_SUCCESS_URL: '決済完了後に遷移するurl',
+    STRIPE_CANCEL_URL: 'キャンセル時に遷移するurl'
   }
 }
 

@@ -31,8 +31,8 @@ export class StripeCheckoutSessionRepository
           quantity: 1
         }
       ],
-      success_url: `${process.env.BASE_URL}/v1/payment/success?session_id={CHECKOUT_SESSION_ID}`,
-      cancel_url: `${process.env.BASE_URL}/v1/payment/cancel`
+      success_url: process.env.STRIPE_SUCCESS_URL,
+      cancel_url: process.env.STRIPE_CANCEL_URL
     })
     return session.id
   }

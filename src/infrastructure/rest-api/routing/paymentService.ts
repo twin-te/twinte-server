@@ -32,22 +32,6 @@ export class PaymentService {
   }
 
   /**
-   * 単発寄付するためのセッションを取得
-   * @param params 寄付額
-   */
-  @Path('/checkout-session/onetime')
-  @POST
-  @Response<{ sessionId: string }>(200, '生成されたセッションID')
-  async createOneTimeCheckoutSession(params: { amount: number }) {
-    return {
-      sessionId: await this.paymentController.createOneTimeCheckoutSession(
-        params.amount,
-        this.context.request.user
-      )
-    }
-  }
-
-  /**
    * 継続寄付を開始するためのセッションを取得
    * @param params
    */
@@ -88,10 +72,20 @@ export class PaymentService {
   }
 
   /**
+   * 支払いユーザー取得
+   */
+  @Path('/users/me')
+  @GET
+  @Response<PaymentUser>(200, '支払いユーザー')
+  getPaymentUser() {
+    return this.paymentController.getPaymentUser(this.context.request.user)
+  }
+
+  /**
    * 支払いユーザーをアップデート
    * @param params 更新内容
    */
-  @Path('/users/:id')
+  @Path('/users/me')
   @PATCH
   @Response<PaymentUser>(200, '更新したユーザー')
   updatePaymentUser(params: { nickname: string | null; link: string | null }) {
@@ -114,24 +108,6 @@ export class PaymentService {
       result: true
     }
   }
-
-  /**
-   * 支払い後のリダイレクト先（仮）
-   */
-  @Path('/success')
-  @GET
-  success() {
-    return 'success'
-  }
-
-  /**
-   * キャンセル時のリダイレクト先？（仮）
-   */
-  @Path('/cancel')
-  @GET
-  cancel() {
-    return 'cancel'
-  }
 }
 
 @Path('/payment')
@@ -139,8 +115,27 @@ export class PaymentService {
 export class _PaymentService {
   paymentController: PaymentController
 
+  @Context
+  context!: ServiceContext
+
   constructor() {
     this.paymentController = container.get(PaymentController)
+  }
+
+  /**
+   * 単発寄付するためのセッションを取得
+   * @param params 寄付額
+   */
+  @Path('/checkout-session/onetime')
+  @POST
+  @Response<{ sessionId: string }>(200, '生成されたセッションID')
+  async createOneTimeCheckoutSession(params: { amount: number }) {
+    return {
+      sessionId: await this.paymentController.createOneTimeCheckoutSession(
+        params.amount,
+        this.context.request.user
+      )
+    }
   }
 
   /**

@@ -43,7 +43,7 @@ export class UserLectureService {
     instructor: string
   }) {
     return this.userLectureController.createCustomUserLecture(
-      this.context.request.user,
+      this.context.request.user!!,
       params.year,
       params.lecture_name,
       params.instructor
@@ -60,7 +60,7 @@ export class UserLectureService {
   @Response(404, '指定されたユーザー講義は存在しません')
   findUserLecture(@PathParam('user_lecture_id') user_lecture_id: string) {
     const result = this.userLectureController.findUserLecture(
-      this.context.request.user,
+      this.context.request.user!!,
       user_lecture_id
     )
     if (result) return result
@@ -74,7 +74,7 @@ export class UserLectureService {
   @Response<UserLectureEntity>(200, 'ユーザー講義一覧')
   getAllUserLecture() {
     return this.userLectureController.getAllUserLectures(
-      this.context.request.user
+      this.context.request.user!!
     )
   }
 
@@ -93,7 +93,7 @@ export class UserLectureService {
   ) {
     userLecture.user_lecture_id = user_lecture_id
     const result = this.userLectureController.updateUserLecture(
-      this.context.request.user,
+      this.context.request.user!!,
       userLecture
     )
     if (!result) throw new NotFoundError('指定されたユーザー講義は存在しません')
@@ -107,7 +107,7 @@ export class UserLectureService {
   @DELETE
   deleteUserLecture(@PathParam('user_lecture_id') user_lecture_id: string) {
     return this.userLectureController.removeUserLecture(
-      this.context.request.user,
+      this.context.request.user!!,
       user_lecture_id
     )
   }

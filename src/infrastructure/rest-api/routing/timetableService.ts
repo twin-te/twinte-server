@@ -50,7 +50,7 @@ export class TimetableService {
   )
   registerLecture(params: { year: number; lectureCode: string }) {
     return this.timetableController.registerLecture(
-      this.context.request.user,
+      this.context.request.user!!,
       params.year,
       params.lectureCode
     )
@@ -75,15 +75,15 @@ export class TimetableService {
     if (date)
       if (date === 'today')
         return this.timetableController.getTodayTimetable(
-          this.context.request.user
+          this.context.request.user!!
         )
       else
         return this.timetableController.getTimetableByDate(
-          this.context.request.user,
+          this.context.request.user!!,
           date
         )
     return this.timetableController.getTimetable(
-      this.context.request.user,
+      this.context.request.user!!,
       year,
       module,
       day
@@ -107,7 +107,7 @@ export class TimetableService {
     @PathParam('period') period: number
   ) {
     const res = this.timetableController.getPeriod(
-      this.context.request.user,
+      this.context.request.user!!,
       year,
       module,
       day,
@@ -136,7 +136,7 @@ export class TimetableService {
     @PathParam('period') period: number,
     params: { room: string; user_lecture_id: string }
   ) {
-    return this.timetableController.upsertPeriod(this.context.request.user, {
+    return this.timetableController.upsertPeriod(this.context.request.user!!, {
       year,
       module,
       day,
@@ -164,7 +164,7 @@ export class TimetableService {
     @PathParam('period') period: number
   ) {
     const res = this.timetableController.removePeriod(
-      this.context.request.user,
+      this.context.request.user!!,
       year,
       module,
       day,

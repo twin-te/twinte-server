@@ -1,4 +1,6 @@
 import { UserEntity } from '../../../entity/user'
-declare module 'express' {
-  interface User extends UserEntity {}
+declare global {
+  namespace Express {
+    export interface User extends UserEntity {}
+  }
 }

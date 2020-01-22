@@ -21,8 +21,5 @@ export interface UserLectureRepository {
     user: UserEntity,
     userLecture: UserLectureEntity
   ): Promise<UserLectureEntity | undefined>
-  removeUserLecture(
-      user:UserEntity,
-      user_lecture_id: string
-  ): Promise<boolean>
+  removeUserLecture(user: UserEntity, user_lecture_id: string): Promise<boolean>
 }

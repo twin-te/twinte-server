@@ -10,7 +10,7 @@ export interface PeriodEntity {
 }
 
 export interface UserLectureEntity {
-  twinte_lecture_id?: string
+  twinte_lecture_id: string | null
   user_lecture_id: string
   year: number
   attendance: number

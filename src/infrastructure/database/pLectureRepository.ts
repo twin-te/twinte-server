@@ -46,7 +46,7 @@ export class PLectureRepository implements LectureRepository {
   async upsertLectures(lectures: LectureEntity[]): Promise<LectureEntity[]> {
     logger.info('講義データベースを更新しています')
     const bar = new _cliProgress.Bar({}, _cliProgress.Presets.shades_classic)
-
+    const newLectures: LectureEntity[] = []
     // 低RAM環境での負荷軽減のため、直列で挿入を行う
     bar.start(lectures.length, 0)
     for (let i = 0; i < lectures.length; i++) {
@@ -62,6 +62,8 @@ export class PLectureRepository implements LectureRepository {
       if (!updateTarget) {
         updateTarget = new pLecture()
         updateTarget.twinte_lecture_id = uuid()
+        lec.twinte_lecture_id = updateTarget.twinte_lecture_id
+        newLectures.push(lec)
       }
 
       updateTarget.lecture_name = lec.name
@@ -81,7 +83,7 @@ export class PLectureRepository implements LectureRepository {
     }
     bar.stop()
     logger.info('更新が完了しました')
-    return []
+    return newLectures
   }
 
   private pLecToLec(pLec: pLecture): LectureEntity {

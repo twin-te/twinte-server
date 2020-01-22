@@ -40,7 +40,10 @@ export class PUserLectureRepository implements UserLectureRepository {
   }
 
   async getAllUserLecture(user: UserEntity): Promise<UserLectureEntity[]> {
-    const res = await this.userLectureRepository.find({ user })
+    const res = await this.userLectureRepository.find({
+      where: { user },
+      relations: ['twinte_lecture']
+    })
     return res.map(el => this.pUserLectureToUserLecture(el))
   }
 
@@ -62,7 +65,9 @@ export class PUserLectureRepository implements UserLectureRepository {
     const u = await this.userRepository.findOne({ ...user })
     if (!u) throw Error('存在するはずのユーザーが見つかりません')
     newUserLecture.user = u
-    return this.userLectureRepository.save(newUserLecture)
+    return this.pUserLectureToUserLecture(
+      await this.userLectureRepository.save(newUserLecture)
+    )
   }
 
   async createUserLecture(
@@ -94,17 +99,22 @@ export class PUserLectureRepository implements UserLectureRepository {
     const u = await this.userRepository.findOne({ ...user })
     if (!u) throw Error('存在するはずのユーザーが見つかりません')
     newUserLecture.user = u
-    return await this.userLectureRepository.save(newUserLecture)
+    return this.pUserLectureToUserLecture(
+      await this.userLectureRepository.save(newUserLecture)
+    )
   }
 
   async updateUserLecture(
     user: UserEntity,
     userLecture: UserLectureEntity
   ): Promise<UserLectureEntity | undefined> {
-    const target = await this.userLectureRepository.findOne({
-      user,
-      user_lecture_id: userLecture.user_lecture_id
-    })
+    const target = await this.userLectureRepository.findOne(
+      {
+        user,
+        user_lecture_id: userLecture.user_lecture_id
+      },
+      { relations: ['twinte_lecture'] }
+    )
     if (!target)
       throw Error('指定されたユーザー講義は存在しないため、更新できません')
     target.lecture_name = userLecture.lecture_name
@@ -113,7 +123,9 @@ export class PUserLectureRepository implements UserLectureRepository {
     target.attendance = userLecture.attendance
     target.late = userLecture.late
     target.memo = userLecture.memo
-    return this.userLectureRepository.save(target)
+    return this.pUserLectureToUserLecture(
+      await this.userLectureRepository.save(target)
+    )
   }
 
   async removeUserLecture(
@@ -141,8 +153,15 @@ export class PUserLectureRepository implements UserLectureRepository {
     return {
       twinte_lecture_id: p.twinte_lecture
         ? p.twinte_lecture.twinte_lecture_id
-        : undefined,
-      ...p
+        : null,
+      user_lecture_id: p.user_lecture_id,
+      year: p.year,
+      attendance: p.attendance,
+      absence: p.absence,
+      late: p.late,
+      memo: p.memo,
+      lecture_name: p.lecture_name,
+      instructor: p.instructor
     }
   }
 }

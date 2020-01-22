@@ -10,6 +10,7 @@ beforeAll(async () => {
 })
 
 test('GetLectureFromRemoteRepository', async () => {
+  jest.setTimeout(99999999)
   const lectures = await remoteLectureRepository.fetchRemoteDatabase(2019)
   expect(lectures.length).toBeGreaterThan(0)
 })

@@ -21,6 +21,8 @@ moment.locale('ja')
 const main = async () => {
   logger.info('起動開始')
   await connect()
+  const { configureDiContainer } = await import('./di/inversify.config')
+  configureDiContainer()
   const { startExpress } = await import('./infrastructure/rest-api')
   await startExpress()
 }

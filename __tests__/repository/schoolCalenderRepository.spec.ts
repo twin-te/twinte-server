@@ -1,4 +1,4 @@
-import { clearDatabase, initDatabaseAndGetDiContainer } from '../helper'
+import { clearDatabase, initRepository } from '../helper'
 import { SchoolCalenderRepository } from '../../src/interface/repository/schoolCalenderRepository'
 import { types } from '../../src/di/types'
 import { Day, Module } from 'twinte-parser'
@@ -6,11 +6,13 @@ import moment from 'moment'
 import { ModuleTerm } from '../../src/entity/moduleTerm'
 import { SubstituteDay } from '../../src/entity/substituteDay'
 import { Event, EventType } from '../../src/entity/event'
+import container, { configureDiContainer } from '../../src/di/inversify.config'
 
 let schoolCalenderRepository: SchoolCalenderRepository
 
 beforeAll(async () => {
-  const container = await initDatabaseAndGetDiContainer()
+  await initRepository()
+  configureDiContainer([types.SchoolCalenderRepository])
   schoolCalenderRepository = container.get(types.SchoolCalenderRepository)
 })
 

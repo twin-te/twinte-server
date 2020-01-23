@@ -1,11 +1,17 @@
 import { types } from '../../src/di/types'
-import { clearDatabase, initDatabaseAndGetDiContainer } from '../helper'
+import { clearDatabase, initRepository } from '../helper'
 import { UpdateLectureDatabaseUseCase } from '../../src/usecase/updateLectureDatabaseUseCase'
+import container, { configureDiContainer } from '../../src/di/inversify.config'
 
 let useCase: UpdateLectureDatabaseUseCase
 
 beforeAll(async () => {
-  const container = await initDatabaseAndGetDiContainer()
+  await initRepository()
+  configureDiContainer([
+    types.UpdateLectureDatabaseUseCase,
+    types.LectureRepository,
+    types.RemoteLectureRepository
+  ])
   useCase = container.get<UpdateLectureDatabaseUseCase>(
     types.UpdateLectureDatabaseUseCase
   )

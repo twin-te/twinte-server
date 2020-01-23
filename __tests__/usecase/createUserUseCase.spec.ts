@@ -1,12 +1,14 @@
 import { types } from '../../src/di/types'
 import { CreateUserUseCase } from '../../src/usecase/createUserUseCase'
 import { AuthenticationProvider } from '../../src/entity/user'
-import { clearDatabase, initDatabaseAndGetDiContainer } from '../helper'
+import { clearDatabase, initRepository } from '../helper'
+import container, { configureDiContainer } from '../../src/di/inversify.config'
 
 let useCase: CreateUserUseCase
 
 beforeAll(async () => {
-  const container = await initDatabaseAndGetDiContainer()
+  await initRepository()
+  configureDiContainer([types.CreateUserUserCase, types.UserRepository])
   useCase = container.get<CreateUserUseCase>(types.CreateUserUserCase)
 })
 

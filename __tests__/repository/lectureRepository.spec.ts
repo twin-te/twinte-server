@@ -1,8 +1,9 @@
-import { clearDatabase, initDatabaseAndGetDiContainer } from '../helper'
+import { clearDatabase, initRepository } from '../helper'
 import { types } from '../../src/di/types'
 import { LectureRepository } from '../../src/interface/repository/lectureRepository'
 import { LectureEntity } from '../../src/entity/lecture'
 import { Day, Module } from 'twinte-parser'
+import container, { configureDiContainer } from '../../src/di/inversify.config'
 
 let lectureRepository: LectureRepository
 
@@ -11,7 +12,8 @@ let lectures: LectureEntity[]
 const year = 2019
 
 beforeAll(async () => {
-  const container = await initDatabaseAndGetDiContainer()
+  await initRepository()
+  configureDiContainer([types.LectureRepository])
   lectureRepository = container.get(types.LectureRepository)
   lectures = [
     {

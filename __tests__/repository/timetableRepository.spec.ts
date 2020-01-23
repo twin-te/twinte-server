@@ -1,4 +1,4 @@
-import { clearDatabase, initDatabaseAndGetDiContainer } from '../helper'
+import { clearDatabase, initRepository } from '../helper'
 import { UserLectureRepository } from '../../src/interface/repository/userLectureRepository'
 import { types } from '../../src/di/types'
 import { UserRepository } from '../../src/interface/repository/userRepository'
@@ -12,6 +12,7 @@ import { LectureRepository } from '../../src/interface/repository/lectureReposit
 import { LectureEntity } from '../../src/entity/lecture'
 import { PeriodEntity, UserLectureEntity } from '../../src/entity/period'
 import { TimetableRepository } from '../../src/interface/repository/timetableRepository'
+import container, { configureDiContainer } from '../../src/di/inversify.config'
 
 let timetableRepository: TimetableRepository
 
@@ -31,7 +32,14 @@ let testUserLecture: UserLectureEntity
 let testCustomUserLecture: UserLectureEntity
 
 beforeAll(async () => {
-  const container = await initDatabaseAndGetDiContainer()
+  await initRepository()
+  configureDiContainer([
+    types.TimetableRepository,
+    types.UserRepository,
+    types.UserLectureRepository,
+    types.LectureRepository
+  ])
+
   timetableRepository = container.get(types.TimetableRepository)
   const userLectureRepository = container.get<UserLectureRepository>(
     types.UserLectureRepository

@@ -1,4 +1,4 @@
-import { clearDatabase, initDatabaseAndGetDiContainer } from '../helper'
+import { clearDatabase, initRepository } from '../helper'
 import { types } from '../../src/di/types'
 import { UserRepository } from '../../src/interface/repository/userRepository'
 import {
@@ -6,11 +6,13 @@ import {
   UserAuthenticationEntity,
   UserEntity
 } from '../../src/entity/user'
+import container, { configureDiContainer } from '../../src/di/inversify.config'
 
 let userRepository: UserRepository
 
 beforeAll(async () => {
-  const container = await initDatabaseAndGetDiContainer()
+  await initRepository()
+  configureDiContainer([types.UserRepository])
   userRepository = container.get(types.UserRepository)
 })
 

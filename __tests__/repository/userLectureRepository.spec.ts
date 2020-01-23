@@ -1,4 +1,4 @@
-import { clearDatabase, initDatabaseAndGetDiContainer } from '../helper'
+import { clearDatabase, initRepository } from '../helper'
 import { UserLectureRepository } from '../../src/interface/repository/userLectureRepository'
 import { types } from '../../src/di/types'
 import { UserRepository } from '../../src/interface/repository/userRepository'
@@ -11,6 +11,7 @@ import { Day, Module } from 'twinte-parser'
 import { LectureRepository } from '../../src/interface/repository/lectureRepository'
 import { LectureEntity } from '../../src/entity/lecture'
 import { UserLectureEntity } from '../../src/entity/period'
+import container, { configureDiContainer } from '../../src/di/inversify.config'
 
 let userLectureRepository: UserLectureRepository
 const name = 'createUserTest'
@@ -26,7 +27,13 @@ let testUser: UserEntity
 let testLecture: LectureEntity
 
 beforeAll(async () => {
-  const container = await initDatabaseAndGetDiContainer()
+  await initRepository()
+  configureDiContainer([
+    types.UserLectureRepository,
+    types.UserRepository,
+    types.LectureRepository
+  ])
+
   userLectureRepository = container.get(types.UserLectureRepository)
   const userRepository = container.get<UserRepository>(types.UserRepository)
   testUser = await userRepository.createUser(testUserAuthentication)

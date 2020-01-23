@@ -1,11 +1,13 @@
-import { clearDatabase, initDatabaseAndGetDiContainer } from '../helper'
+import { clearDatabase, initRepository } from '../helper'
 import { types } from '../../src/di/types'
 import { RemoteLectureRepository } from '../../src/interface/repository/remoteLectureRepository'
+import container, {configureDiContainer} from '../../src/di/inversify.config'
 
 let remoteLectureRepository: RemoteLectureRepository
 
 beforeAll(async () => {
-  const container = await initDatabaseAndGetDiContainer()
+  await initRepository()
+  configureDiContainer([types.RemoteLectureRepository])
   remoteLectureRepository = container.get(types.RemoteLectureRepository)
 })
 

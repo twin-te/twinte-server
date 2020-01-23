@@ -13,7 +13,7 @@ const config = {
 
 let databaseConnection: Connection
 
-export async function initDatabaseAndGetDiContainer() {
+export async function initRepository() {
   jest.setTimeout(10000)
   envCheck(['Database'])
   try {
@@ -22,8 +22,6 @@ export async function initDatabaseAndGetDiContainer() {
 
   await pgtools.createdb(config, process.env.PG_DATABASE)
   databaseConnection = await connect()
-  const { default: container } = await import('../src/di/inversify.config')
-  return container
 }
 
 export async function clearDatabase() {

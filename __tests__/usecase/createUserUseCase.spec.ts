@@ -1,7 +1,7 @@
 import { types } from '../../src/di/types'
 import { CreateUserUseCase } from '../../src/usecase/createUserUseCase'
 import { AuthenticationProvider } from '../../src/entity/user'
-import { clearDatabase, initDatabaseAndGetDiContainer } from '../heler'
+import { clearDatabase, initDatabaseAndGetDiContainer } from '../helper'
 
 let useCase: CreateUserUseCase
 

@@ -1,4 +1,4 @@
-import { clearDatabase, initDatabaseAndGetDiContainer } from '../heler'
+import { clearDatabase, initDatabaseAndGetDiContainer } from '../helper'
 import { types } from '../../src/di/types'
 import { RemoteLectureRepository } from '../../src/interface/repository/remoteLectureRepository'
 

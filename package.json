@@ -13,6 +13,7 @@
     "format": "prettier --write \"{,src/**/}*.{ts,md,js,json}\"",
     "lint": "eslint ./ --ext .ts",
     "lint:fix": "yarn lint --fix",
+    "test": "jest -i",
     "swagger": "yarn swaggerGen -c src/infrastructure/rest-api/swaggerConfig.json",
     "updateLectureDatabase": "ts-node -T src/admin-scripts/upsertLectureDatabase.ts",
     "importModuleDefinition": "ts-node -T src/admin-scripts/importModuleDefinition.ts",

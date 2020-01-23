@@ -1,4 +1,4 @@
-import { clearDatabase, initDatabaseAndGetDiContainer } from '../heler'
+import { clearDatabase, initDatabaseAndGetDiContainer } from '../helper'
 import { UserLectureRepository } from '../../src/interface/repository/userLectureRepository'
 import { types } from '../../src/di/types'
 import { UserRepository } from '../../src/interface/repository/userRepository'
@@ -112,6 +112,24 @@ test('GetTimetable', async () => {
       }
     ])
   )
+})
+
+test('RemovePeriod', async () => {
+  const res = await timetableRepository.removePeriod(
+    testUser,
+    testPeriod.year,
+    testPeriod.module,
+    testPeriod.day,
+    testPeriod.period
+  )
+  expect(res).toBeTruthy()
+  const res2 = await timetableRepository.getTimetable(
+    testUser,
+    testPeriod.year,
+    testPeriod.module,
+    testPeriod.day
+  )
+  expect(res2.length).toBe(0)
 })
 
 afterAll(() => clearDatabase())

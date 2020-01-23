@@ -1,4 +1,4 @@
-import { clearDatabase, initDatabaseAndGetDiContainer } from '../heler'
+import { clearDatabase, initDatabaseAndGetDiContainer } from '../helper'
 import { SchoolCalenderRepository } from '../../src/interface/repository/schoolCalenderRepository'
 import { types } from '../../src/di/types'
 import { Day, Module } from 'twinte-parser'

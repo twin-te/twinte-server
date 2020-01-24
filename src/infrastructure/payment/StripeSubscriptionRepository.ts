@@ -14,15 +14,15 @@ export class StripeSubscriptionRepository implements SubscriptionRepository {
   async find(subscription_id: string): Promise<Subscription> {
     const sub = await stripe.subscriptions.retrieve(subscription_id)
     const paymentUser = await this.findPaymentUserUseCase.findPaymentUser(
-      sub.customer
+      typeof sub.customer === 'string' ? sub.customer : sub.customer.id
     )
     if (!paymentUser) throw new Error('存在するはずのPaymentUserが存在しません')
 
-    return this.transformToSubscriptinEntity(sub, paymentUser)
+    return this.transformToSubscriptionEntity(sub, paymentUser)
   }
 
-  unsubscribe(subscription_id: string): Promise<void> {
-    return stripe.subscriptions.del(subscription_id)
+  async unsubscribe(subscription_id: string): Promise<void> {
+    await stripe.subscriptions.del(subscription_id)
   }
 
   async findByPaymentUser(paymentUser: PaymentUser): Promise<Subscription[]> {
@@ -30,11 +30,11 @@ export class StripeSubscriptionRepository implements SubscriptionRepository {
       customer: paymentUser.payment_user_id
     })
     return subscriptions.data.map((s: Stripe.Subscription) =>
-      this.transformToSubscriptinEntity(s, paymentUser)
+      this.transformToSubscriptionEntity(s, paymentUser)
     )
   }
 
-  private transformToSubscriptinEntity(
+  private transformToSubscriptionEntity(
     sub: Stripe.Subscription,
     paymentUser: PaymentUser
   ): Subscription {

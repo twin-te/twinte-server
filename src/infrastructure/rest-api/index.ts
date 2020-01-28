@@ -5,6 +5,7 @@ import { applyPassport } from './passport'
 import { enableSession } from './session'
 import { enableCors } from './cors'
 import log4js, { getLogger } from 'log4js'
+import errorHandling from './errorHandling'
 
 const logger = getLogger('express')
 
@@ -32,6 +33,7 @@ export async function startExpress() {
 
   enableSwaggerDocument(app)
   app.use('/v1', apiv1)
+  app.use(errorHandling)
   app.listen(process.env.PORT, () => {
     logger.info(`準備完了 ${process.env.BASE_URL}`)
   })

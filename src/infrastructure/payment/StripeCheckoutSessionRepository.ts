@@ -31,8 +31,8 @@ export class StripeCheckoutSessionRepository
           quantity: 1
         }
       ],
-      success_url: process.env.STRIPE_SUCCESS_URL,
-      cancel_url: process.env.STRIPE_CANCEL_URL
+      success_url: process.env.STRIPE_SUCCESS_URL!!,
+      cancel_url: process.env.STRIPE_CANCEL_URL!!
     })
     return session.id
   }
@@ -61,21 +61,31 @@ export class StripeCheckoutSessionRepository
     checkout_session_id: string
   ): Promise<CheckoutSession | undefined> {
     const session = await stripe.checkout.sessions.retrieve(checkout_session_id)
-    const paymentUser = await this.paymentUserRepository.findPaymentUser(
-      session.customer
-    )
+    const paymentUser = session.customer
+      ? await this.paymentUserRepository.findPaymentUser(
+          typeof session.customer === 'string'
+            ? session.customer
+            : session.customer.id
+        )
+      : undefined
     if (session.payment_intent) {
       return {
         type: 'OneTime',
         checkout_session_id: session.id,
-        payment_intent: session.payment_intent,
+        payment_intent:
+          typeof session.payment_intent === 'string'
+            ? session.payment_intent
+            : session.payment_intent.id,
         paymentUser: paymentUser ? paymentUser : undefined
       }
     } else if (session.subscription && paymentUser) {
       return {
         type: 'Subscription',
         checkout_session_id: session.id,
-        subscription: session.subscription,
+        subscription:
+          typeof session.subscription === 'string'
+            ? session.subscription
+            : session.subscription.id,
         paymentUser: paymentUser
       }
     } else {

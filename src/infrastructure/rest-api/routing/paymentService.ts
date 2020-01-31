@@ -42,7 +42,7 @@ export class PaymentService {
     return {
       sessionId: await this.paymentController.createSubscriptionCheckoutSession(
         params.plan_id,
-        this.context.request.user
+        this.context.request.user!!
       )
     }
   }
@@ -55,7 +55,7 @@ export class PaymentService {
   @Response<Payment[]>(200, '支払い一覧')
   getUserPayments() {
     return this.paymentController.findPaymentByPaymentUser(
-      this.context.request.user
+      this.context.request.user!!
     )
   }
 
@@ -67,7 +67,7 @@ export class PaymentService {
   @Response<Subscription[]>(200, 'サブスク一覧')
   getSubscriptions() {
     return this.paymentController.findSubscriptionByPaymentUser(
-      this.context.request.user
+      this.context.request.user!!
     )
   }
 
@@ -78,7 +78,7 @@ export class PaymentService {
   @GET
   @Response<PaymentUser>(200, '支払いユーザー')
   getPaymentUser() {
-    return this.paymentController.getPaymentUser(this.context.request.user)
+    return this.paymentController.getPaymentUser(this.context.request.user!!)
   }
 
   /**
@@ -90,7 +90,7 @@ export class PaymentService {
   @Response<PaymentUser>(200, '更新したユーザー')
   updatePaymentUser(params: { nickname: string | null; link: string | null }) {
     return this.paymentController.updatePaymentUser(
-      this.context.request.user,
+      this.context.request.user!!,
       params
     )
   }

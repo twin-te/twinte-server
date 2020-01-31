@@ -3,7 +3,7 @@ import express from 'express'
 
 export function enableSwaggerDocument(app: express.Application) {
   const swaggerUiOptions = {
-    customSiteTitle: 'My Awesome Docs',
+    customSiteTitle: 'Twin:te API docs',
     swaggerOptions: {
       validatorUrl: null,
       oauth2RedirectUrl: 'http://example.com/oauth2-redirect.html',

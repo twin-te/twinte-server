@@ -4,5 +4,8 @@ export interface UpsertAuthenticationUseCase {
   upsertAuthentication(
     user: UserEntity,
     authentication: UserAuthenticationEntity
-  ): Promise<boolean>
+  ): Promise<
+    | { user: UserEntity; authentications: UserAuthenticationEntity[] }
+    | undefined
+  >
 }

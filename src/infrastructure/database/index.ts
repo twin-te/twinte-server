@@ -50,7 +50,6 @@ export async function connect(): Promise<Connection> {
       synchronize: true,
       logging: false
     })
-
   return con
 }
 

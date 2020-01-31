@@ -12,7 +12,10 @@ export class UpsertAuthenticationInteractor
   upsertAuthentication(
     user: UserEntity,
     authentication: UserAuthenticationEntity
-  ): Promise<boolean> {
+  ): Promise<
+    | { user: UserEntity; authentications: UserAuthenticationEntity[] }
+    | undefined
+  > {
     return this.userRepository.upsertAuthentication(user, authentication)
   }
 }

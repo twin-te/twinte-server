@@ -6,12 +6,16 @@ import pgSession from 'connect-pg-simple'
 const pgStore = pgSession(session)
 
 export function enableSession(app: express.Application) {
+  app.set('trust proxy', 1)
   app.use(
     session({
       secret: process.env.SESSION_SECRET || 'twinte',
       saveUninitialized: false,
+      proxy: true,
       cookie: {
-        maxAge: 31536000000
+        maxAge: 31536000000,
+        secure: process.env.NODE_ENV === 'production',
+        sameSite: 'none'
       },
       store: new pgStore({
         pool: new pg.Pool({

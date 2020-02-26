@@ -36,7 +36,7 @@ export class AuthService {
     if (
       redirect_to &&
       (process.env.NODE_ENV !== 'production' ||
-        /twinte\.net$/.test(redirect_to))
+        /https:\/\/[a-zA-z-_\d.]*\.twinte\.net(\/.*)?$/.test(redirect_to))
     ) {
       const redirectSessionID = uuid()
       redirectMapping.push({

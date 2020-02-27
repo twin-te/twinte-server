@@ -10,6 +10,7 @@ import {
 import { AuthenticationProvider } from '../../../entity/user'
 import passport from 'passport'
 import { Tags } from 'typescript-rest-swagger'
+import uuid = require('uuid')
 
 // リダイレクト先を一時的に保存しとく
 const redirectMapping: { id: string; redirect_to?: string }[] = []
@@ -35,20 +36,25 @@ export class AuthService {
     if (
       redirect_to &&
       (process.env.NODE_ENV !== 'production' ||
-        /twinte\.net$/.test(redirect_to))
-    )
+        /https:\/\/[a-zA-z-_\d.]*\.twinte\.net(\/.*)?$/.test(redirect_to))
+    ) {
+      const redirectSessionID = uuid()
       redirectMapping.push({
-        id: this.context.request.session!!.id,
+        id: redirectSessionID,
         redirect_to
       })
+      this.context.response.cookie('redirect_session', redirectSessionID)
+    }
+
     return new Promise((resolve, _) => {
       passport.authenticate(provider)(
         this.context.request,
         this.context.response,
         () => {
           const mapping = redirectMapping.find(
-            r => r.id === this.context.request.session!!.id
+            r => r.id === this.context.request.cookies['redirect_session']
           )
+          this.context.response.clearCookie('redirect_session')
           // リダイレクト先が指定されてればそこへ、
           // なければ環境変数で指定された場所へリダイレクトされる
           this.context.response.redirect(

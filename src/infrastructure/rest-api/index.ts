@@ -6,6 +6,7 @@ import { enableSession } from './session'
 import { enableCors } from './cors'
 import log4js, { getLogger } from 'log4js'
 import errorHandling from './errorHandling'
+import cookieParser = require('cookie-parser')
 
 const logger = getLogger('express')
 
@@ -25,6 +26,7 @@ export async function startExpress() {
 
   enableCors(app)
   enableSession(app)
+  app.use(cookieParser())
   applyPassport()
 
   const apiv1 = express.Router()

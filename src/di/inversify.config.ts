@@ -37,6 +37,8 @@ import { StripeSubscriptionRepository } from '../infrastructure/payment/StripeSu
 import { FindSubscriptionInteractor } from '../interactor/payment/findSubscriptionInteractor'
 import { UpdatePaymentUserInteractor } from '../interactor/payment/updatePaymentUserInteractor'
 import { GetAllPaidUserInteractor } from '../interactor/payment/GetAllPaidUserInteractor'
+import { FindCheckoutInteractor } from '../interactor/payment/findCheckoutInteractor'
+import { GetCheckoutInfoInteractor } from '../interactor/payment/getCheckoutInfoInteractor'
 
 const config: { identifier: any; bindTo: any }[] = [
   { identifier: types.LectureRepository, bindTo: PLectureRepository },
@@ -129,7 +131,12 @@ const config: { identifier: any; bindTo: any }[] = [
     identifier: types.UpdatePaymentUserUseCase,
     bindTo: UpdatePaymentUserInteractor
   },
-  { identifier: types.GetAllPaidUserUseCase, bindTo: GetAllPaidUserInteractor }
+  { identifier: types.GetAllPaidUserUseCase, bindTo: GetAllPaidUserInteractor },
+  { identifier: types.FindCheckoutUseCase, bindTo: FindCheckoutInteractor },
+  {
+    identifier: types.GetCheckoutInfoUseCase,
+    bindTo: GetCheckoutInfoInteractor
+  }
 ]
 
 const container = new Container()

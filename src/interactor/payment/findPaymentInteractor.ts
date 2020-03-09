@@ -19,4 +19,8 @@ export class FindPaymentInteractor implements FindPaymentUseCase {
   getTotalAmount(): Promise<number> {
     return this.paymentRepository.getTotalAmount()
   }
+
+  findByPaymentID(id: string): Promise<Payment | undefined> {
+    return this.paymentRepository.findByPaymentID(id)
+  }
 }

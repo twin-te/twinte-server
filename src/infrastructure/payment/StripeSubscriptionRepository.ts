@@ -11,7 +11,7 @@ import { PaymentUser } from '../../entity/payment/paymentUser'
 export class StripeSubscriptionRepository implements SubscriptionRepository {
   @inject(types.FindPaymentUserUseCase)
   findPaymentUserUseCase!: FindPaymentUserUseCase
-  async find(subscription_id: string): Promise<Subscription> {
+  async find(subscription_id: string): Promise<Subscription | undefined> {
     const sub = await stripe.subscriptions.retrieve(subscription_id)
     const paymentUser = await this.findPaymentUserUseCase.findPaymentUser(
       typeof sub.customer === 'string' ? sub.customer : sub.customer.id

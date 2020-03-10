@@ -30,7 +30,9 @@ const types = {
   CreatePaymentUserUseCase: Symbol.for('CreatePaymentUserUseCase'),
   FindSubscriptionUseCase: Symbol.for('FindSubscriptionUseCase'),
   UpdatePaymentUserUseCase: Symbol.for('UpdatePaymentUserUseCase'),
-  GetAllPaidUserUseCase: Symbol.for('GetAllPaidUserUseCase')
+  GetAllPaidUserUseCase: Symbol.for('GetAllPaidUserUseCase'),
+  FindCheckoutUseCase: Symbol.for('FindCheckoutUseCase'),
+  GetCheckoutInfoUseCase: Symbol.for('GetCheckoutInfoUseCase')
 }
 
 export { types }

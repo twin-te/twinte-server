@@ -5,5 +5,5 @@ export interface FindSubscriptionUseCase {
   findSubscriptionByPaymentUser(
     paymentUser: PaymentUser
   ): Promise<Subscription[]>
-  findSubscription(subscription_id: string): Promise<Subscription>
+  findSubscription(subscription_id: string): Promise<Subscription | undefined>
 }

@@ -12,6 +12,10 @@ import { Subscription } from '../../entity/payment/subscription'
 import { UpdatePaymentUserUseCase } from '../../usecase/payment/updatePaymentUserUseCase'
 import { PaymentUser } from '../../entity/payment/paymentUser'
 import { GetAllPaidUserUseCase } from './getAllPaidUserUseCase'
+import {
+  CheckoutInfo,
+  GetCheckoutInfoUseCase
+} from '../../usecase/payment/getCheckoutInfoUseCase'
 
 @injectable()
 export class PaymentController {
@@ -39,6 +43,9 @@ export class PaymentController {
   @inject(types.GetAllPaidUserUseCase)
   private getAllPaidUserUseCase!: GetAllPaidUserUseCase
 
+  @inject(types.GetCheckoutInfoUseCase)
+  private getCheckoutInfoUseCase!: GetCheckoutInfoUseCase
+
   async createOneTimeCheckoutSession(
     amount: number,
     user?: UserEntity
@@ -50,6 +57,7 @@ export class PaymentController {
         : undefined
     )
   }
+
   async createSubscriptionCheckoutSession(
     plan_id: string,
     user: UserEntity
@@ -86,7 +94,7 @@ export class PaymentController {
     )
   }
 
-  findSubscription(subscription_id: string): Promise<Subscription> {
+  findSubscription(subscription_id: string): Promise<Subscription | undefined> {
     return this.findSubscriptionUseCase.findSubscription(subscription_id)
   }
 
@@ -111,6 +119,12 @@ export class PaymentController {
     return this.findPaymentUserUseCase.findPaymentUserByTwinteUserId(
       user.twinte_user_id
     )
+  }
+
+  getCheckoutSessionInfo(
+    checkoutID: string
+  ): Promise<CheckoutInfo | undefined> {
+    return this.getCheckoutInfoUseCase.getCheckoutInfo(checkoutID)
   }
 
   async getAllPaidUsers(): Promise<{

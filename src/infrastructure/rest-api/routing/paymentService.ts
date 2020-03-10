@@ -7,6 +7,7 @@ import {
   PathParam,
   POST,
   PreProcessor,
+  QueryParam,
   ServiceContext
 } from 'typescript-rest'
 import { PaymentController } from '../../../interface/controller/paymentController'
@@ -16,6 +17,7 @@ import { Tags, Response } from 'typescript-rest-swagger'
 import { Payment } from '../../../entity/payment/payment'
 import { Subscription } from '../../../entity/payment/subscription'
 import { PaymentUser } from '../../../entity/payment/paymentUser'
+import { NotFoundError } from 'typescript-rest/dist/server/model/errors'
 
 @Path('/payment')
 @Tags('寄付決済に関するAPI')
@@ -158,5 +160,21 @@ export class _PaymentService {
   @GET
   getPaidUsers() {
     return this.paymentController.getAllPaidUsers()
+  }
+
+  @GET
+  @Path('/success')
+  async success(@QueryParam('session_id') sessionID: string) {
+    const sess = await this.paymentController.getCheckoutSessionInfo(sessionID)
+    if (!sess) throw new NotFoundError()
+    if (sess.type === 'OneTime') {
+      this.context.response.redirect(
+        `${process.env.STRIPE_SUCCESS_URL}?type=onetime&amount=${sess.amount}`
+      )
+    } else {
+      this.context.response.redirect(
+        `${process.env.STRIPE_SUCCESS_URL}?type=subscription&amount=${sess.plan[0].amount}`
+      )
+    }
   }
 }

@@ -10,7 +10,7 @@ export class FindSubscriptionInteractor implements FindSubscriptionUseCase {
   @inject(types.SubscriptionRepository)
   subscriptionRepository!: SubscriptionRepository
 
-  findSubscription(subscription_id: string): Promise<Subscription> {
+  findSubscription(subscription_id: string): Promise<Subscription | undefined> {
     return this.subscriptionRepository.find(subscription_id)
   }
 

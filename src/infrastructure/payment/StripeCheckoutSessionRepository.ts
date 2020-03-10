@@ -18,20 +18,19 @@ export class StripeCheckoutSessionRepository
   ): Promise<string> {
     const session = await stripe.checkout.sessions.create({
       payment_method_types: ['card'],
+      submit_type: 'donate',
       customer: paymentUser ? paymentUser.payment_user_id : undefined,
       line_items: [
         {
           name: 'Twin:te寄付',
           description: '寄付いただいたお金はTwin:teの運用や開発に使用します',
-          images: [
-            'https://wonderful-goldwasser-531adc.netlify.com/Twintelogo-colorA.a9fc046b.png'
-          ],
+          images: ['https://www.twinte.net/ogp.jpg'],
           amount,
           currency: 'jpy',
           quantity: 1
         }
       ],
-      success_url: process.env.STRIPE_SUCCESS_URL!!,
+      success_url: `${process.env.BASE_URL}/v1/payment/success?session_id={CHECKOUT_SESSION_ID}`,
       cancel_url: process.env.STRIPE_CANCEL_URL!!
     })
     return session.id
@@ -43,6 +42,7 @@ export class StripeCheckoutSessionRepository
   ): Promise<string> {
     const session = await stripe.checkout.sessions.create({
       payment_method_types: ['card'],
+      submit_type: 'donate',
       customer: paymentUser.payment_user_id,
       subscription_data: {
         items: [
@@ -51,7 +51,7 @@ export class StripeCheckoutSessionRepository
           }
         ]
       },
-      success_url: process.env.STRIPE_SUCCESS_URL!!,
+      success_url: `${process.env.BASE_URL}/v1/payment/success?session_id={CHECKOUT_SESSION_ID}`,
       cancel_url: process.env.STRIPE_CANCEL_URL!!
     })
     return session.id

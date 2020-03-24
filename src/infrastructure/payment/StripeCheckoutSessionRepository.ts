@@ -42,7 +42,6 @@ export class StripeCheckoutSessionRepository
   ): Promise<string> {
     const session = await stripe.checkout.sessions.create({
       payment_method_types: ['card'],
-      submit_type: 'donate',
       customer: paymentUser.payment_user_id,
       subscription_data: {
         items: [

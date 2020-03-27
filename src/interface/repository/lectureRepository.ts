@@ -14,7 +14,7 @@ export interface LectureRepository {
    * キーワードから講義を検索
    * @param keyword
    */
-  searchLectureByKeyword(keyword: string): Promise<LectureEntity[]>
+  searchLectureByKeyword(year: number,keyword: string): Promise<LectureEntity[]>
 
   findLectureByLectureCode(
     year: number,

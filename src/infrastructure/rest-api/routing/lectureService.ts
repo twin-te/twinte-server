@@ -15,7 +15,10 @@ export class LectureService {
   @Path('/search')
   @Response<UserLectureEntity[]>(200, '検索結果')
   @GET
-  lectureFromKeyword(@QueryParam('q') q: string) {
-    return this.lectureController.searchByKeyword(q)
+  lectureFromKeyword(
+    @QueryParam('q') q: string,
+    @QueryParam('year') year: number
+  ) {
+    return this.lectureController.searchByKeyword(year, q)
   }
 }

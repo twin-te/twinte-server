@@ -8,7 +8,10 @@ export class LectureController {
   @inject(types.FindLectureUseCase)
   private searchLectureByKeywordUseCase!: FindLectureUseCase
 
-  searchByKeyword(keyword: string): Promise<LectureEntity[]> {
-    return this.searchLectureByKeywordUseCase.searchLectureByKeyword(keyword)
+  searchByKeyword(year: number, keyword: string): Promise<LectureEntity[]> {
+    return this.searchLectureByKeywordUseCase.searchLectureByKeyword(
+      year,
+      keyword
+    )
   }
 }

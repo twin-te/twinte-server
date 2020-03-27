@@ -1,6 +1,6 @@
 import log4js from 'log4js'
 import envCheck from '../envCheck'
-import container from '../di/inversify.config'
+import container, {configureDiContainer} from '../di/inversify.config'
 import { types } from '../di/types'
 import { UpdateSchoolCalenderUseCase } from '../usecase/updateSchoolCalenderUseCase'
 import { promises as fs } from 'fs'
@@ -16,6 +16,7 @@ if (!process.argv[2]) {
   logger.fatal('引数に読み込む定義jsonファイルを指定してください')
 }
 const main = async () => {
+  configureDiContainer()
   await connect()
   logger.info(
     `モジュール期間の定義を ${process.argv[2]}から読み込んでいます...`

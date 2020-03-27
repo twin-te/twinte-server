@@ -38,7 +38,7 @@ export class GetSchoolCalenderInteractor implements GetSchoolCalenderUseCase {
   }
 
   async getModule(date: Moment): Promise<Module | undefined> {
-    const nendo = date.month() < 4 ? date.year() - 1 : date.year()
+    const nendo = date.month() < 3 ? date.year() - 1 : date.year()
 
     const moduleTerms = await this.schoolCalenderRepository.getModuleTerms(
       nendo

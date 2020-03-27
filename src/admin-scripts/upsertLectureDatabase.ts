@@ -2,7 +2,7 @@
  * 講義データベースを最新のリモートレポジトリ(kdb)で更新する
  */
 
-import container from '../di/inversify.config'
+import container, {configureDiContainer} from '../di/inversify.config'
 import { types } from '../di/types'
 import { UpdateLectureDatabaseUseCase } from '../usecase/updateLectureDatabaseUseCase'
 import { connect } from '../infrastructure/database'
@@ -14,6 +14,7 @@ const logger = log4js.getLogger('main')
 
 envCheck(['Database'])
 const main = async () => {
+  configureDiContainer()
   await connect()
   logger.info(
     '講義データベースの更新を開始します。途中で終了しないでください。'

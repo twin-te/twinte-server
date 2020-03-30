@@ -51,7 +51,10 @@ test('FindLectureByLectureCode', async () => {
 })
 
 test('SearchLectureByKeyword', async () => {
-  const res = await lectureRepository.searchLectureByKeyword(lectures[0].name)
+  const res = await lectureRepository.searchLectureByKeyword(
+    2019,
+    lectures[0].name
+  )
   expect(res[0]).toMatchObject(lectures[0])
 })
 

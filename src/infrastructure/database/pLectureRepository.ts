@@ -31,13 +31,16 @@ export class PLectureRepository implements LectureRepository {
     return this.pLecToLec(pLec)
   }
 
-  async searchLectureByKeyword(keyword: string): Promise<LectureEntity[]> {
+  async searchLectureByKeyword(
+    year: number,
+    keyword: string
+  ): Promise<LectureEntity[]> {
     const pLecs = await this.repository.find({
       relations: ['dates'],
       where: [
-        { lecture_name: Like(`%${keyword}%`) },
-        { lecture_code: Like(`${keyword}%`) },
-        { instructor: Like(`%${keyword}%`) }
+        { lecture_name: Like(`%${keyword}%`), year },
+        { lecture_code: Like(`${keyword}%`), year },
+        { instructor: Like(`%${keyword}%`), year }
       ]
     })
     return pLecs.map(el => this.pLecToLec(el))

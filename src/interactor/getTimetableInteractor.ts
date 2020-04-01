@@ -70,7 +70,7 @@ export class GetTimetableInteractor implements GetTimetableUseCase {
     date: moment.Moment
   ): Promise<PeriodEntity[]> {
     // 年度
-    const nendo = date.month() < 4 ? date.year() - 1 : date.year()
+    const nendo = date.month() + 1 < 4 ? date.year() - 1 : date.year()
 
     const moduleTerms = await this.schoolCalenderRepository.getModuleTerms(
       nendo

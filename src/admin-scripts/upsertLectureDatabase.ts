@@ -22,6 +22,6 @@ const main = async () => {
   const usecase = container.get<UpdateLectureDatabaseUseCase>(
     types.UpdateLectureDatabaseUseCase
   )
-  await usecase.updateLectureDatabase(2019)
+  await usecase.updateLectureDatabase(2020)
 }
 main()

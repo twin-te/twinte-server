@@ -53,8 +53,8 @@ export class PSchoolCalenderRepository implements SchoolCalenderRepository {
     const res = await this.substituteDayRepository.find({
       date: Raw(
         alias =>
-          `${alias} >= '${year}-01-01'::date and ${alias} <= '${year +
-            1}-12-31'::date`
+          `${alias} >= '${year}-04-01'::date and ${alias} <= '${year +
+            1}-03-31'::date`
       )
     })
     return res.map(el => ({

@@ -1,5 +1,8 @@
-import { GET, Path, PathParam } from 'typescript-rest'
-import { SchoolCalenderController } from '../../../interface/controller/schoolCalenderController'
+import { GET, Path, PathParam, QueryParam } from 'typescript-rest'
+import {
+  SchoolCalenderController,
+  OutputSubstituteDay
+} from '../../../interface/controller/schoolCalenderController'
 import container from '../../../di/inversify.config'
 import { OutputSchoolCalender } from '../../../interface/controller/schoolCalenderController'
 import { Response, Tags } from 'typescript-rest-swagger'
@@ -11,6 +14,17 @@ export class SchoolCalenderService {
 
   constructor() {
     this.schoolCalenderController = container.get(SchoolCalenderController)
+  }
+
+  /**
+   * 指定された年度の振替授業日一覧を取得する
+   * @param year 年度
+   */
+  @Path('/substitutes/list')
+  @GET
+  @Response<OutputSubstituteDay[]>(200, '指定された年度の振替日一覧')
+  getSubstituteDays(@QueryParam('year') year: number) {
+    return this.schoolCalenderController.getSubstituteDays(year)
   }
 
   /**

@@ -13,7 +13,7 @@ interface OutputEvent {
   date: string
 }
 
-interface OutputSubstituteDay {
+export interface OutputSubstituteDay {
   date: string
   change_to: Day
 }
@@ -60,5 +60,14 @@ export class SchoolCalenderController {
       substituteDay: outputSubstitute,
       module
     }
+  }
+
+  async getSubstituteDays(year: number): Promise<OutputSubstituteDay[]> {
+    return (await this.getSchoolCalenderUseCae.getSubstituteDays(year)).map(
+      s => ({
+        date: s.date.format('YYYY-MM-DD'),
+        change_to: s.change_to
+      })
+    )
   }
 }

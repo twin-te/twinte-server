@@ -52,6 +52,19 @@ export class CreateUserLectureInteractor implements CreateUserLectureUseCase {
     )
     if (!srcLecture) return undefined
 
+    const isConflicts = await Promise.all(
+      srcLecture.details.map(d =>
+        this.timetableRepository.getPeriod(
+          user,
+          year,
+          d.module,
+          d.day,
+          d.period
+        )
+      )
+    )
+    if (isConflicts.some(e => e)) throw new Error('重複する時限が存在します')
+
     for (let i = 0; i < srcLecture.details.length; i++) {
       const d = srcLecture.details[i]
       const period: PeriodEntity = {

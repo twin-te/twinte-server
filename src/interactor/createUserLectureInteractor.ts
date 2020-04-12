@@ -42,11 +42,6 @@ export class CreateUserLectureInteractor implements CreateUserLectureUseCase {
         `${year}年度開講の講義${lectureCode}は見つかりませんでした`
       )
     const twinte_lecture_id = lecture.twinte_lecture_id
-    const userLecture = await this.userLectureRepository.createUserLecture(
-      user,
-      twinte_lecture_id
-    )
-    if (!userLecture) return undefined
     const srcLecture = await this.lectureRepository.findLectureById(
       twinte_lecture_id
     )
@@ -64,6 +59,12 @@ export class CreateUserLectureInteractor implements CreateUserLectureUseCase {
       )
     )
     if (isConflicts.some(e => e)) throw new Error('重複する時限が存在します')
+
+    const userLecture = await this.userLectureRepository.createUserLecture(
+      user,
+      twinte_lecture_id
+    )
+    if (!userLecture) return undefined
 
     for (let i = 0; i < srcLecture.details.length; i++) {
       const d = srcLecture.details[i]

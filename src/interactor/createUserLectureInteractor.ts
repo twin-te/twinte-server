@@ -6,6 +6,7 @@ import { types } from '../di/types'
 import { LectureRepository } from '../interface/repository/lectureRepository'
 import { TimetableRepository } from '../interface/repository/timetableRepository'
 import { UserEntity } from '../entity/user'
+import { Day, Module } from 'twinte-parser'
 
 @injectable()
 export class CreateUserLectureInteractor implements CreateUserLectureUseCase {
@@ -48,17 +49,32 @@ export class CreateUserLectureInteractor implements CreateUserLectureUseCase {
     if (!srcLecture) return undefined
 
     const isConflicts = await Promise.all(
-      srcLecture.details.map(d =>
-        this.timetableRepository.getPeriod(
-          user,
-          year,
-          d.module,
-          d.day,
-          d.period
-        )
+      srcLecture.details.map(
+        async d =>
+          (await this.timetableRepository.getPeriod(
+            user,
+            year,
+            d.module,
+            d.day,
+            d.period
+          )) ||
+          // 通年もチェック
+          (await this.timetableRepository.getPeriod(
+            user,
+            year,
+            Module.Annual,
+            d.day,
+            d.period
+          ))
       )
     )
-    if (isConflicts.some(e => e)) throw new Error('重複する時限が存在します')
+    if (
+      isConflicts
+        // 不明は除く
+        .filter(e => e && (e.module != Module.Unknown || e.day != Day.Unknown))
+        .some(e => e)
+    )
+      throw new Error('重複する時限が存在します')
 
     const userLecture = await this.userLectureRepository.createUserLecture(
       user,

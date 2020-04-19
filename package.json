@@ -68,7 +68,7 @@
     "pgtools": "^0.3.0",
     "reflect-metadata": "^0.1.13",
     "stripe": "^8.4.0",
-    "twinte-parser": "^1.2.3",
+    "twinte-parser": "1.2.3",
     "typeorm": "^0.2.20",
     "typescript-rest": "^2.2.2",
     "typescript-rest-swagger": "^1.0.4",

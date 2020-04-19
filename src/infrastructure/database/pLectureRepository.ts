@@ -37,7 +37,7 @@ export class PLectureRepository implements LectureRepository {
     keyword: string
   ): Promise<LectureEntity[]> {
     const pLecs = await this.repository.find({
-      relations: ['dates'],
+      relations: ['dates', 'standardYear'],
       where: [
         { lecture_name: Like(`%${keyword}%`), year },
         { lecture_code: Like(`${keyword}%`), year },
@@ -84,7 +84,7 @@ export class PLectureRepository implements LectureRepository {
       })
       updateTarget.credits = lec.credits
       updateTarget.overview = lec.overview
-      updateTarget.remarks = lec.overview
+      updateTarget.remarks = lec.remarks
       updateTarget.type = lec.type
       updateTarget.standardYear = lec.standardYear.map(e => {
         const y = new LectureStandardYear()

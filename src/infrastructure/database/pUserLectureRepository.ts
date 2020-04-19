@@ -96,6 +96,7 @@ export class PUserLectureRepository implements UserLectureRepository {
     newUserLecture.absence = 0
     newUserLecture.late = 0
     newUserLecture.memo = ''
+    newUserLecture.credits = srcLecture.credits
     const u = await this.userRepository.findOne({ ...user })
     if (!u) throw Error('存在するはずのユーザーが見つかりません')
     newUserLecture.user = u
@@ -161,7 +162,8 @@ export class PUserLectureRepository implements UserLectureRepository {
       late: p.late,
       memo: p.memo,
       lecture_name: p.lecture_name,
-      instructor: p.instructor
+      instructor: p.instructor,
+      credits: p.credits
     }
   }
 

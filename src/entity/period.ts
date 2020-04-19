@@ -19,6 +19,7 @@ export interface UserLectureEntity {
   memo: string
   lecture_name: string
   instructor: string
+  credits: number
 }
 
 export interface TimetableEntity extends PeriodEntity {

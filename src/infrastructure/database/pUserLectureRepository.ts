@@ -164,4 +164,15 @@ export class PUserLectureRepository implements UserLectureRepository {
       instructor: p.instructor
     }
   }
+
+  async getLectureCodes(user: UserEntity, year: number): Promise<string[]> {
+    const res = await this.userLectureRepository.find({
+      where: { user, year },
+      relations: ['twinte_lecture']
+    })
+    return res
+      .map(ul => ul.twinte_lecture?.lecture_code)
+      .filter(e => e)
+      .map(e => e!!)
+  }
 }

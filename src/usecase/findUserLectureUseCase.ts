@@ -7,4 +7,5 @@ export interface FindUserLectureUseCase {
     user_lecture_id: string
   ): Promise<UserLectureEntity | undefined>
   getAllUserLectures(user: UserEntity): Promise<UserLectureEntity[]>
+  getLectureCodes(user: UserEntity, year: number): Promise<string[]>
 }

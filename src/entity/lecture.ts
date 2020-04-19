@@ -1,6 +1,20 @@
-import { Lecture as _Lecture } from 'twinte-parser'
+import { Day, Module } from 'twinte-parser'
 
-export interface LectureEntity extends _Lecture {
+export interface LectureEntity {
+  lectureCode: string
+  name: string
+  credits: number
+  overview: string
+  remarks: string
+  type: number
+  details: {
+    module: Module
+    day: Day
+    period: number
+    room: string
+  }[]
+  instructor: string
   twinte_lecture_id: string
   year: number
+  standardYear: number[]
 }

@@ -11,6 +11,7 @@ import { SubstituteDay } from './orm/substituteDay'
 import { Session } from './orm/session'
 import { getLogger } from 'log4js'
 import { PaymentUser } from '../payment/orm/paymentUser'
+import { LectureStandardYear } from './orm/lectureStandardYear'
 
 const logger = getLogger('database')
 
@@ -37,6 +38,7 @@ export async function connect(): Promise<Connection> {
       entities: [
         Lecture,
         LectureDate,
+        LectureStandardYear,
         User,
         UserAuthentication,
         Period,

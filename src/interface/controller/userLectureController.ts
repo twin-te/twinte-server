@@ -59,4 +59,8 @@ export class UserLectureController {
   ): Promise<UserLectureEntity | undefined> {
     return this.updateUserLectureUseCase.updateUserLecture(user, userLecture)
   }
+
+  getLectureCodes(user: UserEntity, year: number): Promise<string[]> {
+    return this.findUserLectureUseCase.getLectureCodes(user, year)
+  }
 }

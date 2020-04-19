@@ -111,4 +111,19 @@ export class UserLectureService {
       user_lecture_id
     )
   }
+
+  @GET
+  @Path('/lecture-code-csv/:year')
+  async getLectureCodes(@PathParam('year') year: number) {
+    this.context.response.setHeader('Content-Type', 'text/csv')
+    this.context.response.setHeader(
+      'Content-Disposition',
+      `attachment; filename="${year}.csv"`
+    )
+    const res = await this.userLectureController.getLectureCodes(
+      this.context.request.user!!,
+      year
+    )
+    this.context.response.send(res.reduce((all, c) => `${all}\n${c}`))
+  }
 }

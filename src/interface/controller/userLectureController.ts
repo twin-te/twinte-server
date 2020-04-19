@@ -43,6 +43,13 @@ export class UserLectureController {
     return this.findUserLectureUseCase.getAllUserLectures(user)
   }
 
+  getUserLectureByYear(
+    user: UserEntity,
+    year: number
+  ): Promise<UserLectureEntity[]> {
+    return this.findUserLectureUseCase.getUserLectureByYear(user, year)
+  }
+
   removeUserLecture(
     user: UserEntity,
     user_lecture_id: string

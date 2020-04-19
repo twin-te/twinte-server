@@ -24,6 +24,17 @@ export class PUserLectureRepository implements UserLectureRepository {
     this.periodRepository = getConnection().getRepository(pPeriod)
   }
 
+  async getUserLectureByYear(
+    user: UserEntity,
+    year: number
+  ): Promise<UserLectureEntity[]> {
+    const res = await this.userLectureRepository.find({
+      where: { user, year },
+      relations: ['twinte_lecture']
+    })
+    return res.map(el => this.pUserLectureToUserLecture(el))
+  }
+
   async findUserLectureById(
     user: UserEntity,
     user_lecture_id: string

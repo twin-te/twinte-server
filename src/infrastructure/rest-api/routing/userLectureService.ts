@@ -7,6 +7,7 @@ import {
   POST,
   PreProcessor,
   PUT,
+  QueryParam,
   ServiceContext
 } from 'typescript-rest'
 import { UserLectureController } from '../../../interface/controller/userLectureController'
@@ -68,14 +69,20 @@ export class UserLectureService {
   }
 
   /**
-   * ユーザーが保持しているユーザー講義をすべて取得する
+   * ユーザーが保持しているユーザー講義を取得する
    */
   @GET
   @Response<UserLectureEntity>(200, 'ユーザー講義一覧')
-  getAllUserLecture() {
-    return this.userLectureController.getAllUserLectures(
-      this.context.request.user!!
-    )
+  getAllUserLecture(@QueryParam('year') year?: number) {
+    if (year)
+      return this.userLectureController.getUserLectureByYear(
+        this.context.request.user!!,
+        year
+      )
+    else
+      return this.userLectureController.getAllUserLectures(
+        this.context.request.user!!
+      )
   }
 
   /**

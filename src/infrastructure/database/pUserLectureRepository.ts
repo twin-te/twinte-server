@@ -177,7 +177,7 @@ export class PUserLectureRepository implements UserLectureRepository {
       memo: p.memo,
       lecture_name: p.lecture_name,
       instructor: p.instructor,
-      credits: p.credits
+      credits: Number(p.credits) //numeric型は厳密にjsのnumber型で表せないためstringで帰ってくる
     }
   }
 

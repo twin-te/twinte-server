@@ -7,11 +7,17 @@ export interface UserLectureRepository {
     user_lecture_id: string
   ): Promise<UserLectureEntity | undefined>
   getAllUserLecture(user: UserEntity): Promise<UserLectureEntity[]>
+  getUserLectureByYear(
+    user: UserEntity,
+    year: number
+  ): Promise<UserLectureEntity[]>
+
   createCustomUserLecture(
     user: UserEntity,
     year: number,
     lecture_name: string,
-    instructor: string
+    instructor: string,
+    credits: number
   ): Promise<UserLectureEntity>
   createUserLecture(
     user: UserEntity,

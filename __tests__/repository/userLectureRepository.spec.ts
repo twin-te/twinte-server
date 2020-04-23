@@ -47,6 +47,11 @@ beforeAll(async () => {
       year: 2019,
       twinte_lecture_id: '',
       instructor: 'Twin:te',
+      credits: 2,
+      standardYear: [1, 2],
+      overview: 'overview',
+      remarks: 'remarks',
+      type: 1,
       details: [
         { module: Module.SpringA, day: Day.Mon, period: 1, room: '3A404' }
       ]
@@ -70,6 +75,7 @@ test('CreateUserLecture', async () => {
   expect(res!!.late).toBe(0)
   expect(res!!.absence).toBe(0)
   expect(res!!.memo).toBe('')
+  expect(res!!.credits).toBe(2)
   testUserLecture = res!!
 })
 
@@ -100,13 +106,15 @@ test('CreateCustomUserLecture', async () => {
   const customUserLecture = {
     year: 2019,
     lecture_name: '講義C',
-    instructor: 'Twin-te'
+    instructor: 'Twin-te',
+    credits: 2
   }
   const res = await userLectureRepository.createCustomUserLecture(
     testUser,
     customUserLecture.year,
     customUserLecture.lecture_name,
-    customUserLecture.instructor
+    customUserLecture.instructor,
+    customUserLecture.credits
   )
   expect(res).toBeTruthy()
   expect(res!!.twinte_lecture_id).toBeNull()

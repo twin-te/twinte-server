@@ -24,6 +24,17 @@ export class PUserLectureRepository implements UserLectureRepository {
     this.periodRepository = getConnection().getRepository(pPeriod)
   }
 
+  async getUserLectureByYear(
+    user: UserEntity,
+    year: number
+  ): Promise<UserLectureEntity[]> {
+    const res = await this.userLectureRepository.find({
+      where: { user, year },
+      relations: ['twinte_lecture']
+    })
+    return res.map(el => this.pUserLectureToUserLecture(el))
+  }
+
   async findUserLectureById(
     user: UserEntity,
     user_lecture_id: string
@@ -51,7 +62,8 @@ export class PUserLectureRepository implements UserLectureRepository {
     user: UserEntity,
     year: number,
     lecture_name: string,
-    instructor: string
+    instructor: string,
+    credits: number
   ): Promise<UserLectureEntity> {
     const newUserLecture = new pUserLecture()
     newUserLecture.user_lecture_id = uuid()
@@ -62,6 +74,7 @@ export class PUserLectureRepository implements UserLectureRepository {
     newUserLecture.late = 0
     newUserLecture.year = year
     newUserLecture.memo = ''
+    newUserLecture.credits = credits
     const u = await this.userRepository.findOne({ ...user })
     if (!u) throw Error('存在するはずのユーザーが見つかりません')
     newUserLecture.user = u
@@ -96,6 +109,7 @@ export class PUserLectureRepository implements UserLectureRepository {
     newUserLecture.absence = 0
     newUserLecture.late = 0
     newUserLecture.memo = ''
+    newUserLecture.credits = srcLecture.credits
     const u = await this.userRepository.findOne({ ...user })
     if (!u) throw Error('存在するはずのユーザーが見つかりません')
     newUserLecture.user = u
@@ -123,6 +137,7 @@ export class PUserLectureRepository implements UserLectureRepository {
     target.attendance = userLecture.attendance
     target.late = userLecture.late
     target.memo = userLecture.memo
+    target.credits = userLecture.credits
     return this.pUserLectureToUserLecture(
       await this.userLectureRepository.save(target)
     )
@@ -161,7 +176,8 @@ export class PUserLectureRepository implements UserLectureRepository {
       late: p.late,
       memo: p.memo,
       lecture_name: p.lecture_name,
-      instructor: p.instructor
+      instructor: p.instructor,
+      credits: Number(p.credits) //numeric型は厳密にjsのnumber型で表せないためstringで帰ってくる
     }
   }
 

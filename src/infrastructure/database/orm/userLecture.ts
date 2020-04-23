@@ -54,4 +54,10 @@ export class UserLecture {
 
   @Column()
   memo!: string
+
+  @Column({
+    type: 'numeric',
+    default: 0
+  })
+  credits!: number
 }

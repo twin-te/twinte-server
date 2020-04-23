@@ -24,4 +24,11 @@ export class FindUserLectureInteractor implements FindUserLectureUseCase {
   getLectureCodes(user: UserEntity, year: number): Promise<string[]> {
     return this.userLectureRepository.getLectureCodes(user, year)
   }
+
+  getUserLectureByYear(
+    user: UserEntity,
+    year: number
+  ): Promise<UserLectureEntity[]> {
+    return this.userLectureRepository.getUserLectureByYear(user, year)
+  }
 }

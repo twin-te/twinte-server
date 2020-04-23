@@ -22,6 +22,11 @@ beforeAll(async () => {
       year: 2019,
       twinte_lecture_id: '',
       instructor: 'Twin:te',
+      overview: 'overview',
+      remarks: 'remarks',
+      standardYear: [1, 2],
+      credits: 1.5,
+      type: 1,
       details: [
         { module: Module.SpringA, day: Day.Mon, period: 1, room: '3A404' }
       ]

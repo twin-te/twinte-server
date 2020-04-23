@@ -22,13 +22,15 @@ export class UserLectureController {
     user: UserEntity,
     year: number,
     lecture_name: string,
-    instructor: string
+    instructor: string,
+    credits: number
   ): Promise<UserLectureEntity> {
     return this.createUserLectureUseCase.createCustomUserLecture(
       user,
       year,
       lecture_name,
-      instructor
+      instructor,
+      credits
     )
   }
 
@@ -41,6 +43,13 @@ export class UserLectureController {
 
   getAllUserLectures(user: UserEntity): Promise<UserLectureEntity[]> {
     return this.findUserLectureUseCase.getAllUserLectures(user)
+  }
+
+  getUserLectureByYear(
+    user: UserEntity,
+    year: number
+  ): Promise<UserLectureEntity[]> {
+    return this.findUserLectureUseCase.getUserLectureByYear(user, year)
   }
 
   removeUserLecture(

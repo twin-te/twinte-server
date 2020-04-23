@@ -8,6 +8,7 @@ import uuid = require('uuid')
 import { getConnection } from './index'
 import _cliProgress from 'cli-progress'
 import { getLogger } from 'log4js'
+import { LectureStandardYear } from './orm/lectureStandardYear'
 
 const logger = getLogger('database')
 
@@ -23,7 +24,7 @@ export class PLectureRepository implements LectureRepository {
     twinteLectureId: string
   ): Promise<LectureEntity | undefined> {
     const pLec = await this.repository.findOne(twinteLectureId, {
-      relations: ['dates']
+      relations: ['dates', 'standardYear']
     })
 
     if (!pLec) return undefined
@@ -36,7 +37,7 @@ export class PLectureRepository implements LectureRepository {
     keyword: string
   ): Promise<LectureEntity[]> {
     const pLecs = await this.repository.find({
-      relations: ['dates'],
+      relations: ['dates', 'standardYear'],
       where: [
         { lecture_name: Like(`%${keyword}%`), year },
         { lecture_code: Like(`${keyword}%`), year },
@@ -59,7 +60,7 @@ export class PLectureRepository implements LectureRepository {
           lecture_code: lec.lectureCode,
           year: lec.year
         },
-        { relations: ['dates'] }
+        { relations: ['dates', 'standardYear'] }
       )
 
       if (!updateTarget) {
@@ -81,6 +82,16 @@ export class PLectureRepository implements LectureRepository {
         ld.room = el.room
         return ld
       })
+      updateTarget.credits = lec.credits
+      updateTarget.overview = lec.overview
+      updateTarget.remarks = lec.remarks
+      updateTarget.type = lec.type
+      updateTarget.standardYear = lec.standardYear.map(e => {
+        const y = new LectureStandardYear()
+        y.standardYear = e
+        return y
+      })
+
       await this.pLecToLec(await this.repository.save(updateTarget))
       bar.update(i)
     }
@@ -96,7 +107,12 @@ export class PLectureRepository implements LectureRepository {
       lectureCode: pLec.lecture_code,
       name: pLec.lecture_name,
       details: pLec.dates,
-      instructor: pLec.instructor
+      instructor: pLec.instructor,
+      credits: Number(pLec.credits),
+      overview: pLec.overview,
+      remarks: pLec.remarks,
+      type: pLec.type,
+      standardYear: pLec.standardYear.map(e => e.standardYear)
     }
   }
 
@@ -106,7 +122,7 @@ export class PLectureRepository implements LectureRepository {
   ): Promise<LectureEntity | undefined> {
     const res = await this.repository.findOne(
       { year, lecture_code },
-      { relations: ['dates'] }
+      { relations: ['dates', 'standardYear'] }
     )
     if (!res) return undefined
     return this.pLecToLec(res)

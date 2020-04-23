@@ -11,6 +11,7 @@ export interface CreateUserLectureUseCase {
     user: UserEntity,
     year: number,
     lecture_name: string,
-    instructor: string
+    instructor: string,
+    credits: number
   ): Promise<UserLectureEntity>
 }

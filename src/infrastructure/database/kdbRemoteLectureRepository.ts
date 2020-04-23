@@ -9,10 +9,14 @@ export class KdbRemoteLectureRepository implements RemoteLectureRepository {
     const csv = await downloadKDB(year)
     const lectures = parseKDB(csv)
 
-    return lectures.map(el => ({
-      ...el,
-      year,
-      twinte_lecture_id: ''
-    }))
+    return lectures.map(el => {
+      const { year: standardYear, ...tmp } = el
+      return {
+        ...tmp,
+        year,
+        standardYear,
+        twinte_lecture_id: ''
+      }
+    })
   }
 }

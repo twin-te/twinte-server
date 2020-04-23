@@ -56,6 +56,11 @@ beforeAll(async () => {
       year: 2019,
       twinte_lecture_id: '',
       instructor: 'Twin:te',
+      credits: 2,
+      standardYear: [1, 2],
+      overview: 'overview',
+      remarks: 'remarks',
+      type: 1,
       details: [
         { module: Module.SpringA, day: Day.Mon, period: 1, room: '3A404' }
       ]
@@ -69,13 +74,15 @@ beforeAll(async () => {
   const customUserLecture = {
     year: 2019,
     lecture_name: '講義C',
-    instructor: 'Twin-te'
+    instructor: 'Twin-te',
+    credits: 2
   }
   testCustomUserLecture = await userLectureRepository.createCustomUserLecture(
     testUser,
     customUserLecture.year,
     customUserLecture.lecture_name,
-    customUserLecture.instructor
+    customUserLecture.instructor,
+    customUserLecture.credits
   )
 })
 let testPeriod: PeriodEntity

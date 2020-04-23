@@ -42,12 +42,14 @@ export class UserLectureService {
     year: number
     lecture_name: string
     instructor: string
+    credits: number
   }) {
     return this.userLectureController.createCustomUserLecture(
       this.context.request.user!!,
       params.year,
       params.lecture_name,
-      params.instructor
+      params.instructor,
+      params.credits
     )
   }
 

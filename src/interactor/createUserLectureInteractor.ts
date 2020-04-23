@@ -19,13 +19,15 @@ export class CreateUserLectureInteractor implements CreateUserLectureUseCase {
     user: UserEntity,
     year: number,
     lecture_name: string,
-    instructor: string
+    instructor: string,
+    credits: number
   ): Promise<UserLectureEntity> {
     return this.userLectureRepository.createCustomUserLecture(
       user,
       year,
       lecture_name,
-      instructor
+      instructor,
+      credits
     )
   }
 
@@ -71,7 +73,7 @@ export class CreateUserLectureInteractor implements CreateUserLectureUseCase {
     if (
       isConflicts
         // 不明は除く
-        .filter(e => e && (e.module != Module.Unknown && e.day != Day.Unknown))
+        .filter(e => e && e.module != Module.Unknown && e.day != Day.Unknown)
         .some(e => e)
     )
       throw new Error('重複する時限が存在します')

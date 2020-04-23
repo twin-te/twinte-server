@@ -73,7 +73,13 @@ export class CreateUserLectureInteractor implements CreateUserLectureUseCase {
     if (
       isConflicts
         // 不明は除く
-        .filter(e => e && e.module != Module.Unknown && e.day != Day.Unknown)
+        .filter(
+          e =>
+            e &&
+            e.module != Module.Unknown &&
+            e.day != Day.Unknown &&
+            e.day != Day.Intensive
+        )
         .some(e => e)
     )
       throw new Error('重複する時限が存在します')

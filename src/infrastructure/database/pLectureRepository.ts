@@ -108,7 +108,7 @@ export class PLectureRepository implements LectureRepository {
       name: pLec.lecture_name,
       details: pLec.dates,
       instructor: pLec.instructor,
-      credits: pLec.credits,
+      credits: Number(pLec.credits),
       overview: pLec.overview,
       remarks: pLec.remarks,
       type: pLec.type,

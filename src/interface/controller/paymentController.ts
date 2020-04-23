@@ -16,6 +16,7 @@ import {
   CheckoutInfo,
   GetCheckoutInfoUseCase
 } from '../../usecase/payment/getCheckoutInfoUseCase'
+import { BadRequestError } from 'typescript-rest/dist/server/model/errors'
 
 @injectable()
 export class PaymentController {
@@ -106,6 +107,8 @@ export class PaymentController {
     user: UserEntity,
     params: { nickname: string | null; link: string | null }
   ): Promise<PaymentUser> {
+    if (params.link && !/^https?:\/\/.+/.test(params.link))
+      throw new BadRequestError('linkの値が不正です')
     const paymentUser = await this.findPaymentUserUseCase.findPaymentUserByTwinteUserId(
       user.twinte_user_id
     )

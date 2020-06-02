@@ -12,6 +12,7 @@ import { Session } from './orm/session'
 import { getLogger } from 'log4js'
 import { PaymentUser } from '../payment/orm/paymentUser'
 import { LectureStandardYear } from './orm/lectureStandardYear'
+import { Information } from './orm/information'
 
 const logger = getLogger('database')
 
@@ -47,7 +48,8 @@ export async function connect(): Promise<Connection> {
         SchoolEvent,
         SubstituteDay,
         Session,
-        PaymentUser
+        PaymentUser,
+        Information
       ],
       synchronize: true,
       logging: false

@@ -1,4 +1,4 @@
-import { Moment } from 'moment'
+import { Moment } from 'moment-timezone'
 
 export enum EventType {
   Holiday = '休日',

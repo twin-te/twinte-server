@@ -1,4 +1,4 @@
-import { Moment } from 'moment'
+import { Moment } from 'moment-timezone'
 import { Information } from '../entity/info'
 
 export interface CreateInfoUseCase {

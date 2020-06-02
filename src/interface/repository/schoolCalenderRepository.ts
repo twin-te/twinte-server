@@ -2,7 +2,7 @@ import { ModuleTerm } from '../../entity/moduleTerm'
 import { SubstituteDay } from '../../entity/substituteDay'
 import { Event } from '../../entity/event'
 import { Module } from 'twinte-parser'
-import { Moment } from 'moment'
+import { Moment } from 'moment-timezone'
 
 export interface SchoolCalenderRepository {
   getModuleTerms(year: number): Promise<ModuleTerm[]>

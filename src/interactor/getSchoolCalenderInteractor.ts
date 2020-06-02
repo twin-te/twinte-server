@@ -5,7 +5,7 @@ import { Event } from '../entity/event'
 import { SubstituteDay } from '../entity/substituteDay'
 import { inject, injectable } from 'inversify'
 import { types } from '../di/types'
-import { Moment } from 'moment'
+import { Moment } from 'moment-timezone'
 import { SchoolCalenderRepository } from '../interface/repository/schoolCalenderRepository'
 
 @injectable()

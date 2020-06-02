@@ -1,9 +1,10 @@
 import { connect } from './infrastructure/database'
 import envCheck from './envCheck'
 import log4js from 'log4js'
-import moment from 'moment'
+import moment from 'moment-timezone'
 import 'moment/locale/ja'
 import { initStripe } from './infrastructure/payment/stripe'
+import 'moment-timezone'
 
 if (process.env.NODE_ENV === 'production')
   log4js.configure('./prod-log4js-config.json')
@@ -18,6 +19,7 @@ else logger.info('開発モードで起動します')
 envCheck()
 
 moment.locale('ja')
+moment.tz.setDefault('Asia/Tokyo')
 
 const main = async () => {
   logger.info('起動開始')

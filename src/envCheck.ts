@@ -15,6 +15,7 @@ const envVariables: { [key: string]: { [key: string]: string } } = {
     REDIRECT_URL: 'ログイン後にリダイレクトするURL'
   },
   Auth: {
+    ADMIN_USER_ID: '管理者のTwin:te ID',
     TWITTER_CONSUMER_KEY: 'Twitter Consumer Key',
     TWITTER_CONSUMER_SECRET: 'Twitter Consumer Secret',
     GOOGLE_CLIENT_ID: 'Google Client ID',

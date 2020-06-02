@@ -3,7 +3,7 @@ import { Information } from '../entity/info'
 import { inject, injectable } from 'inversify'
 import { InformationRepository } from '../interface/repository/informationRepository'
 import { types } from '../di/types'
-import { Moment } from 'moment'
+import { Moment } from 'moment-timezone'
 
 @injectable()
 export class CreateInfoInteractor implements CreateInfoUseCase {

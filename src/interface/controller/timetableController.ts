@@ -14,7 +14,7 @@ import { RemovePeriodUseCase } from '../../usecase/removePeriodUseCase'
 import { FindUserLectureUseCase } from '../../usecase/findUserLectureUseCase'
 import { FindLectureUseCase } from '../../usecase/findLectureUseCase'
 
-import moment from 'moment'
+import moment from 'moment-timezone'
 
 export interface OutputPeriodData extends PeriodEntity {
   lecture_code: string | null

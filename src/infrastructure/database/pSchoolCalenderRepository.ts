@@ -9,7 +9,7 @@ import { SubstituteDay as pSubstituteDay } from './orm/substituteDay'
 import { Event } from '../../entity/event'
 import { getConnection } from './index'
 
-import moment from 'moment'
+import moment from 'moment-timezone'
 import { Module } from 'twinte-parser'
 @injectable()
 export class PSchoolCalenderRepository implements SchoolCalenderRepository {

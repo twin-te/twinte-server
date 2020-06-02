@@ -39,6 +39,12 @@ import { UpdatePaymentUserInteractor } from '../interactor/payment/updatePayment
 import { GetAllPaidUserInteractor } from '../interactor/payment/GetAllPaidUserInteractor'
 import { FindCheckoutInteractor } from '../interactor/payment/findCheckoutInteractor'
 import { GetCheckoutInfoInteractor } from '../interactor/payment/getCheckoutInfoInteractor'
+import { CreateInfoInteractor } from '../interactor/createInfoInteractor'
+import { FindInfoInteractor } from '../interactor/findInfoInteractor'
+import { UpdateInfoInteractor } from '../interactor/updateInfoInteractor'
+import { DeleteInfoInteractor } from '../interactor/deleteInfoInteractor'
+import { PInformationRepository } from '../infrastructure/database/pInformationRepository'
+import { InfoController } from '../interface/controller/infoController'
 
 const config: { identifier: any; bindTo: any }[] = [
   { identifier: types.LectureRepository, bindTo: PLectureRepository },
@@ -136,6 +142,30 @@ const config: { identifier: any; bindTo: any }[] = [
   {
     identifier: types.GetCheckoutInfoUseCase,
     bindTo: GetCheckoutInfoInteractor
+  },
+  {
+    identifier: types.CreateInfoUseCase,
+    bindTo: CreateInfoInteractor
+  },
+  {
+    identifier: types.FindInfoUseCase,
+    bindTo: FindInfoInteractor
+  },
+  {
+    identifier: types.UpdateInfoUseCase,
+    bindTo: UpdateInfoInteractor
+  },
+  {
+    identifier: types.DeleteInfoUseCase,
+    bindTo: DeleteInfoInteractor
+  },
+  {
+    identifier: types.InformationRepository,
+    bindTo: PInformationRepository
+  },
+  {
+    identifier: InfoController,
+    bindTo: InfoController
   }
 ]
 

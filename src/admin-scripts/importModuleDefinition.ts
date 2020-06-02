@@ -7,7 +7,7 @@ import { promises as fs } from 'fs'
 import { ModuleTerm } from '../entity/moduleTerm'
 import { connect } from '../infrastructure/database'
 
-import moment from 'moment'
+import moment from 'moment-timezone'
 log4js.configure('./dev-log4js-config.json')
 const logger = log4js.getLogger('main')
 

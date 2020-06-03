@@ -3,7 +3,7 @@ import { types } from '../../di/types'
 import { EventType } from '../../entity/event'
 import { GetSchoolCalenderUseCase } from '../../usecase/getSchoolCalenderUseCase'
 
-import moment from 'moment'
+import moment from 'moment-timezone'
 import { Day, Module } from 'twinte-parser'
 
 interface OutputEvent {

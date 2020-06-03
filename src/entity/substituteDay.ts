@@ -1,4 +1,4 @@
-import { Moment } from 'moment'
+import { Moment } from 'moment-timezone'
 import { Day } from 'twinte-parser'
 
 export interface SubstituteDay {

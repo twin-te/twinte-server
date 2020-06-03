@@ -6,7 +6,7 @@ import { UpdateSchoolCalenderUseCase } from '../usecase/updateSchoolCalenderUseC
 import { promises as fs } from 'fs'
 import { connect } from '../infrastructure/database'
 
-import moment from 'moment'
+import moment from 'moment-timezone'
 import { SubstituteDay } from '../entity/substituteDay'
 log4js.configure('./dev-log4js-config.json')
 const logger = log4js.getLogger('main')

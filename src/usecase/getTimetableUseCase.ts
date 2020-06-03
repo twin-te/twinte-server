@@ -1,7 +1,7 @@
 import { UserEntity } from '../entity/user'
 import { Day, Module } from 'twinte-parser'
 import { PeriodEntity, TimetableEntity } from '../entity/period'
-import { Moment } from 'moment'
+import { Moment } from 'moment-timezone'
 
 export interface GetTimetableUseCase {
   getTimetable(

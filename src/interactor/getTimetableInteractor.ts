@@ -8,7 +8,7 @@ import { PeriodEntity, TimetableEntity } from '../entity/period'
 import { SchoolCalenderRepository } from '../interface/repository/schoolCalenderRepository'
 import { EventType } from '../entity/event'
 
-import moment from 'moment'
+import moment from 'moment-timezone'
 
 @injectable()
 export class GetTimetableInteractor implements GetTimetableUseCase {

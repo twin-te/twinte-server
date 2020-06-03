@@ -1,4 +1,4 @@
-import { Moment } from 'moment'
+import { Moment } from 'moment-timezone'
 import { SubstituteDay } from '../entity/substituteDay'
 import { ModuleTerm } from '../entity/moduleTerm'
 import { Module } from 'twinte-parser'

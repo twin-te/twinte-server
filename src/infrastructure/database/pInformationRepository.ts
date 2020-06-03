@@ -18,12 +18,14 @@ export class PInformationRepository implements InformationRepository {
   async create(
     title: string,
     content: string,
-    moment: Moment
+    moment: Moment,
+    tag: string
   ): Promise<Information> {
     const info = new pInfo()
     info.info_id = uuid()
     info.title = title
     info.content = content
+    info.tag = tag
     info.date = moment.format()
     return this.transform(await this.repository.save(info))
   }
@@ -73,12 +75,11 @@ export class PInformationRepository implements InformationRepository {
     return this.transform(await this.repository.save(target))
   }
 
-  transform(src: pInfo): Information {
+  transform({ date, info_id, ...e }: pInfo): Information {
     return {
-      id: src.info_id,
-      title: src.title,
-      content: src.content,
-      date: moment(src.date)
+      id: info_id,
+      date: moment(date),
+      ...e
     }
   }
 }

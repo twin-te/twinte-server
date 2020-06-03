@@ -19,4 +19,7 @@ export class Information {
     type: 'timestamptz'
   })
   date!: string
+
+  @Column()
+  tag!: string
 }

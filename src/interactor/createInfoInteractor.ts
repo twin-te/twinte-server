@@ -12,8 +12,9 @@ export class CreateInfoInteractor implements CreateInfoUseCase {
   createInfo(
     title: string,
     content: string,
-    date: Moment
+    date: Moment,
+    tag: string
   ): Promise<Information> {
-    return this.informationRepository.create(title, content, date)
+    return this.informationRepository.create(title, content, date, tag)
   }
 }

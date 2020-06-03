@@ -33,8 +33,8 @@ export class PublicInformationService {
   @Path('/')
   @GET
   getInformation(
-    @QueryParam('limit') limit: number,
-    @QueryParam('offset') offset: number
+    @QueryParam('limit') limit: number = 50,
+    @QueryParam('offset') offset: number = 0
   ): Promise<OutputInformationData[]> {
     return this.controller.findInfo(false, limit, offset)
   }
@@ -54,21 +54,31 @@ export class InternalInformationService {
     this.controller = container.get(InfoController)
   }
 
+  /**
+   * お知らせを作成する
+   * @param body お知らせ内容
+   */
   @Path('/')
   @POST
   create(body: {
     title: string
     content: string
     date: string
+    tag: string
   }): Promise<OutputInformationData> {
-    return this.controller.createInfo(body.title, body.content, body.date)
+    return this.controller.createInfo(
+      body.title,
+      body.content,
+      body.date,
+      body.tag
+    )
   }
 
   @Path('/')
   @GET
   list(
-    @QueryParam('limit') limit: number,
-    @QueryParam('offset') offset: number
+    @QueryParam('limit') limit: number = 50,
+    @QueryParam('offset') offset: number = 0
   ): Promise<OutputInformationData[]> {
     return this.controller.findInfo(true, limit, offset)
   }
@@ -77,9 +87,15 @@ export class InternalInformationService {
   @PUT
   update(
     @PathParam('info_id') id: string,
-    body: { title: string; content: string; date: string }
+    body: { title: string; content: string; date: string; tag: string }
   ): Promise<OutputInformationData> {
-    return this.controller.updateInfo(id, body.title, body.content, body.date)
+    return this.controller.updateInfo(
+      id,
+      body.title,
+      body.content,
+      body.date,
+      body.tag
+    )
   }
 
   @Path('/:info_id')

@@ -31,13 +31,15 @@ export class InfoController {
   async createInfo(
     title: string,
     content: string,
-    date: string
+    date: string,
+    tag: string
   ): Promise<OutputInformationData> {
     return this.transform(
       await this.createInfoUseCase.createInfo(
         title,
         content,
-        moment.tz(date, 'Asia/Tokyo')
+        moment.tz(date, 'Asia/Tokyo'),
+        tag
       )
     )
   }
@@ -46,14 +48,16 @@ export class InfoController {
     id: string,
     title: string,
     content: string,
-    date: string
+    date: string,
+    tag: string
   ): Promise<OutputInformationData> {
     return this.transform(
       await this.updateInfoUseCase.updateInfo({
         id,
         title,
         content,
-        date: moment.tz(date, 'Asia/Tokyo')
+        date: moment.tz(date, 'Asia/Tokyo'),
+        tag
       })
     )
   }

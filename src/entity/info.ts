@@ -5,4 +5,5 @@ export interface Information {
   title: string
   content: string
   date: Moment
+  tag: string
 }

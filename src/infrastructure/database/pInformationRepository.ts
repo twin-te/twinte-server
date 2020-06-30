@@ -47,19 +47,19 @@ export class PInformationRepository implements InformationRepository {
         take: limit,
         skip: offset,
         order: {
-          date: 'ASC'
+          date: 'DESC'
         }
       })
       return res.map(i => this.transform(i))
     } else {
       const res = await this.repository.find({
         where: {
-          date: unreleased ? undefined : Raw(alias => `${alias} <= now()`)
+          date: Raw(alias => `${alias} <= now()`)
         },
         take: limit,
         skip: offset,
         order: {
-          date: 'ASC'
+          date: 'DESC'
         }
       })
       return res.map(i => this.transform(i))

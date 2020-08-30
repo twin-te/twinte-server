@@ -9,7 +9,7 @@ import {
 } from '../../src/entity/user'
 import { Day, Module } from 'twinte-parser'
 import { LectureRepository } from '../../src/interface/repository/lectureRepository'
-import { LectureEntity } from '../../src/entity/lecture'
+import { LectureEntity, LectureFormat } from '../../src/entity/lecture'
 import { UserLectureEntity } from '../../src/entity/period'
 import container, { configureDiContainer } from '../../src/di/inversify.config'
 
@@ -54,7 +54,8 @@ beforeAll(async () => {
       type: 1,
       details: [
         { module: Module.SpringA, day: Day.Mon, period: 1, room: '3A404' }
-      ]
+      ],
+      formats: [LectureFormat.OnlineAsynchronous]
     }
   ]
   testLecture = (await lectureRepository.upsertLectures(lectures))[0]
@@ -76,6 +77,7 @@ test('CreateUserLecture', async () => {
   expect(res!!.absence).toBe(0)
   expect(res!!.memo).toBe('')
   expect(res!!.credits).toBe(2)
+  expect(res!!.formats).toStrictEqual([LectureFormat.OnlineAsynchronous])
   testUserLecture = res!!
 })
 
@@ -114,7 +116,8 @@ test('CreateCustomUserLecture', async () => {
     customUserLecture.year,
     customUserLecture.lecture_name,
     customUserLecture.instructor,
-    customUserLecture.credits
+    customUserLecture.credits,
+    [LectureFormat.FaceToFace]
   )
   expect(res).toBeTruthy()
   expect(res!!.twinte_lecture_id).toBeNull()
@@ -124,6 +127,7 @@ test('CreateCustomUserLecture', async () => {
   expect(res!!.late).toBe(0)
   expect(res!!.absence).toBe(0)
   expect(res!!.memo).toBe('')
+  expect(res!!.formats).toStrictEqual([LectureFormat.FaceToFace])
   customTestUserLecture = res
 })
 

@@ -7,6 +7,7 @@ import { LectureRepository } from '../interface/repository/lectureRepository'
 import { TimetableRepository } from '../interface/repository/timetableRepository'
 import { UserEntity } from '../entity/user'
 import { Day, Module } from 'twinte-parser'
+import { LectureFormat } from '../entity/lecture'
 
 @injectable()
 export class CreateUserLectureInteractor implements CreateUserLectureUseCase {
@@ -20,14 +21,16 @@ export class CreateUserLectureInteractor implements CreateUserLectureUseCase {
     year: number,
     lecture_name: string,
     instructor: string,
-    credits: number
+    credits: number,
+    formats: LectureFormat[]
   ): Promise<UserLectureEntity> {
     return this.userLectureRepository.createCustomUserLecture(
       user,
       year,
       lecture_name,
       instructor,
-      credits
+      credits,
+      formats
     )
   }
 

@@ -1,7 +1,7 @@
 import { clearDatabase, initRepository } from '../helper'
 import { types } from '../../src/di/types'
 import { LectureRepository } from '../../src/interface/repository/lectureRepository'
-import { LectureEntity } from '../../src/entity/lecture'
+import { LectureEntity, LectureFormat } from '../../src/entity/lecture'
 import { Day, Module } from 'twinte-parser'
 import container, { configureDiContainer } from '../../src/di/inversify.config'
 
@@ -29,7 +29,8 @@ beforeAll(async () => {
       type: 1,
       details: [
         { module: Module.SpringA, day: Day.Mon, period: 1, room: '3A404' }
-      ]
+      ],
+      formats: [LectureFormat.OnlineAsynchronous]
     }
   ]
 })

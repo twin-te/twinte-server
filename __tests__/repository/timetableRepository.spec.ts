@@ -9,7 +9,7 @@ import {
 } from '../../src/entity/user'
 import { Day, Module } from 'twinte-parser'
 import { LectureRepository } from '../../src/interface/repository/lectureRepository'
-import { LectureEntity } from '../../src/entity/lecture'
+import { LectureEntity, LectureFormat } from '../../src/entity/lecture'
 import { PeriodEntity, UserLectureEntity } from '../../src/entity/period'
 import { TimetableRepository } from '../../src/interface/repository/timetableRepository'
 import container, { configureDiContainer } from '../../src/di/inversify.config'
@@ -63,7 +63,8 @@ beforeAll(async () => {
       type: 1,
       details: [
         { module: Module.SpringA, day: Day.Mon, period: 1, room: '3A404' }
-      ]
+      ],
+      formats: [LectureFormat.OnlineSynchronous]
     }
   ]
   testLecture = (await lectureRepository.upsertLectures(lectures))[0]
@@ -82,7 +83,8 @@ beforeAll(async () => {
     customUserLecture.year,
     customUserLecture.lecture_name,
     customUserLecture.instructor,
-    customUserLecture.credits
+    customUserLecture.credits,
+    [LectureFormat.Others]
   )
 })
 let testPeriod: PeriodEntity
@@ -123,7 +125,8 @@ test('GetTimetable', async () => {
         ...testPeriod,
         lecture_name: testUserLecture.lecture_name,
         lecture_code: testLecture.lectureCode,
-        instructor: testUserLecture.instructor
+        instructor: testUserLecture.instructor,
+        formats: testUserLecture.formats
       }
     ])
   )

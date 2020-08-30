@@ -75,6 +75,9 @@ export class PLectureRepository implements LectureRepository {
       if (!updateTarget) {
         updateTarget = new pLecture()
         updateTarget.twinte_lecture_id = uuid()
+        updateTarget.dates = []
+        updateTarget.standardYear = []
+        updateTarget.formats = []
         lec.twinte_lecture_id = updateTarget.twinte_lecture_id
         newLectures.push(lec)
       }

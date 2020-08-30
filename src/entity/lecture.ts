@@ -17,4 +17,12 @@ export interface LectureEntity {
   twinte_lecture_id: string
   year: number
   standardYear: number[]
+  formats: LectureFormat[]
+}
+
+export enum LectureFormat {
+  OnlineAsynchronous = 'Asynchronous',
+  OnlineSynchronous = 'Synchronous',
+  FaceToFace = 'FaceToFace',
+  Others = 'Others'
 }

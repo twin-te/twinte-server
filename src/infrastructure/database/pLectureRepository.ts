@@ -1,5 +1,8 @@
 import { LectureRepository } from '../../interface/repository/lectureRepository'
 import { Lecture as pLecture } from './orm/lecture'
+import { LectureDate as pLecDate } from './orm/lectureDate'
+import { LectureStandardYear as pLecYear } from './orm/lectureStandardYear'
+import { LectureFormat as pLecFormat } from './orm/lectureFormat'
 import { injectable } from 'inversify'
 import { Like, Repository } from 'typeorm'
 import { LectureEntity } from '../../entity/lecture'
@@ -9,22 +12,28 @@ import { getConnection } from './index'
 import _cliProgress from 'cli-progress'
 import { getLogger } from 'log4js'
 import { LectureStandardYear } from './orm/lectureStandardYear'
+import { LectureFormat } from './orm/lectureFormat'
 
 const logger = getLogger('database')
 
 @injectable()
 export class PLectureRepository implements LectureRepository {
   repository: Repository<pLecture>
-
+  dateRepository: Repository<pLecDate>
+  yearRepository: Repository<pLecYear>
+  formatRepository: Repository<pLecFormat>
   constructor() {
     this.repository = getConnection().getRepository(pLecture)
+    this.dateRepository = getConnection().getRepository(pLecDate)
+    this.yearRepository = getConnection().getRepository(pLecYear)
+    this.formatRepository = getConnection().getRepository(pLecFormat)
   }
 
   async findLectureById(
     twinteLectureId: string
   ): Promise<LectureEntity | undefined> {
     const pLec = await this.repository.findOne(twinteLectureId, {
-      relations: ['dates', 'standardYear']
+      relations: ['dates', 'standardYear', 'formats']
     })
 
     if (!pLec) return undefined
@@ -37,7 +46,7 @@ export class PLectureRepository implements LectureRepository {
     keyword: string
   ): Promise<LectureEntity[]> {
     const pLecs = await this.repository.find({
-      relations: ['dates', 'standardYear'],
+      relations: ['dates', 'standardYear', 'formats'],
       where: [
         { lecture_name: Like(`%${keyword}%`), year },
         { lecture_code: Like(`${keyword}%`), year },
@@ -60,7 +69,7 @@ export class PLectureRepository implements LectureRepository {
           lecture_code: lec.lectureCode,
           year: lec.year
         },
-        { relations: ['dates', 'standardYear'] }
+        { relations: ['dates', 'standardYear', 'formats'] }
       )
 
       if (!updateTarget) {
@@ -74,6 +83,9 @@ export class PLectureRepository implements LectureRepository {
       updateTarget.instructor = lec.instructor
       updateTarget.year = lec.year
       updateTarget.lecture_code = lec.lectureCode
+      await Promise.all(
+        updateTarget.dates.map(d => this.dateRepository.delete(d))
+      )
       updateTarget.dates = lec.details.map(el => {
         const ld = new LectureDate()
         ld.module = el.module
@@ -86,10 +98,21 @@ export class PLectureRepository implements LectureRepository {
       updateTarget.overview = lec.overview
       updateTarget.remarks = lec.remarks
       updateTarget.type = lec.type
+      await Promise.all(
+        updateTarget.standardYear.map(y => this.yearRepository.delete(y))
+      )
       updateTarget.standardYear = lec.standardYear.map(e => {
         const y = new LectureStandardYear()
         y.standardYear = e
         return y
+      })
+      await Promise.all(
+        updateTarget.formats.map(f => this.formatRepository.delete(f))
+      )
+      updateTarget.formats = lec.formats.map(el => {
+        const f = new LectureFormat()
+        f.format = el
+        return f
       })
 
       await this.pLecToLec(await this.repository.save(updateTarget))
@@ -112,7 +135,8 @@ export class PLectureRepository implements LectureRepository {
       overview: pLec.overview,
       remarks: pLec.remarks,
       type: pLec.type,
-      standardYear: pLec.standardYear.map(e => e.standardYear)
+      standardYear: pLec.standardYear.map(e => e.standardYear),
+      formats: pLec.formats.map(f => f.format)
     }
   }
 
@@ -122,7 +146,7 @@ export class PLectureRepository implements LectureRepository {
   ): Promise<LectureEntity | undefined> {
     const res = await this.repository.findOne(
       { year, lecture_code },
-      { relations: ['dates', 'standardYear'] }
+      { relations: ['dates', 'standardYear', 'formats'] }
     )
     if (!res) return undefined
     return this.pLecToLec(res)

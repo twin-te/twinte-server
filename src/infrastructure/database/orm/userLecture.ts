@@ -2,6 +2,7 @@ import { Column, Entity, ManyToOne, OneToMany, PrimaryColumn } from 'typeorm'
 import { Lecture } from './lecture'
 import { Period } from './period'
 import { User } from './user'
+import { UserLectureFormat } from './userLectureFormat'
 
 @Entity()
 export class UserLecture {
@@ -60,4 +61,13 @@ export class UserLecture {
     default: 0
   })
   credits!: number
+
+  @OneToMany(
+    () => UserLectureFormat,
+    uf => uf.userLecture,
+    {
+      cascade: true
+    }
+  )
+  formats!: UserLectureFormat[]
 }

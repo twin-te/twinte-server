@@ -1,5 +1,5 @@
 import { RemoteLectureRepository } from '../../interface/repository/remoteLectureRepository'
-import { LectureEntity } from '../../entity/lecture'
+import { LectureEntity, LectureFormat } from '../../entity/lecture'
 import { downloadKDB, parseKDB } from 'twinte-parser'
 import { injectable } from 'inversify'
 
@@ -10,11 +10,22 @@ export class KdbRemoteLectureRepository implements RemoteLectureRepository {
     const lectures = parseKDB(csv)
 
     return lectures.map(el => {
-      const { year: standardYear, ...tmp } = el
+      const { year: standardYear, remarks, ...tmp } = el
+
+      const formats: LectureFormat[] = []
+
+      if (remarks.includes('オンデマンド'))
+        formats.push(LectureFormat.OnlineAsynchronous)
+      if (remarks.includes('同時双方向'))
+        formats.push(LectureFormat.OnlineSynchronous)
+      if (remarks.includes('対面')) formats.push(LectureFormat.FaceToFace)
+
       return {
         ...tmp,
         year,
         standardYear,
+        formats,
+        remarks,
         twinte_lecture_id: ''
       }
     })

@@ -40,7 +40,11 @@ export class PTimetableRepository implements TimetableRepository {
     if (day) where.day = day
     if (period) where.period = period
     const res = await this.periodRepository.find({
-      relations: ['user_lecture', 'user_lecture.twinte_lecture'],
+      relations: [
+        'user_lecture',
+        'user_lecture.twinte_lecture',
+        'user_lecture.formats'
+      ],
       where
     })
 
@@ -50,7 +54,8 @@ export class PTimetableRepository implements TimetableRepository {
       lecture_code: p.user_lecture.twinte_lecture
         ? p.user_lecture.twinte_lecture.lecture_code
         : undefined,
-      instructor: p.user_lecture.instructor
+      instructor: p.user_lecture.instructor,
+      formats: p.user_lecture.formats.map(f => f.format)
     }))
   }
 

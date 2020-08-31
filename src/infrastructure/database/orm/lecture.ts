@@ -1,6 +1,7 @@
 import { Column, Entity, OneToMany, PrimaryColumn, Unique } from 'typeorm'
 import { LectureDate } from './lectureDate'
 import { LectureStandardYear } from './lectureStandardYear'
+import { LectureFormat } from './lectureFormat'
 
 @Entity()
 @Unique('UQ_YEAR_LECTURE_CODE', ['year', 'lecture_code'])
@@ -67,4 +68,13 @@ export class Lecture {
     }
   )
   dates!: LectureDate[]
+
+  @OneToMany(
+    () => LectureFormat,
+    lectureFormat => lectureFormat.lecture,
+    {
+      cascade: true
+    }
+  )
+  formats!: LectureFormat[]
 }

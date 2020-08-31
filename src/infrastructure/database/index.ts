@@ -13,6 +13,8 @@ import { getLogger } from 'log4js'
 import { PaymentUser } from '../payment/orm/paymentUser'
 import { LectureStandardYear } from './orm/lectureStandardYear'
 import { Information } from './orm/information'
+import {LectureFormat} from './orm/lectureFormat'
+import {UserLectureFormat} from './orm/userLectureFormat'
 
 const logger = getLogger('database')
 
@@ -40,10 +42,12 @@ export async function connect(): Promise<Connection> {
         Lecture,
         LectureDate,
         LectureStandardYear,
+        LectureFormat,
         User,
         UserAuthentication,
         Period,
         UserLecture,
+        UserLectureFormat,
         ModuleTerm,
         SchoolEvent,
         SubstituteDay,

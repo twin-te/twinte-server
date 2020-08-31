@@ -16,6 +16,7 @@ import { UserLectureEntity } from '../../../entity/period'
 import isAuthenticated from '../middleware/isAuthenticated'
 import { Response, Tags } from 'typescript-rest-swagger'
 import { NotFoundError } from 'typescript-rest/dist/server/model/errors'
+import { LectureFormat } from '../../../entity/lecture'
 
 @Path('/user-lectures')
 @PreProcessor(isAuthenticated)
@@ -43,13 +44,15 @@ export class UserLectureService {
     lecture_name: string
     instructor: string
     credits: number
+    formats: LectureFormat[]
   }) {
     return this.userLectureController.createCustomUserLecture(
       this.context.request.user!!,
       params.year,
       params.lecture_name,
       params.instructor,
-      params.credits
+      params.credits,
+      params.formats
     )
   }
 

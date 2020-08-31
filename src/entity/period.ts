@@ -1,4 +1,5 @@
 import { Day, Module } from 'twinte-parser'
+import { LectureFormat } from './lecture'
 
 export interface PeriodEntity {
   year: number
@@ -20,10 +21,12 @@ export interface UserLectureEntity {
   lecture_name: string
   instructor: string
   credits: number
+  formats: LectureFormat[]
 }
 
 export interface TimetableEntity extends PeriodEntity {
   lecture_name: string
   lecture_code?: string
   instructor: string
+  formats: LectureFormat[]
 }

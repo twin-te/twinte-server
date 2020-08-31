@@ -6,6 +6,7 @@ import { UserLectureEntity } from '../../entity/period'
 import { FindUserLectureUseCase } from '../../usecase/findUserLectureUseCase'
 import { UpdateUserLectureUseCase } from '../../usecase/updateUserLectureUseCase'
 import { RemoveUserLectureUseCase } from '../../usecase/removeUserLectureUseCase'
+import { LectureFormat } from '../../entity/lecture'
 
 @injectable()
 export class UserLectureController {
@@ -23,14 +24,16 @@ export class UserLectureController {
     year: number,
     lecture_name: string,
     instructor: string,
-    credits: number
+    credits: number,
+    formats: LectureFormat[]
   ): Promise<UserLectureEntity> {
     return this.createUserLectureUseCase.createCustomUserLecture(
       user,
       year,
       lecture_name,
       instructor,
-      credits
+      credits,
+      formats
     )
   }
 

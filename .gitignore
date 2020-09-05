@@ -79,7 +79,12 @@ dist
 # IDE
 .idea
 
+# VS Code
+.vscode
+
 # Service worker
 sw.*
 
 /build
+
+.swagger_dist

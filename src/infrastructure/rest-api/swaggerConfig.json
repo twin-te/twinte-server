@@ -1,0 +1,11 @@
+{
+  "swagger": {
+    "outputDirectory": "./.swagger_dist",
+    "entryFile": "./src/infrastructure/rest-api/routing/*.ts",
+    "version": "1.0",
+    "name": "Twinte",
+    "description": "Twinte API v1",
+    "license": "MIT",
+    "basePath": "/v1/"
+  }
+}

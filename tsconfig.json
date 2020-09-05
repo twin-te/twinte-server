@@ -1,12 +1,14 @@
 {
   "compilerOptions": {
-    "target": "esnext",
+    "target": "es2018",
     "module": "commonjs",
     "strict": true,
     "noImplicitAny": true,
     "strictNullChecks": true,
     "strictFunctionTypes": true,
     "strictPropertyInitialization": true,
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
     "noImplicitThis": true,
     "alwaysStrict": true,
     "noUnusedLocals": true,
@@ -14,7 +16,9 @@
     "noImplicitReturns": true,
     "noFallthroughCasesInSwitch": true,
     "moduleResolution": "node",
+    "resolveJsonModule": true,
     "esModuleInterop": true,
-    "outDir": "build/"
+    "outDir": "build/",
+    "typeRoots": ["./src/infrastructure/rest-api/types", "./node_modules/@types"]
   }
 }

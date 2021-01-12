@@ -88,7 +88,7 @@ export class GetTimetableInteractor implements GetTimetableUseCase {
     if (!targetModule) return []
 
     const substituteDates = await this.schoolCalenderRepository.getSubstituteDays(
-      date.year()
+      nendo
     )
 
     const schoolEvents = await this.schoolCalenderRepository.getEvents(
